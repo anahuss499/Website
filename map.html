@@ -5,15 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#32cd32">
   <title>Map — Mahmood Masjid</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="" crossorigin="" />
-  <style>#map{height:60vh;border-radius:8px;}</style>
+
+  <style>
+  .map-embed iframe{height:60vh;border-radius:8px;border:0;width:100%}
+  </style>
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="/"><img class="brand-logo" src="/assets/img/logo.svg" alt="Mahmood Masjid logo"> <span>Mahmood Masjid</span></a>
+      <a class="brand" href="/"><img class="brand-logo" src="/assets/img/logo.svg" alt="Mahmood Masjid logo" tabindex="0" role="button" aria-label="Mahmood Masjid logo — press Enter to enlarge"> <span>Mahmood Masjid</span></a>
       <nav class="main-nav" aria-label="Main navigation">
         <button class="nav-toggle" aria-expanded="false" aria-label="Open navigation"><span class="hamburger"></span></button>
         <button class="compact-toggle" aria-pressed="false" aria-label="Toggle compact menu (icons only)" title="Compact menu (icons only)"><svg class="compact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h2l3.6 16h2.8L18 4h2l-4 16h-8L5 4zm7 5l-1 6h2l-1-6z"/></svg></button>
@@ -33,31 +35,35 @@
   <main class="container">
     <section class="card map-card">
       <h1>Our Location</h1>
-      <p>Below is a map showing the approximate location of the mosque in Gujrat, Pakistan. Change the coordinates in the JS if you'd like to point to the exact mosque location.</p>
-      <div id="map"></div>
-      <p><small>Coordinates used: <span id="coords">32.5734, 74.0781</span></small></p>
-      <p><a id="open-gmap" class="btn ghost" href="#" target="_blank">Open in Google Maps</a></p>
+      <p>Below is a map showing the mosque location.</p>
+      <div class="map-embed">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.693831331617!2d74.14836267613443!3d32.698569787990124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391f01001b28f153%3A0x1fcc66f9db8a19e0!2sMahmood%20Masjid!5e1!3m2!1sen!2suk!4v1766859236121!5m2!1sen!2suk" width="100%" height="450" style="border:0;border-radius:8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <p><small>Address: Mahmood Masjid — Gujrat</small></p>
+      <p><a id="open-gmap" class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Mahmood+Masjid+Gujrat" target="_blank" rel="noopener">Open in Google Maps</a></p>
     </section>
   </main>
 
   <footer class="site-footer">
-    <small>© <span id="current-year"></span> Mahmood Masjid</small>
+    <div class="footer-grid">
+      <div class="footer-left"><small>© <span id="current-year"></span> Mahmood Masjid — Gujrat, Pakistan</small></div>
+      <div class="footer-right" aria-label="Follow Mahmood Masjid on social media">
+        <div class="social-links">
+          <a class="social-link" href="https://facebook.com/yourpage" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7H8.9v-3h1.6V9.1c0-1.6.9-2.6 2.3-2.6.7 0 1.4.1 1.9.2v2.1h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 3h-1.9v7A10 10 0 0 0 22 12z"/></svg></a>
+          <a class="social-link" href="https://instagram.com/yourpage" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 6.3A4.7 4.7 0 1 0 16.7 13 4.7 4.7 0 0 0 12 8.3zm6.4-3.6a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/></svg></a>
+          <a class="social-link" href="https://x.com/yourpage" target="_blank" rel="noopener noreferrer" aria-label="X/Twitter" title="X/Twitter"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 5.9c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.7-2 .9A3.1 3.1 0 0 0 12 8.8c0 .2 0 .4.1.6A8.8 8.8 0 0 1 3 6.2a3.1 3.1 0 0 0-.4 1.6 3.1 3.1 0 0 0 1.4 2.6c-.5 0-1-.1-1.4-.4v.1a3.1 3.1 0 0 0 2.5 3 3.1 3.1 0 0 1-.8.1c-.2 0-.4 0-.6-.1a3.1 3.1 0 0 0 2.9 2.2 6.3 6.3 0 0 1-4.5 1.2 9 9 0 0 0 4.9 1.4c5.8 0 9-4.9 9-9v-.4c.6-.4 1-1 1.4-1.7-.6.3-1.2.6-1.9.7z"/></svg></a>
+          <a class="social-link" href="https://youtube.com/yourchannel" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2s-.2-1.6-.8-2.3c-.8-1-1.7-1-2.1-1.1C14.9 3.4 12 3.4 12 3.4h0s-2.9 0-6.7.4c-.5.1-1.4.1-2.1 1.1-.6.7-.8 2.3-.8 2.3S2 9 2 10.9v2.2C2 15 2.2 16.6 2.2 16.6s.2 1.6.8 2.3c.8 1 1.9 1 2.4 1.1 1.8.2 7.4.3 7.4.3s2.9 0 6.7-.4c.5-.1 1.4-.1 2.1-1.1.6-.7.8-2.3.8-2.3s.2-2.2.2-3.9v-2.2c0-1.8-.2-3.9-.2-3.9zM10 15V9l5 3-5 3z"/></svg></a>
+          <a class="social-link" href="https://wa.me/your-number" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11 11 0 0 0 3 21l1.7-6.2A9 9 0 0 1 5 10.5 9 9 0 0 1 20.5 3.5zM16.2 14.5c-.3.9-1.5 1.7-2.1 1.8-.7.1-1.4.2-2-.1-.6-.3-2.5-1.5-3.1-2.1-.6-.6-1.2-1.2-.9-1.9.3-.7.5-.7 1.2-1 1.1-.5 2.7-.8 3.5-.9.8-.1 1.4.2 1.9.7.5.5.8 1.7.6 2.6z"/></svg></a>
+        </div>
+      </div>
+    </div>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Default: Gujrat city coordinates
-    const lat = 32.5734, lon = 74.0781;
+    // Set footer year and ensure Open in Google Maps link points to mosque
     document.getElementById('current-year').textContent = new Date().getFullYear();
-    const map = L.map('map').setView([lat, lon], 14);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-    L.marker([lat, lon]).addTo(map).bindPopup('Mahmood Masjid (approx)').openPopup();
-    document.getElementById('coords').textContent = lat + ', ' + lon; 
-    const gmapHref = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
-    document.getElementById('open-gmap').href = gmapHref;
+    const openG = document.getElementById('open-gmap');
+    if(openG) openG.href = 'https://www.google.com/maps/search/?api=1&query=Mahmood+Masjid+Gujrat';
   </script>
   <script src="assets/js/ui.js"></script>
 </body>
