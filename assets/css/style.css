@@ -1,0 +1,166 @@
+/* Theme: user requested colors — updated with sharp UI tokens */
+:root{
+  --green:#32cd32; /* accent */
+  --bg:#f5f5f5; /* page background */
+  --text:#000000; /* primary text color */
+  --muted:#6b6b6b;
+  --card-bg: #ffffff;
+  --radius:8px; /* slightly sharper */
+  --max-width:1200px;
+  --elevation: 0 10px 30px rgba(12,18,22,0.08);
+  --elevation-2: 0 6px 18px rgba(12,18,22,0.06);
+  --glass-border: rgba(0,0,0,0.04);
+  --neon: rgba(50,205,50,0.12);
+}
+ 
+*{box-sizing:border-box}
+html,body{height:100%}
+body{font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--text); background: linear-gradient(180deg,var(--bg), #ffffff); -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.container{max-width:var(--max-width);margin:0 auto;padding:28px}
+.site-header{background:transparent;backdrop-filter: blur(6px);border-bottom:1px solid var(--glass-border);position:sticky;top:0;z-index:60}
+ 
+
+.site-header .container{display:flex;align-items:center;justify-content:space-between}
+.brand{font-family: 'Orbitron', sans-serif;font-weight:700;color:var(--text);text-decoration:none;font-size:1.05rem;letter-spacing:0.6px;display:inline-flex;align-items:center;gap:10px}
+.brand .brand-logo{width:38px;height:38px;border-radius:8px;display:inline-block;object-fit:cover;box-shadow:0 6px 18px rgba(50,205,50,0.08);background:linear-gradient(135deg,var(--green),#26a326)}
+.brand small{font-size:0.78rem;color:var(--muted);margin-left:6px}  
+.main-nav{display:flex;align-items:center;gap:10px}
+.main-nav .nav-toggle{display:none;background:transparent;border:0;padding:8px;cursor:pointer}
+.main-nav .compact-toggle{display:none;background:transparent;border:0;padding:8px;cursor:pointer;color:var(--text);border-radius:8px}
+.main-nav .compact-toggle:focus{outline:3px solid rgba(50,205,50,0.12);outline-offset:2px}
+.main-nav .compact-toggle .compact-icon{width:18px;height:18px;display:inline-block;fill:currentColor}
+.main-nav .nav-toggle .hamburger{display:inline-block;width:22px;height:2px;background:var(--text);position:relative}
+.main-nav .nav-toggle .hamburger:before,.main-nav .nav-toggle .hamburger:after{content:'';position:absolute;left:0;width:22px;height:2px;background:var(--text);}
+.main-nav .nav-toggle .hamburger:before{top:-7px}
+.main-nav .nav-toggle .hamburger:after{top:7px}
+
+.main-nav .nav-links{display:flex;align-items:center;gap:8px}
+.main-nav .nav-links a{color:var(--text);text-decoration:none;padding:10px 12px;border-radius:10px;transition:transform .18s ease, box-shadow .18s ease, background .18s ease;font-weight:600;display:flex;align-items:center;gap:10px}
+.main-nav .nav-links a .nav-icon{width:18px;height:18px;display:inline-block;flex-shrink:0}
+.main-nav .nav-links a svg{width:18px;height:18px;fill:currentColor}
+.main-nav .nav-links a.active, .main-nav .nav-links a:hover{background:linear-gradient(90deg,var(--green), rgba(50,205,50,0.06));color:#fff;box-shadow:var(--elevation-2);transform:translateY(-3px)}
+.main-nav .nav-links a:hover svg{fill:#fff} 
+
+/* mobile */
+@media (max-width:800px){
+  .main-nav .nav-toggle{display:block}
+  .main-nav .compact-toggle{display:inline-flex}
+  .main-nav .compact-toggle .compact-icon{width:18px;height:18px}
+  .main-nav .nav-links{display:none;position:fixed;top:64px;right:14px;left:14px;background:linear-gradient(180deg, #fff, #f7f7f7);border-radius:10px;padding:12px;box-shadow:0 12px 40px rgba(0,0,0,0.12);flex-direction:column;min-width:auto;gap:6px}
+  body.nav-open .main-nav .nav-links{display:flex}
+
+  /* by default show icons + labels on small screens */
+  .main-nav .nav-links a{min-width:auto;justify-content:flex-start;padding:8px 12px;border-radius:10px}
+  .main-nav .nav-links a span{display:inline-block;margin-left:8px;white-space:nowrap;transition:opacity .18s ease, transform .18s ease}
+  .main-nav .nav-links a .nav-icon{margin-right:6px}
+
+  /* compact (icons-only) mode when user toggles it */
+  body.nav-compact .main-nav .nav-links a span{display:none;opacity:0;transform:translateX(-4px)}
+  body.nav-compact .main-nav .nav-links a{justify-content:center}
+
+  /* small adjustments for very small screens */
+  @media (max-width:500px){
+    .main-nav .nav-links{right:8px;left:8px;padding:8px;min-width:auto}
+  }
+}  
+.hero{padding:28px 0}
+.hero h1{margin:0;font-size:2.4rem;color:var(--text);font-family:Orbitron, sans-serif}
+.hero-grid{display:flex;gap:22px;align-items:stretch}
+.hero-left{flex:1}
+.hero-right{width:340px}
+.clock-big{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(50,205,50,0.04), rgba(255,255,255,0.9));border:1px solid var(--glass-border)}
+.time-big{font-weight:800;font-size:2.8rem;color:var(--text)}
+.next-prayer{padding:14px;border-radius:10px;background:linear-gradient(90deg,var(--green),rgba(50,205,50,0.12));color:#fff;margin-top:18px}
+.next-prayer .np-name{font-size:1.4rem;font-weight:700}
+.next-prayer .np-countdown{font-size:1.2rem;margin-top:10px;background:rgba(0,0,0,0.06);padding:8px;border-radius:8px;color:#fff;display:inline-block}
+.hero-features{display:flex;gap:12px;margin-top:18px}
+.feature{display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(50,205,50,0.04), rgba(255,255,255,0.85));border:1px solid var(--glass-border)}
+.hero small{color:var(--muted)}
+@media (max-width:800px){
+  .hero-grid{flex-direction:column}
+  .hero-right{width:100%}
+  .time-big{font-size:2rem}
+}
+
+
+/* responsive hero */
+@media (max-width:800px){
+  .hero-grid{flex-direction:column}
+  .hero-right{width:100%}
+  .clock-big{padding:16px;margin-top:10px}
+  .time-big{font-size:2rem}
+  .next-prayer{margin-top:10px;padding:10px}
+}
+
+/* improved touch targets */
+a.btn, .main-nav .nav-links a{min-height:40px;display:inline-flex;align-items:center}
+
+/* accessible focus */
+:focus{outline:3px solid rgba(50,205,50,0.18);outline-offset:3px}
+
+/* small screens: table becomes scrollable and denser */
+@media (max-width:480px){
+  .prayer-table thead th{font-size:0.78rem}
+  .prayer-table tbody td{font-size:0.78rem;padding:8px}
+}
+
+.lead{color:var(--muted)}
+.card{background:var(--card-bg);padding:20px;border-radius:var(--radius);box-shadow:var(--elevation);border:1px solid var(--glass-border);margin:20px 0;transition:transform .18s ease, box-shadow .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(12,18,22,0.12)}
+.clock-card .clock-grid{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.time{font-weight:700;font-size:1.5rem;color:var(--text)}
+.prayer-list{list-style:none;padding:0;margin:12px 0}
+.prayer-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #eee}
+.prayer-list li.active{background:linear-gradient(90deg,var(--green),rgba(50,205,50,0.06));border-radius:8px;padding:10px;color:var(--text);font-weight:700}
+.prayer-footer{font-size:0.9rem;color:var(--muted)}
+.cta{display:flex;flex-direction:column;align-items:start}
+.btn{background:var(--green);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;box-shadow:0 8px 28px rgba(50,205,50,0.09);border:none;font-weight:700;text-transform:uppercase;letter-spacing:0.6px}
+.btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--text);backdrop-filter: blur(4px);padding:8px 12px}
+.btn:hover{transform:translateY(-3px);box-shadow:0 24px 40px rgba(12,18,22,0.08)}
+.site-footer{text-align:center;margin:40px 0;color:var(--muted)}
+.quran-grid{display:flex;gap:20px}
+.surah-list{min-width:260px;max-height:60vh;overflow:auto;padding-right:8px}
+.surah-item{padding:8px;border-radius:6px;cursor:pointer}
+.surah-item:hover{background:var(--accent);color:#fff}
+.surah-item .idx{font-weight:700;margin-right:8px;color:var(--text)}
+.surah-content{flex:1;max-height:60vh;overflow:auto;padding:8px}
+.contact-form label{display:block;margin-top:10px}
+.contact-form input,.contact-form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);margin-top:6px;transition:box-shadow .12s ease}
+.contact-form input:focus,.contact-form textarea:focus{box-shadow:0 8px 20px rgba(50,205,50,0.06);outline:none}
+.form-actions{margin-top:12px;display:flex;gap:10px;align-items:center}
+
+.map-card p{margin-bottom:10px}
+.prayer-table{width:100%;border-collapse:collapse;margin-top:8px}
+.prayer-table thead th{background:linear-gradient(90deg,var(--green), rgba(50,205,50,0.06));padding:12px;font-weight:700;color:#042204;border-bottom:2px solid rgba(0,0,0,0.06)}
+.prayer-table tbody td{padding:12px;border-bottom:1px solid rgba(0,0,0,0.04);font-size:0.95rem}
+.table-wrap{overflow:auto;border-radius:8px}
+@media (max-width:800px){.quran-grid{flex-direction:column}.container{padding:16px}.main-nav a{padding:8px}.clock-card .clock-grid{flex-direction:column;align-items:flex-start}}
+/* small helper */
+.time-val{font-weight:700}
+
+/* Quran / Arabic styling */
+.surah-content .ayah{padding:10px 0;border-bottom:1px solid #f0f0f0}
+.surah-content .arab{font-family: 'Noto Naskh Arabic', 'Amiri', sans-serif;direction:rtl;font-size:1.6rem;display:block;color:#0b1b0b}
+.surah-content .aya-num{opacity:0.6;margin-left:8px;color:var(--muted)}
+.surah-item{transition:background .15s,color .15s}
+.surah-item:focus{outline:2px solid var(--accent)}
+
+/* Azkar styles */
+.azkar .arab{font-family: 'Noto Naskh Arabic', serif;direction:rtl;font-size:1.35rem;color:#081707;margin:6px 0}
+.azkar ol, .azkar ul{padding-left:18px}
+
+/* Quran responsive and Indo-Pak styles */
+.surah-select{display:none;width:100%;padding:10px;border-radius:8px;border:1px solid #e6e6e6;margin-top:10px}
+.surah-content{direction:rtl}
+.surah-content .arab{font-family: 'Noto Naskh Arabic', 'Amiri', sans-serif;direction:rtl;font-size:1.6rem;display:block;color:#0b1b0b}
+.surah-content.indo-pak .arab{font-size:2rem;line-height:1.6;text-align:right;padding:12px 8px}
+.surah-content.indo-pak .ayah{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.03)}
+.surah-content.indo-pak .aya-num{display:inline-block;background:var(--green);color:#fff;border-radius:999px;padding:6px 8px;font-size:0.8rem;margin-left:8px}
+
+@media (max-width:800px){
+  .surah-select{display:block}
+  .surah-list{display:none;max-height:220px}
+}
+
+/* Futuristic headings */
+h1, h2, h3{font-family:'Orbitron',sans-serif;color:var(--text);letter-spacing:0.6px} 
