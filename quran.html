@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#32cd32">
+  <title>Quran — Mahmood Masjid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/"><img class="brand-logo" src="/assets/img/logo.svg" alt="Mahmood Masjid logo"> <span>Mahmood Masjid</span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-toggle" aria-expanded="false" aria-label="Open navigation"><span class="hamburger"></span></button>
+        <button class="compact-toggle" aria-pressed="false" aria-label="Toggle compact menu (icons only)" title="Compact menu (icons only)"><svg class="compact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h2l3.6 16h2.8L18 4h2l-4 16h-8L5 4zm7 5l-1 6h2l-1-6z"/></svg></button>
+        <div class="nav-links">
+          <a href="/"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10.5z"></path></svg> <span>Home</span></a>
+          <a href="/about.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <span>About</span></a>
+          <a href="/quran.html" class="active"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13a2 2 0 0 1 2 2v14l-3-1-3 1-3-1-3 1V5a2 2 0 0 1 2-2z"/></svg> <span>Quran</span></a>
+          <a href="/prayer-calendar.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7zm5-4h2v2H8V3zM7 10h5v5H7z"/></svg> <span>Prayer Calendar</span></a>
+          <a href="/azkar.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s-1 3 0 4 0 7 0 7h2s1-5 1-7 0-4 0-4-1 1-3 0zM7 10s1 3 0 5 0 4 0 4h2s1-3 1-5-1-4-1-4-1 0-2 0z"/></svg> <span>Azkar &amp; Duas</span></a>
+          <a href="/map.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg> <span>Map</span></a>
+          <a href="/contact.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6l-10 6L2 6z"/></svg> <span>Contact</span></a>
+        </div> 
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card quran">
+      <h1>Quran — Surah Index</h1>
+      <div class="quran-search">
+        <div class="search-row">
+          <input id="surah-search" placeholder="Search surah by name or number...">
+          <label class="toggle"><input type="checkbox" id="indo-toggle"> Indo‑Pak mode</label>
+        </div>
+        <select id="surah-select" class="surah-select" aria-label="Surah select"></select>
+      </div>
+      <div class="quran-grid">
+        <aside class="surah-list" id="surah-list" aria-label="Surah list"></aside>
+        <div class="surah-content" id="surah-content">
+          <p>Select a Surah from the list to load the Arabic text (Uthmani script). Use <strong>Indo‑Pak mode</strong> for a larger, mushaf-like layout optimized for readers in the subcontinent.</p>
+        </div>
+      </div> 
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© <span id="current-year"></span> Mahmood Masjid</small>
+  </footer>
+
+  <script src="assets/js/quran.js"></script>
+  <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
+  <script src="assets/js/ui.js"></script>
+</body>
+</html>
