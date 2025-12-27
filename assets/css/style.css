@@ -22,8 +22,27 @@ body{font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetic
 
 .site-header .container{display:flex;align-items:center;justify-content:space-between}
 .brand{font-family: 'Orbitron', sans-serif;font-weight:700;color:var(--text);text-decoration:none;font-size:1.05rem;letter-spacing:0.6px;display:inline-flex;align-items:center;gap:10px}
-.brand .brand-logo{width:38px;height:38px;border-radius:8px;display:inline-block;object-fit:cover;box-shadow:0 6px 18px rgba(50,205,50,0.08);background:linear-gradient(135deg,var(--green),#26a326)}
-.brand small{font-size:0.78rem;color:var(--muted);margin-left:6px}  
+.brand .brand-logo{width:40px;height:40px;border-radius:8px;display:inline-block;object-fit:contain;background:transparent;padding:2px;filter:drop-shadow(0 0 8px rgba(50,205,50,0.85)) drop-shadow(0 0 18px rgba(50,205,50,0.45));transition:filter .18s ease, transform .18s ease;cursor:pointer}
+.brand .brand-logo:focus{outline:3px solid rgba(50,205,50,0.14);outline-offset:3px}
+.brand:hover .brand-logo{transform:translateY(-2px);filter:drop-shadow(0 0 12px rgba(50,205,50,0.95)) drop-shadow(0 0 28px rgba(50,205,50,0.6))}
+
+/* Logo modal / lightbox */
+.logo-modal-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,4,0.6);backdrop-filter: blur(3px);z-index:140;opacity:0;visibility:hidden;transition:opacity .18s ease, visibility .18s}
+.logo-modal-overlay.open{opacity:1;visibility:visible}
+.logo-modal{max-width:calc(min(92vw, 720px));max-height:90vh;background:transparent;padding:20px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.logo-modal img{width:100%;height:auto;max-height:80vh;display:block;border-radius:8px;filter:drop-shadow(0 0 26px rgba(50,205,50,0.45));transform:scale(.98);transition:transform .18s ease}
+.logo-modal.open img{transform:scale(1)}
+.logo-modal .logo-close{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:700}
+.logo-modal .logo-close:focus{outline:3px solid rgba(50,205,50,0.18);outline-offset:3px}
+@media (max-width:480px){
+  .logo-modal{padding:12px}
+  .logo-modal img{max-height:72vh}
+}
+
+.brand > span{font-size:1.05rem;margin-left:6px;display:inline-block;text-shadow:0 0 6px rgba(50,205,50,0.12)}
+.brand small{font-size:0.78rem;color:var(--muted);margin-left:6px}
+.brand:hover > span{text-shadow:0 0 14px rgba(50,205,50,0.28)}
+
 .main-nav{display:flex;align-items:center;gap:10px}
 .main-nav .nav-toggle{display:none;background:transparent;border:0;padding:8px;cursor:pointer}
 .main-nav .compact-toggle{display:none;background:transparent;border:0;padding:8px;cursor:pointer;color:var(--text);border-radius:8px}
@@ -118,7 +137,27 @@ a.btn, .main-nav .nav-links a{min-height:40px;display:inline-flex;align-items:ce
 .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--text);backdrop-filter: blur(4px);padding:8px 12px}
 .btn:hover{transform:translateY(-3px);box-shadow:0 24px 40px rgba(12,18,22,0.08)}
 .site-footer{text-align:center;margin:40px 0;color:var(--muted)}
+.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:var(--max-width);margin:0 auto;padding:12px 0;border-top:1px solid var(--glass-border)}
+.footer-left{color:var(--muted)}
+.footer-right{display:flex;align-items:center}
+@media (max-width:600px){.footer-grid{flex-direction:column;align-items:stretch;gap:8px}.footer-right{justify-content:flex-start}}
+
 .quran-grid{display:flex;gap:20px}
+
+/* Search input layout and responsive behavior */
+.quran-search{margin-bottom:12px}
+.quran-search .search-row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.quran-search .search-input{position:relative;flex:1;display:flex;align-items:center;min-width:220px}
+.quran-search .search-input .search-icon{width:20px;height:20px;position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.quran-search .search-input input{width:100%;padding:10px 38px 10px 40px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);font-size:1rem;background:transparent}
+.quran-search #search-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:var(--muted);font-size:1.05rem;padding:6px;border-radius:6px}
+
+@media (max-width:600px){
+  .quran-search .search-row{flex-direction:column;align-items:stretch}
+  .quran-search .search-input{width:100%}
+  .quran-search .search-hint{margin-top:6px}
+}
+
 .surah-list{min-width:260px;max-height:60vh;overflow:auto;padding-right:8px}
 .surah-item{padding:8px;border-radius:6px;cursor:pointer}
 .surah-item:hover{background:var(--accent);color:#fff}
@@ -164,3 +203,67 @@ a.btn, .main-nav .nav-links a{min-height:40px;display:inline-flex;align-items:ce
 
 /* Futuristic headings */
 h1, h2, h3{font-family:'Orbitron',sans-serif;color:var(--text);letter-spacing:0.6px} 
+
+/* About page modern layout */
+.about-hero{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(50,205,50,0.02), rgba(255,255,255,0.6));border:1px solid var(--glass-border);box-shadow:0 8px 30px rgba(50,205,50,0.03);margin-bottom:18px}
+.about-hero .about-hero-text h1{font-size:1.8rem;margin:0 0 6px}
+.about-hero .lead{margin:0;color:var(--muted);line-height:1.5}
+.about-hero-img img{width:100%;height:180px;object-fit:cover;border-radius:8px;display:block}
+
+.about-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+.card-section{padding:16px;background:linear-gradient(180deg,var(--card-bg), #fff);border-radius:10px;border:1px solid rgba(0,0,0,0.04)}
+.card-section h2{margin-top:0;color:var(--text)}
+.card-section h3{margin-bottom:6px;color:var(--muted)}
+.card-section ul{padding-left:18px}
+.side .btn{display:inline-block;margin-top:10px}
+.donor-list{margin-top:12px;padding:12px;background:linear-gradient(180deg,#f9fff9,#fff);border-radius:8px;border:1px solid rgba(0,0,0,0.04)}
+
+/* Social links */
+.socials{margin-top:12px}
+.socials h4{margin:6px 0}
+.social-links{display:flex;gap:8px;flex-wrap:wrap}
+.social-link{width:44px;height:44px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.04);color:var(--text);transition:transform .14s ease, box-shadow .14s ease, background .14s ease}
+.social-link svg{width:20px;height:20px;fill:currentColor}
+.social-link:hover, .social-link:focus{transform:translateY(-4px) scale(1.03);box-shadow:0 12px 30px rgba(50,205,50,0.12);background:linear-gradient(90deg,var(--green), #8b4513);color:#fff}
+.social-link:focus{outline:3px solid rgba(50,205,50,0.12);outline-offset:4px}
+
+.about-footer{margin-top:14px;padding-top:8px;border-top:1px dashed rgba(0,0,0,0.04)}
+
+@media (max-width:900px){
+  .about-hero{grid-template-columns:1fr 200px}
+  .about-grid{grid-template-columns:1fr}
+  .about-hero-img img{height:140px}
+}
+
+@media (max-width:480px){
+  .about-hero{grid-template-columns:1fr;gap:10px}
+  .about-hero-img img{height:120px}
+}
+
+/* About page refinements */
+.about-hero{padding:22px;gap:26px}
+.about-hero .lead{font-size:1.04rem;color:rgba(0,0,0,0.7)}
+.card-section{padding:20px}
+.card-section ul li{margin-bottom:10px;padding-left:18px;position:relative}
+.card-section ul li:before{content:'';width:9px;height:9px;background:var(--green);box-shadow:0 0 10px rgba(50,205,50,0.9);border-radius:50%;position:absolute;left:0;top:10px}
+.side .btn{display:inline-block;background:linear-gradient(90deg,var(--green), #8b4513);box-shadow:0 8px 30px rgba(50,205,50,0.12);padding:10px 14px;border-radius:10px;border:none}
+.side .btn:hover{box-shadow:0 12px 40px rgba(50,205,50,0.2);transform:translateY(-2px)}
+.donor-list h4{margin:0 0 8px;font-weight:700}
+.about-hero-img{border-radius:8px;overflow:hidden}
+
+/* Urdu / original text styling */
+.urdu-section{background:linear-gradient(180deg, rgba(50,205,50,0.02), #fff);border-left:4px solid var(--green);padding:18px;border-radius:10px;margin-bottom:18px}
+.urdu-section h2{margin-top:0;text-align:right}
+.urdu-text{font-family: 'Noto Naskh Arabic', 'Jameel Noori Nastaleeq', serif;font-size:1.02rem;line-height:1.7;color:#0b1b0b;text-align:right}
+.urdu-text p{margin-bottom:12px}
+
+@media (max-width:680px){
+  .about-hero .about-hero-text h1{font-size:1.4rem}
+  .about-hero .lead{font-size:1rem}
+}
+
+@media (max-width:420px){
+  .about-hero .about-hero-text h1{font-size:1.25rem}
+  .about-hero .lead{font-size:0.95rem}
+}
+

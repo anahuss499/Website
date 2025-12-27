@@ -1,4 +1,4 @@
-// ui.js - mobile nav toggle and small UI helpers
+// ui.js - mobile nav toggle, small UI helpers, and logo modal
 (function(){
   const body = document.body;
   const toggle = document.querySelectorAll('.nav-toggle');
@@ -55,6 +55,71 @@
       document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));
     }
   });
+
+  // Logo modal support
+  let logoModal = null;
+  function createLogoModal(){
+    if(logoModal) return logoModal;
+    const overlay = document.createElement('div');
+    overlay.className = 'logo-modal-overlay';
+    overlay.innerHTML = `<div class="logo-modal" role="dialog" aria-modal="true" aria-label="Logo preview">
+      <img src="" alt="Mahmood Masjid logo preview">
+      <button class="logo-close" aria-label="Close logo preview">Close</button>
+    </div>`;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (ev)=>{
+      if(ev.target === overlay) closeLogoModal();
+    });
+    const closeBtn = overlay.querySelector('.logo-close');
+    closeBtn.addEventListener('click', closeLogoModal);
+    // keyboard
+    overlay.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') closeLogoModal();
+    });
+    logoModal = overlay;
+    return logoModal;
+  }
+
+  function openLogoModal(src, alt){
+    const modal = createLogoModal();
+    const img = modal.querySelector('img');
+    img.src = src;
+    img.alt = alt || 'Mahmood Masjid logo preview';
+    modal.classList.add('open');
+    setTimeout(()=> modal.classList.add('visible'), 20);
+    modal.classList.add('open');
+    // focus close button for accessibility
+    const closeBtn = modal.querySelector('.logo-close');
+    closeBtn.focus();
+  }
+  function closeLogoModal(){
+    if(!logoModal) return;
+    logoModal.classList.remove('open');
+    setTimeout(()=>{
+      if(logoModal) logoModal.remove();
+      logoModal = null;
+    }, 180);
+  }
+
+  // click handler on logo image (and keyboard on brand)
+  document.addEventListener('click', (e)=>{
+    const logo = e.target.closest('.brand-logo');
+    if(logo){
+      e.preventDefault();
+      openLogoModal(logo.getAttribute('src'), logo.getAttribute('alt'));
+    }
+  });
+  // keyboard: Enter or Space on focused .brand-logo (or focused brand link)
+  document.addEventListener('keydown', (e)=>{
+    const active = document.activeElement;
+    if(active && active.classList && active.classList.contains('brand-logo')){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openLogoModal(active.getAttribute('src'), active.getAttribute('alt'));
+      }
+    }
+  });
+
   // smooth scroll for internal links
   document.addEventListener('click', (e)=>{
     const a = e.target.closest('a');
