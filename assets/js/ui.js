@@ -131,4 +131,53 @@
       if(el) el.scrollIntoView({behavior:'smooth'});
     }
   });
+
+  // Language toggle functionality
+  function setLanguage(urdu){
+    const applyText = (selector, attr)=>{
+      document.querySelectorAll(selector).forEach(el=>{
+        const val = el.getAttribute(attr);
+        if(val !== null) el.textContent = val;
+      });
+    };
+    const applyHTML = (selector, attr)=>{
+      document.querySelectorAll(selector).forEach(el=>{
+        const val = el.getAttribute(attr);
+        if(val !== null) el.innerHTML = val;
+      });
+    };
+    const applyPlaceholder = (selector, attr)=>{
+      document.querySelectorAll(selector).forEach(el=>{
+        const val = el.getAttribute(attr);
+        if(val !== null) el.setAttribute('placeholder', val);
+      });
+    };
+
+    if(urdu){
+      body.classList.add('urdu-mode');
+      applyText('[data-urdu]', 'data-urdu');
+      applyHTML('[data-urdu-html]', 'data-urdu-html');
+      applyPlaceholder('[data-urdu-placeholder]', 'data-urdu-placeholder');
+    } else {
+      body.classList.remove('urdu-mode');
+      applyText('[data-urdu]', 'data-en');
+      applyHTML('[data-urdu-html]', 'data-en-html');
+      applyPlaceholder('[data-urdu-placeholder]', 'data-en-placeholder');
+    }
+    try{ localStorage.setItem('lang', urdu ? 'urdu' : 'en'); } catch(e){}
+  }
+
+  const langToggle = document.getElementById('lang-toggle');
+  if(langToggle){
+    // Initialize from localStorage
+    try{
+      const savedLang = localStorage.getItem('lang');
+      if(savedLang === 'urdu') setLanguage(true);
+    } catch(e){}
+    
+    langToggle.addEventListener('click', ()=>{
+      const isUrdu = body.classList.contains('urdu-mode');
+      setLanguage(!isUrdu);
+    });
+  }
 })();

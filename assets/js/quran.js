@@ -194,6 +194,7 @@ function stripDiacritics(str){
 async function loadSurah(number){
   contentEl.innerHTML = `<p>Loading Surah ${number}...</p>`;
   try{
+    // Try to fetch from a resource with tajweed/harakat marks
     const res = await fetch(`https://api.alquran.cloud/v1/surah/${number}/quran-uthmani`);
     const json = await res.json();
     if(json.status !== 'OK'){ throw new Error('API error'); }
@@ -201,14 +202,34 @@ async function loadSurah(number){
     // find metadata if available
     const meta = surahMeta[number-1] || {};
     let title = `${data.name}`;
-    if(meta.english) title = `${meta.english} — ${data.name}`;
-    if(meta.urdu) title += ` <small>• ${meta.urdu}</small>`;
-    let html = `<h2 class="surah-title">${title} <small>(${data.numberOfAyahs} ayahs)</small></h2>`;
+    if(meta.english && meta.urdu){
+      title = `${meta.english} / ${meta.urdu} — ${data.name}`;
+    } else if(meta.english){
+      title = `${meta.english} — ${data.name}`;
+    } else if(meta.urdu){
+      title = `${meta.urdu} — ${data.name}`;
+    }
+    // Add decorative divider before surah
+    let html = `<div class="surah-divider"><span class="divider-mark">✦</span></div>`;
+    html += `<h2 class="surah-title">${title} <small>(${data.numberOfAyahs} ayahs)</small></h2>`;
+    
+    // Add Bismillah once for all surahs except Surah 9 (At-Tawbah)
+    const hasBismillah = data.number !== 9;
+    if(hasBismillah){
+      html += '<div class="bismillah">بسم الله الرحمن الرحيم</div>';
+    }
+    
     html += '<div class="ayahs">';
+    // Build continuous text with ayah numbers inline (mushaf style with Ottoman Nastaleeq)
+    let ayahText = '';
+    const offset = hasBismillah ? 1 : 0;
     data.ayahs.forEach(a=>{
-      const clean = stripDiacritics(a.text);
-      html += `<p class="ayah"><span class="aya-num">(${a.numberInSurah})</span> <span class="arab">${clean}</span></p>`;
+      if(hasBismillah && a.numberInSurah === 1) return; // skip Bismillah verse in the flow
+      const ayahNum = a.numberInSurah - offset;
+      // Add ayah text with ayah number inline; visual separation handled via CSS pseudo-element
+      ayahText += `${a.text} <span class=\"aya-num-inline\">${ayahNum}</span> `;
     });
+    html += `<p class="arab-text">${ayahText}</p>`;
     html += '</div>';
     contentEl.innerHTML = html;
     contentEl.scrollTop = 0;
@@ -219,7 +240,7 @@ async function loadSurah(number){
   }
 } 
 
-// Indo-Pak mode (default only)
+// Indo-Pak mode enabled by default (harakat marks are preserved)
 function setIndoPak(on){
   if(on) contentEl.classList.add('indo-pak'); else contentEl.classList.remove('indo-pak');
   try{ localStorage.setItem('quranIndo', on ? '1' : '0'); }catch(e){}
