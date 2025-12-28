@@ -5,24 +5,26 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#32cd32">
   <title>About — Mahmood Masjid</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="/"><img class="brand-logo" src="/assets/img/logo.png" alt="Mahmood Masjid logo"> <span>Mahmood Masjid</span></a>
+      <a class="brand" href="/"><img class="brand-logo" src="/assets/img/logo.png" alt="Mahmood Masjid logo"> <span data-en="Mahmood Masjid" data-urdu="محمود مسجد">Mahmood Masjid</span></a>
       <nav class="main-nav" aria-label="Main navigation">
+        <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language (English/Urdu)" title="Toggle language"><span class="lang-text">اردو</span></button>
         <button class="nav-toggle" aria-expanded="false" aria-label="Open navigation"><span class="hamburger"></span></button>
         <button class="compact-toggle" aria-pressed="false" aria-label="Toggle compact menu (icons only)" title="Compact menu (icons only)"><svg class="compact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h2l3.6 16h2.8L18 4h2l-4 16h-8L5 4zm7 5l-1 6h2l-1-6z"/></svg></button> 
         <div class="nav-links">
-          <a href="/"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10.5z"></path></svg> <span>Home</span></a> 
-          <a href="/about.html" class="active"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <span>About</span></a>
-          <a href="/quran.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13a2 2 0 0 1 2 2v14l-3-1-3 1-3-1-3 1V5a2 2 0 0 1 2-2z"/></svg> <span>Quran</span></a>
-          <a href="/prayer-calendar.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7zm5-4h2v2H8V3zM7 10h5v5H7z"/></svg> <span>Prayer Calendar</span></a>
-          <a href="/azkar.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s-1 3 0 4 0 7 0 7h2s1-5 1-7 0-4 0-4-1 1-3 0zM7 10s1 3 0 5 0 4 0 4h2s1-3 1-5-1-4-1-4-1 0-2 0z"/></svg> <span>Azkar &amp; Duas</span></a>
-          <a href="/map.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg> <span>Map</span></a>
-          <a href="/contact.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6l-10 6L2 6z"/></svg> <span>Contact</span></a>
+          <a href="/"><img class="nav-icon" src="assets/img/home-icon.png" alt=""> <span data-en="Home" data-urdu="ہوم">Home</span></a> 
+          <a href="/about.html" class="active"><img class="nav-icon" src="assets/img/about-icon.png" alt=""> <span data-en="About" data-urdu="ہمارے بارے میں">About</span></a>
+          <a href="/quran.html"><img class="nav-icon" src="assets/img/quran-icon.png" alt=""> <span data-en="Quran" data-urdu="قرآن">Quran</span></a>
+          <a href="/prayer-calendar.html"><img class="nav-icon" src="assets/img/calendar-icon.png" alt=""> <span data-en="Prayer Calendar" data-urdu="نماز کا کیلنڈر">Prayer Calendar</span></a>
+          <a href="/azkar.html"><img class="nav-icon" src="assets/img/azkar-icon.png" alt=""> <span data-en="Azkar & Duas" data-urdu="اذکار اور دعائیں">Azkar &amp; Duas</span></a>
+          <a href="/map.html"><img class="nav-icon" src="assets/img/map-icon.png" alt=""> <span data-en="Map" data-urdu="نقشہ">Map</span></a>
+          <a href="/contact.html#donate"><img class="nav-icon" src="assets/img/contact-icon.png" alt=""> <span data-en="Donate" data-urdu="عطیہ">Donate</span></a>
+          <a href="/contact.html"><img class="nav-icon" src="assets/img/contact-icon.png" alt=""> <span data-en="Contact" data-urdu="رابطہ">Contact</span></a>
         </div> 
       </nav>
     </div>
@@ -32,11 +34,57 @@
     <article class="card about">
       <header class="about-hero">
         <div class="about-hero-text">
-          <h1>From Dream to Reality</h1>
-          <p class="lead">Mahmood Masjid — a center of worship, learning and community service in Gujrat. Every noble work begins with a pure intention; our mosque is the living result of that intention and the community's dedication.</p>
+          <h1 data-en="From Dream to Reality" data-urdu="خواب سے حقیقت تک">From Dream to Reality</h1>
+          <p class="lead" data-en="Mahmood Masjid — a center of worship, learning and community service in Gujrat. Every noble work begins with a pure intention; our mosque is the living result of that intention and the community's dedication." data-urdu="محمود مسجد — گجرات میں عبادت، تعلیم اور معاشرتی خدمات کا مرکز۔ ہر نیک کام ایک پاک نیت سے شروع ہوتا ہے؛ ہماری مسجد اس نیت اور کمیونٹی کی لگن کا زندہ نتیجہ ہے۔">Mahmood Masjid — a center of worship, learning and community service in Gujrat. Every noble work begins with a pure intention; our mosque is the living result of that intention and the community's dedication.</p>
         </div>
         <div class="about-hero-img"><img src="/assets/img/masjid.jpg" alt="Mahmood Masjid" onerror="this.style.display='none'"></div>
       </header>
+
+      <!-- Old Mosque & New Design Section -->
+      <section class="mosque-comparison">
+        <h2 data-en="Mosque Transformation" data-urdu="مسجد کی تبدیلی">Mosque Transformation</h2>
+        <p data-en="See the journey from our beloved old mosque to the beautiful new design that will serve our community for generations to come." data-urdu="ہماری پیاری پرانی مسجد سے لے کر خوبصورت نئے ڈیزائن تک کا سفر دیکھیں جو آنے والی نسلوں کے لیے ہماری کمیونٹی کی خدمت کرے گا۔">See the journey from our beloved old mosque to the beautiful new design that will serve our community for generations to come.</p>
+        
+        <div class="mosque-grid">
+          <div class="mosque-item">
+            <div class="mosque-gallery">
+              <div class="mosque-main-img">
+                <img id="old-main" src="/assets/img/old-mosque-1.jpg" alt="Old Mahmood Masjid" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23f0f0f0\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-family=\'Arial\' font-size=\'18\'%3EOld Mosque Image%3C/text%3E%3C/svg%3E'">
+              </div>
+              <div class="mosque-thumbnails">
+                <img class="thumb active" data-target="old-main" src="/assets/img/mahmood1.jpg" alt="Old mosque view 1" onerror="this.style.display='none'">
+                <img class="thumb" data-target="old-main" src="/assets/img/mahmood3.jpg" alt="Old mosque view 2" onerror="this.style.display='none'">
+                <img class="thumb" data-target="old-main" src="/assets/img/mahmood2.jpg" alt="Old mosque view 3" onerror="this.style.display='none'">
+                <img class="thumb" data-target="old-main" src="/assets/img/mahmood4.jpg" alt="Old mosque view 4" onerror="this.style.display='none'">
+              </div>
+            </div>
+            <div class="mosque-info">
+              <h3 data-en="Old Mosque (1980s)" data-urdu="پرانی مسجد (1980ء)">Old Mosque (1980s)</h3>
+              <p data-en="Built by Haji Noor Ilahi with pure intention and dedication, this mosque has served our community faithfully for decades. Though its structure has become fragile over time, its spiritual legacy remains strong." data-urdu="حاجی نور الہی نے خالص نیت اور لگن سے تعمیر کیا، اس مسجد نے دہائیوں سے ہماری کمیونٹی کی وفاداری سے خدمت کی ہے۔ اگرچہ وقت کے ساتھ ساتھ اس کی ساخت نازک ہو گئی ہے، لیکن اس کی روحانی میراث مضبوط ہے۔">Built by Haji Noor Ilahi with pure intention and dedication, this mosque has served our community faithfully for decades. Though its structure has become fragile over time, its spiritual legacy remains strong.</p>
+            </div>
+          </div>
+
+          <div class="mosque-item">
+            <div class="mosque-gallery">
+              <div class="mosque-main-img">
+                <img id="new-main" src="/assets/img/new-mosque-1.jpg" alt="New Mahmood Masjid Design" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23e8f5e9\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%2332cd32\' font-family=\'Arial\' font-size=\'18\'%3ENew Mosque Design%3C/text%3E%3C/svg%3E'">
+              </div>
+              <div class="mosque-thumbnails">
+                <img class="thumb active" data-target="new-main" src="/assets/img/Masjid1.jpg" alt="New design view 1" onerror="this.style.display='none'">
+                <img class="thumb" data-target="new-main" src="/assets/img/Masjid2.jpg" alt="New design view 2" onerror="this.style.display='none'">
+                <img class="thumb" data-target="new-main" src="/assets/img/Masjid3.jpg" alt="New design view 3" onerror="this.style.display='none'">
+                <img class="thumb" data-target="new-main" src="/assets/img/Masjid4.jpg" alt="New design view 4" onerror="this.style.display='none'">
+                <img class="thumb" data-target="new-main" src="/assets/img/Ladies Hall.jpeg" alt="New design view 4" onerror="this.style.display='none'">
+
+              </div>
+            </div>
+            <div class="mosque-info">
+              <h3 data-en="New Mosque Design (2025)" data-urdu="نئی مسجد کا ڈیزائن (2025ء)">New Mosque Design (2025)</h3>
+              <p data-en="A modern, safe, and spacious design that honors our heritage while embracing the future. With enhanced facilities for prayer, education, and community gatherings, the new mosque will be a beacon of faith and unity for generations." data-urdu="ایک جدید، محفوظ اور وسیع ڈیزائن جو مستقبل کو اپناتے ہوئے ہماری وراثت کا احترام کرتا ہے۔ نماز، تعلیم اور کمیونٹی اجتماعات کے لیے بہتر سہولیات کے ساتھ، نئی مسجد نسلوں کے لیے ایمان اور اتحاد کی روشنی ہوگی۔">A modern, safe, and spacious design that honors our heritage while embracing the future. With enhanced facilities for prayer, education, and community gatherings, the new mosque will be a beacon of faith and unity for generations.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section class="card-section urdu-section" dir="rtl" lang="ur">
         <h2>اصلی متن (اردو)</h2>
@@ -98,14 +146,34 @@
           <h2>Current Condition & Reconstruction</h2>
           <p>The building has aged and requires careful rebuilding and renovation to ensure safety and sustained use. Plans are underway to restore and strengthen the mosque so it may continue serving generations to come.</p>
 
-          <h2>Join the Effort — Donate & Support</h2>
-          <p>This is a blessed opportunity to participate in a lasting charity (Sadaqah Jariyah). Building or restoring a mosque brings ongoing reward as long as it benefits the community.</p>
-          <p><a class="btn" href="/contact.html">Donate or Get Involved</a></p>
+          <h2 data-en="Join the Effort — Donate & Support" data-urdu="کوشش میں شامل ہوں — عطیہ اور تعاون">Join the Effort — Donate & Support</h2>
+          <p data-en="This is a blessed opportunity to participate in a lasting charity (Sadaqah Jariyah). Building or restoring a mosque brings ongoing reward as long as it benefits the community." data-urdu="یہ دائمی صدقہ جاریہ میں حصہ لینے کا مبارک موقع ہے۔ مسجد کی تعمیر یا بحالی کا اجر جاری رہتا ہے جب تک یہ معاشرے کو فائدہ پہنچاتی ہے۔">This is a blessed opportunity to participate in a lasting charity (Sadaqah Jariyah). Building or restoring a mosque brings ongoing reward as long as it benefits the community.</p>
+
+          <div class="card" style="background: linear-gradient(180deg, rgba(50,205,50,0.04), #fff); padding: 16px; margin: 16px 0; border: 1px solid rgba(50,205,50,0.2);">
+            <h3 data-en="Donations via Bank Transfer" data-urdu="بینک ٹرانسفر کے ذریعے عطیات">Donations via Bank Transfer</h3>
+            <p data-en="Support the mosque reconstruction through bank transfer (domestic & international):" data-urdu="بینک ٹرانسفر (ملکی اور بین الاقوامی) کے ذریعے مسجد کی تعمیر نو میں تعاون کریں:">Support the mosque reconstruction through bank transfer (domestic & international):</p>
+            
+            <div style="background: #fff; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 3px solid var(--green);">
+              <p style="margin: 4px 0;"><strong data-en="Bank Name:" data-urdu="بینک کا نام:">Bank Name:</strong> [Your Bank Name]</p>
+              <p style="margin: 4px 0;"><strong data-en="Account Title:" data-urdu="اکاؤنٹ کا نام:">Account Title:</strong> Mahmood Masjid</p>
+              <p style="margin: 4px 0;"><strong data-en="Account Number:" data-urdu="اکاؤنٹ نمبر:">Account Number:</strong> [Your Account Number]</p>
+              <p style="margin: 4px 0;"><strong data-en="IBAN:" data-urdu="آئی بی اے این:">IBAN:</strong> PK[XX]XXXX[XXXXXXXXXXXXXXXXXX]</p>
+              <p style="margin: 4px 0;"><strong data-en="SWIFT/BIC Code:" data-urdu="سوفٹ کوڈ:">SWIFT/BIC Code:</strong> [SWIFT Code]</p>
+              <p style="margin: 4px 0;"><strong data-en="Branch:" data-urdu="برانچ:">Branch:</strong> [Branch Name], Gujrat</p>
+              <p style="margin: 4px 0;"><strong data-en="Country:" data-urdu="ملک:">Country:</strong> Pakistan</p>
+            </div>
+            
+            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+              <small data-en="For domestic transfers within Pakistan, use Account Number and Branch. For international transfers, include IBAN and SWIFT/BIC. Contact us if you need assistance." data-urdu="پاکستان کے اندرونی ٹرانسفر کے لیے اکاؤنٹ نمبر اور برانچ استعمال کریں۔ بین الاقوامی ٹرانسفر کے لیے آئی بی اے این اور سوئفٹ/بی آئی سی شامل کریں۔ مدد درکار ہو تو ہم سے رابطہ کریں۔">For domestic transfers within Pakistan, use Account Number and Branch. For international transfers, include IBAN and SWIFT/BIC. Contact us if you need assistance.</small>
+            </p>
+          </div>
+
+          <p><a class="btn" href="/contact.html" data-en="Contact Us for Donation Info" data-urdu="عطیات کی معلومات کے لیے رابطہ کریں">Contact Us for Donation Info</a></p>
 
           <div class="donor-list card">
-            <h4>Recent Supporters</h4>
+            <h4 data-en="Recent Supporters" data-urdu="حالیہ معاونین">Recent Supporters</h4>
             <ul>
-              <li><em>Be the first to be listed here — your support matters.</em></li>
+              <li><em data-en="Be the first to be listed here — your support matters." data-urdu="یہاں درج ہونے والے پہلے فرد بنیں — آپ کا تعاون اہمیت رکھتا ہے۔">Be the first to be listed here — your support matters.</em></li>
             </ul>
           </div>
 
@@ -120,15 +188,124 @@
     </article>
   </main>
 
+  <!-- Image Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <span class="lightbox-prev">&#10094;</span>
+    <span class="lightbox-next">&#10095;</span>
+    <img class="lightbox-content" id="lightbox-img">
+  </div>
+
   <footer class="site-footer">
     <div class="footer-grid">
-      <div class="footer-left"><small>© <span id="current-year"></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan</small></div>
+      <div class="footer-left"><small data-en-html="© <span id='current-year'></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>Email us</a>" data-urdu-html="© <span id='current-year'></span> محمود مسجد — محمود آباد، گجرات، پنجاب، پاکستان | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>ای میل کریں</a>">© <span id="current-year"></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class="footer-mail" href="mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A">Email us</a></small></div>
       <div class="footer-right" aria-label="Follow Mahmood Masjid on social media">
         <div class="social-links">
-          <a class="social-link" href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7H8.9v-3h1.6V9.1c0-1.6.9-2.6 2.3-2.6.7 0 1.4.1 1.9.2v2.1h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 3h-1.9v7A10 10 0 0 0 22 12z"/></svg></a>
-          <a class="social-link" href="https://www.tiktok.com/@mahmoodmasjid" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 6.3A4.7 4.7 0 1 0 16.7 13 4.7 4.7 0 0 0 12 8.3zm6.4-3.6a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/></svg></a>
-          <a class="social-link" href="https://www.youtube.com/channel/UC1qctjTFPcIE8LNF5PTDNNw" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.615 3.172H4.385c-.805 0-1.558.324-2.107.873-.549.549-.873 1.302-.873 2.107v15.246c0 .805.324 1.558.873 2.107s1.302.873 2.107.873h15.246c.805 0 1.558-.324 2.107-.873s.873-1.302.873-2.107V6.049c0-.805-.324-1.558-.873-2.107s-1.302-.873-2.107-.873zM9 6a6 6 0 1 1-6 6v9a6 6 0 0 1 6-6zm9-6a9 9 0 1 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9 -9"></path></svg></a>
+          <a class="social-link" href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><img src="assets/img/fblogo.png" alt="Facebook"></a>
+          <a class="social-link" href="https://www.tiktok.com/@mahmoodmasjid" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><img src="assets/img/tiktoklogo.png" alt="TikTok"></a>
+          <a class="social-link" href="https://www.youtube.com/channel/UC1qctjTFPcIE8LNF5PTDNNw" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><img src="assets/img/ytlogo.png" alt="YouTube"></a>
           </div>
   <script src="assets/js/ui.js"></script>
+  <script>
+    // Mosque gallery thumbnail functionality
+    document.querySelectorAll('.thumb').forEach(thumb => {
+      thumb.addEventListener('click', function() {
+        const mainImgId = this.getAttribute('data-target');
+        const mainImg = document.getElementById(mainImgId);
+        
+        if (mainImg) {
+          // Update main image src
+          mainImg.src = this.src;
+          
+          // Update active states within the same gallery
+          const gallery = this.closest('.mosque-gallery');
+          gallery.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+
+    // Lightbox zoom functionality for main images
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    const lightboxPrev = document.querySelector('.lightbox-prev');
+    const lightboxNext = document.querySelector('.lightbox-next');
+    
+    let currentGallery = null;
+    let currentImageIndex = 0;
+    let galleryImages = [];
+
+    // Add click listeners to main mosque images
+    document.querySelectorAll('.mosque-main-img img').forEach(img => {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', function() {
+        // Find the gallery this image belongs to
+        const gallery = this.closest('.mosque-gallery');
+        currentGallery = gallery;
+        
+        // Get all thumbnail images from this gallery
+        galleryImages = Array.from(gallery.querySelectorAll('.thumb')).filter(thumb => thumb.style.display !== 'none');
+        
+        // Find current image index
+        currentImageIndex = galleryImages.findIndex(thumb => thumb.src === this.src);
+        if (currentImageIndex === -1) currentImageIndex = 0;
+        
+        // Show lightbox
+        lightbox.style.display = 'flex';
+        lightboxImg.src = this.src;
+      });
+    });
+
+    // Navigate to previous image
+    function showPrevImage() {
+      if (galleryImages.length === 0) return;
+      currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+      lightboxImg.src = galleryImages[currentImageIndex].src;
+    }
+
+    // Navigate to next image
+    function showNextImage() {
+      if (galleryImages.length === 0) return;
+      currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+      lightboxImg.src = galleryImages[currentImageIndex].src;
+    }
+
+    // Arrow button click handlers
+    lightboxPrev.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPrevImage();
+    });
+
+    lightboxNext.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showNextImage();
+    });
+
+    // Close lightbox when clicking the X button
+    lightboxClose.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+
+    // Close lightbox when clicking outside the image
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.style.display === 'flex') {
+        if (e.key === 'Escape') {
+          lightbox.style.display = 'none';
+        } else if (e.key === 'ArrowLeft') {
+          showPrevImage();
+        } else if (e.key === 'ArrowRight') {
+          showNextImage();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
