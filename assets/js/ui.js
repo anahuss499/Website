@@ -2,8 +2,55 @@
 (function(){
   const body = document.body;
   const toggle = document.querySelectorAll('.nav-toggle');
-  const compactToggles = document.querySelectorAll('.compact-toggle');
+  // compact menu removed
   const breakpoint = 800;
+  
+  // Language selection modal on first visit
+  function initLanguageModal(){
+    const langModalOverlay = document.getElementById('lang-modal-overlay');
+    if(!langModalOverlay) return; // Only on pages with the modal
+    
+    try{
+      const langSelected = localStorage.getItem('lang');
+      if(!langSelected){
+        // First visit - show language modal
+        setTimeout(()=>{
+          langModalOverlay.classList.add('show');
+        }, 300);
+      } else {
+        // Already selected - apply saved language
+        setLanguage(langSelected === 'urdu');
+      }
+    } catch(e){
+      // If localStorage fails, default to English
+      setLanguage(false);
+    }
+    
+    // Handle language button clicks
+    const langButtons = langModalOverlay.querySelectorAll('.lang-btn');
+    langButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const lang = btn.getAttribute('data-lang');
+        const isUrdu = lang === 'urdu';
+        setLanguage(isUrdu);
+        try{
+          localStorage.setItem('lang', isUrdu ? 'urdu' : 'en');
+        } catch(e){}
+        langModalOverlay.classList.remove('show');
+        setTimeout(()=>{
+          langModalOverlay.style.display = 'none';
+        }, 400);
+      });
+    });
+  }
+  
+  // Initialize on page load
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initLanguageModal);
+  } else {
+    initLanguageModal();
+  }
+  
   function setOpen(btn, open){
     btn.setAttribute('aria-expanded', String(open));
     if(open) body.classList.add('nav-open'); else body.classList.remove('nav-open');
@@ -15,31 +62,12 @@
     });
   });
 
-  function setCompact(on){
-    compactToggles.forEach(b => b.setAttribute('aria-pressed', String(on)));
-    if(on){
-      body.classList.add('nav-compact');
-      compactToggles.forEach(b=> b.setAttribute('title', 'Expand menu (show labels)'));
-    } else {
-      body.classList.remove('nav-compact');
-      compactToggles.forEach(b=> b.setAttribute('title', 'Compact menu (icons only)'));
-    }
-    try{ localStorage.setItem('navCompact', on ? '1' : '0'); } catch(e){}
-  }
+  // compact mode removed
 
-  compactToggles.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const pressed = btn.getAttribute('aria-pressed') === 'true';
-      setCompact(!pressed);
-    });
-  });
+  // no compact toggle listeners
 
   // initialize compact from localStorage
-  try{
-    const stored = localStorage.getItem('navCompact');
-    if(stored === '1') setCompact(true);
-    else setCompact(false);
-  } catch(e){}
+  // ignore legacy navCompact; always show labels
 
   // close nav on escape
   document.addEventListener('keydown', (e)=>{
@@ -158,11 +186,17 @@
       applyText('[data-urdu]', 'data-urdu');
       applyHTML('[data-urdu-html]', 'data-urdu-html');
       applyPlaceholder('[data-urdu-placeholder]', 'data-urdu-placeholder');
+      // Update language toggle button to show opposite language
+      const langText = document.querySelector('.lang-text');
+      if(langText) langText.textContent = 'EN';
     } else {
       body.classList.remove('urdu-mode');
       applyText('[data-urdu]', 'data-en');
       applyHTML('[data-urdu-html]', 'data-en-html');
       applyPlaceholder('[data-urdu-placeholder]', 'data-en-placeholder');
+      // Update language toggle button to show opposite language
+      const langText = document.querySelector('.lang-text');
+      if(langText) langText.textContent = 'UR';
     }
     try{ localStorage.setItem('lang', urdu ? 'urdu' : 'en'); } catch(e){}
   }
@@ -173,7 +207,10 @@
     try{
       const savedLang = localStorage.getItem('lang');
       if(savedLang === 'urdu') setLanguage(true);
-    } catch(e){}
+      else setLanguage(false);
+    } catch(e){
+      setLanguage(false);
+    }
     
     langToggle.addEventListener('click', ()=>{
       const isUrdu = body.classList.contains('urdu-mode');

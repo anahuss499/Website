@@ -117,14 +117,120 @@ const surahMeta = [
   {name: "An-Nas",        english: "Mankind",                        urdu: "الناس"}
 ];
 
+// Strict Arabic names (without relying on Urdu-script field)
+const surahArabic = [
+  "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
+  "هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
+  "الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+  "لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
+  "فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+  "الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+  "الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+  "نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
+  "التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+  "الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
+  "القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+  "المسد","الإخلاص","الفلق","الناس"
+];
+
 const listEl = document.getElementById('surah-list');
 const contentEl = document.getElementById('surah-content');
 const searchEl = document.getElementById('surah-search');
 const selectEl = document.getElementById('surah-select');
 // Indo‑Pak toggle removed from markup — page defaults to Indo‑Pak style
 const clearBtn = document.getElementById('search-clear');
+const statusEl = document.getElementById('quran-status');
+// Tajweed toggle removed; plain rendering only
 
 let currentActive = null;
+// Indo‑Pak text source (optional): when available, verses will be rendered from this dataset
+let indoPakData = null; // { surahNumber: [ { ayah: number, text: string }, ... ] }
+let indoPakLoading = null;
+const INDO_PAK_VERSION = '9.6.1';
+
+// Configure an optional source URL for Indo‑Pak text (raw GitHub or local JSON)
+// You can set window.IndopakSource = { type: 'txt', url: 'https://.../Indopak.v.9.6-Madinah-Ayah%20by%20Ayah%20with%20Ayah%20Numbers.txt' }
+// or window.IndopakSource = { type: 'json', url: '/assets/data/indopak.json' }
+const defaultIndoPakSource = {
+  type: 'txt',
+  url: 'https://raw.githubusercontent.com/junnunkarim/backup__indopak_quran_text/master/Data/Madinah%20Version%20v.9.6.1/Ayah%20by%20Ayah/Indopak.v.9.6-Madinah-Ayah%20by%20Ayah%20with%20Ayah%20Numbers.txt'
+};
+
+async function ensureIndoPakLoaded(){
+  if(indoPakData) return indoPakData;
+  if(indoPakLoading) return indoPakLoading;
+  const src = window.IndopakSource || defaultIndoPakSource;
+  // Try cache first
+  try{
+    const cacheKey = `IndoPakCache::${src.url}::${INDO_PAK_VERSION}`;
+    const cached = localStorage.getItem(cacheKey);
+    if(cached){
+      const parsed = JSON.parse(cached);
+      if(parsed && typeof parsed === 'object'){
+        indoPakData = parsed;
+        return indoPakData;
+      }
+    }
+  }catch(e){/* ignore cache errors */}
+  indoPakLoading = (async()=>{
+    try{
+      setStatus('Loading Indo‑Pak text…', 'loading');
+      const res = await fetch(src.url, { cache: 'no-store' });
+      if(!res.ok) throw new Error('Indo‑Pak source not reachable');
+      if(src.type === 'json'){
+        const json = await res.json();
+        // Expect { surahs: [ { number, ayahs: ["text", ...] } ] } or { "1": ["..."], "2": ["..."] }
+        const map = {};
+        if(Array.isArray(json.surahs)){
+          json.surahs.forEach(s=>{ map[Number(s.number)] = (s.ayahs||[]).map((t, idx)=>({ ayah: idx+1, text: String(t) })) });
+        }else{
+          Object.keys(json).forEach(k=>{ const arr = json[k]; if(Array.isArray(arr)) map[Number(k)] = arr.map((t, idx)=>({ ayah: idx+1, text: String(t) })); });
+        }
+        indoPakData = map;
+      }else{
+        const txt = await res.text();
+        const lines = txt.split(/\r?\n/);
+        const map = {};
+        const re = /^(\d+):(\d+)\s+(.+)$/;
+        for(const line of lines){
+          const m = re.exec(line.trim());
+          if(!m) continue;
+          const s = Number(m[1]);
+          const a = Number(m[2]);
+          const t = m[3];
+          if(!map[s]) map[s] = [];
+          map[s].push({ ayah: a, text: t });
+        }
+        indoPakData = map;
+      }
+      // Save to cache
+      try{
+        const cacheKey = `IndoPakCache::${src.url}::${INDO_PAK_VERSION}`;
+        localStorage.setItem(cacheKey, JSON.stringify(indoPakData));
+      }catch(e){/* ignore cache errors */}
+      setStatus('Indo‑Pak text loaded.', 'info', 1400);
+      return indoPakData;
+    }catch(e){
+      console.warn('Indo‑Pak text load failed:', e);
+      indoPakData = null;
+      setStatus('Indo‑Pak source unavailable — falling back to Uthmani.', 'error');
+      return null;
+    }
+  })();
+  return indoPakLoading;
+}
+
+// Remove private-use glyphs and stray placeholders that may render as empty boxes
+function sanitizeAyahText(t){
+  if(!t) return t;
+  // Strip Private Use Area characters (commonly used for custom ayah markers in some fonts)
+  let out = String(t).replace(/[\uE000-\uF8FF]/g, '');
+  // Remove trailing whitespace
+  out = out.replace(/\s+$/, '');
+  return out;
+}
+
+// Tajweed colorization removed
 
 function populateSelect(){
   selectEl.innerHTML = '';
@@ -149,7 +255,20 @@ function renderList(filter=''){
     el.className = 'surah-item';
     el.tabIndex = 0;
     el.dataset.idx = i;
-    el.innerHTML = `<span class="idx">${i}</span><div class="surah-meta"><span class="name">${m.name}</span><small class="names">${m.english || ''}${m.urdu ? ' • ' + m.urdu : ''}</small></div>`;
+    const arabicName = surahArabic[i-1] || m.urdu || m.name;
+    el.innerHTML = `<span class=\"idx\">${i}</span>
+      <div class=\"surah-meta\">
+        <div class=\"name-line\">
+          <span class=\"name-arabic\" dir=\"rtl\" lang=\"ar\">${arabicName}</span>
+          <span class=\"sep\">•</span>
+          <span class=\"name-roman\">${m.name}</span>
+        </div>
+        <div class=\"translation-line\">
+          ${m.english ? `<span class=\"trans-en\">${m.english}</span>` : ''}
+          ${m.english && m.urdu ? `<span class=\"sep\">•</span>` : ''}
+          ${m.urdu ? `<span class=\"trans-urdu\" dir=\"rtl\" lang=\"ur\">${m.urdu}</span>` : ''}
+        </div>
+      </div>`;
     el.addEventListener('click', ()=> loadSurah(i));
     el.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') loadSurah(i); });
     listEl.appendChild(el);
@@ -193,14 +312,44 @@ function stripDiacritics(str){
 
 async function loadSurah(number){
   contentEl.innerHTML = `<p>Loading Surah ${number}...</p>`;
+  setStatus(`Loading Surah ${number}…`, 'loading');
   try{
-    // Try to fetch from a resource with tajweed/harakat marks
+    // Prefer Indo‑Pak source when available
+    const indo = await ensureIndoPakLoaded();
+    const meta = surahMeta[number-1] || {};
+    let html = `<div class="surah-divider"><span class="divider-mark">✦</span></div>`;
+    if(indo && indo[number]){
+      const ayahs = indo[number];
+      const titleName = meta.name || `Surah ${number}`;
+      html += `<h2 class="surah-title">${titleName} <small>(${ayahs.length} ayahs)</small></h2>`;
+      // Visual Bismillah for surahs except 9
+      if(number !== 9){ html += '<div class="bismillah">بسم الله الرحمن الرحيم</div>'; }
+      html += '<div class="ayahs">';
+      // Display ayahs in blocks of 16 for mushaf-style layout
+      const blockSize = 16;
+      for(let i = 0; i < ayahs.length; i += blockSize){
+        let ayahText = '';
+        const blockEnd = Math.min(i + blockSize, ayahs.length);
+        for(let j = i; j < blockEnd; j++){
+          const a = ayahs[j];
+          const cleaned = sanitizeAyahText(a.text);
+          ayahText += `${cleaned}<span class="aya-num-inline">${a.ayah}</span>`;
+        }
+        html += `<p class="arab-text">${ayahText}</p>`;
+      }
+      html += '</div>';
+      contentEl.innerHTML = html;
+      contentEl.scrollTop = 0;
+      highlightActive(number);
+      clearStatus();
+      return;
+    }
+
+    // Fallback: Uthmani API
     const res = await fetch(`https://api.alquran.cloud/v1/surah/${number}/quran-uthmani`);
     const json = await res.json();
     if(json.status !== 'OK'){ throw new Error('API error'); }
     const data = json.data;
-    // find metadata if available
-    const meta = surahMeta[number-1] || {};
     let title = `${data.name}`;
     if(meta.english && meta.urdu){
       title = `${meta.english} / ${meta.urdu} — ${data.name}`;
@@ -209,34 +358,34 @@ async function loadSurah(number){
     } else if(meta.urdu){
       title = `${meta.urdu} — ${data.name}`;
     }
-    // Add decorative divider before surah
-    let html = `<div class="surah-divider"><span class="divider-mark">✦</span></div>`;
     html += `<h2 class="surah-title">${title} <small>(${data.numberOfAyahs} ayahs)</small></h2>`;
-    
-    // Add Bismillah once for all surahs except Surah 9 (At-Tawbah)
     const hasBismillah = data.number !== 9;
-    if(hasBismillah){
-      html += '<div class="bismillah">بسم الله الرحمن الرحيم</div>';
-    }
-    
+    if(hasBismillah){ html += '<div class="bismillah">بسم الله الرحمن الرحيم</div>'; }
     html += '<div class="ayahs">';
-    // Build continuous text with ayah numbers inline (mushaf style with Ottoman Nastaleeq)
-    let ayahText = '';
+    // Display ayahs in blocks of 16 for mushaf-style layout
+    const blockSize = 16;
     const offset = hasBismillah ? 1 : 0;
-    data.ayahs.forEach(a=>{
-      if(hasBismillah && a.numberInSurah === 1) return; // skip Bismillah verse in the flow
-      const ayahNum = a.numberInSurah - offset;
-      // Add ayah text with ayah number inline; visual separation handled via CSS pseudo-element
-      ayahText += `${a.text} <span class=\"aya-num-inline\">${ayahNum}</span> `;
-    });
-    html += `<p class="arab-text">${ayahText}</p>`;
+    const filteredAyahs = data.ayahs.filter(a => !(hasBismillah && a.numberInSurah === 1));
+    for(let i = 0; i < filteredAyahs.length; i += blockSize){
+      let ayahText = '';
+      const blockEnd = Math.min(i + blockSize, filteredAyahs.length);
+      for(let j = i; j < blockEnd; j++){
+        const a = filteredAyahs[j];
+        const ayahNum = a.numberInSurah - offset;
+        const cleaned = sanitizeAyahText(a.text);
+        ayahText += `${cleaned}<span class="aya-num-inline">${ayahNum}</span>`;
+      }
+      html += `<p class="arab-text">${ayahText}</p>`;
+    }
     html += '</div>';
     contentEl.innerHTML = html;
     contentEl.scrollTop = 0;
     highlightActive(number);
+    clearStatus();
   }catch(err){
-    console.error('Quran API error',err);
+    console.error('Quran load error',err);
     contentEl.innerHTML = '<p>Error loading surah. Try again later.</p>';
+    setStatus('Error loading surah. Try again later.', 'error');
   }
 } 
 
@@ -248,9 +397,63 @@ function setIndoPak(on){
 // Force Indo‑Pak as the only mode
 setIndoPak(true);
 
-searchEl && searchEl.addEventListener('input', (e)=> renderList(e.target.value));
-clearBtn && clearBtn.addEventListener('click', ()=>{ searchEl.value=''; renderList(''); searchEl.focus(); });
+function handleSearch(value){
+  renderList(value);
+  // On mobile, also filter the select dropdown
+  if(window.innerWidth <= 800){
+    const matchedSurahs = [];
+    selectEl.innerHTML = '';
+    surahMeta.forEach((m, idx)=>{
+      const i = idx+1;
+      const label = `${i}. ${m.name} ${m.english || ''} ${m.urdu || ''}`;
+      if(value && !label.toLowerCase().includes(value.toLowerCase())) return;
+      matchedSurahs.push(i);
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${i}. ${m.name} ${m.english ? '— ' + m.english : ''}${m.urdu ? ' / ' + m.urdu : ''}`;
+      selectEl.appendChild(opt);
+    });
+    // Auto-load surah if only one match
+    if(matchedSurahs.length === 1){
+      loadSurah(matchedSurahs[0]);
+    }
+  } else {
+    // On desktop, auto-load when only one result matches
+    let matchedCount = 0;
+    let matchedIdx = 0;
+    surahMeta.forEach((m, idx)=>{
+      const i = idx+1;
+      const label = `${i}. ${m.name} ${m.english || ''} ${m.urdu || ''}`;
+      if(!value || label.toLowerCase().includes(value.toLowerCase())){
+        matchedCount++;
+        matchedIdx = i;
+      }
+    });
+    if(matchedCount === 1 && value){
+      loadSurah(matchedIdx);
+    }
+  }
+}
+
+searchEl && searchEl.addEventListener('input', (e)=> handleSearch(e.target.value));
+clearBtn && clearBtn.addEventListener('click', ()=>{ searchEl.value=''; handleSearch(''); searchEl.focus(); });
 populateSelect();
 renderList();
 selectEl && selectEl.addEventListener('change', (e)=> loadSurah(Number(e.target.value)));
+
+// Status helpers
+function setStatus(msg, type='info', autoHideMs){
+  if(!statusEl) return;
+  statusEl.textContent = msg;
+  statusEl.hidden = false;
+  statusEl.classList.remove('is-loading','is-error');
+  if(type==='loading') statusEl.classList.add('is-loading');
+  else if(type==='error') statusEl.classList.add('is-error');
+  if(autoHideMs){
+    setTimeout(()=>{ clearStatus(); }, autoHideMs);
+  }
+}
+function clearStatus(){ if(!statusEl) return; statusEl.hidden = true; statusEl.textContent = ''; statusEl.classList.remove('is-loading','is-error'); }
+
+// Tajweed toggle removed; no persistence needed
 
