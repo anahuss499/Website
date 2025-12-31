@@ -56,11 +56,13 @@
   <main class="container">
     <section class="card">
       <h1 data-en="Prayer Calendar" data-urdu="نماز کا کیلنڈر">Prayer Calendar</h1>
-      <p data-en="Select a month and year to view and download prayer times for Gujrat, Pakistan." data-urdu="گجرات، پاکستان کے لیے نماز کے اوقات دیکھنے اور ڈاؤن لوڈ کرنے کے لیے مہینہ اور سال منتخب کریں۔">Select a month and year to view and download prayer times for Gujrat, Pakistan.</p>
+      <p data-en="Select a month and year to view and download prayer times for Gujrat, Pakistan (Hanafi Method)." data-urdu="گجرات، پاکستان کے لیے نماز کے اوقات دیکھنے اور ڈاؤن لوڈ کرنے کے لیے مہینہ اور سال منتخب کریں (حنفی طریقہ)۔">Select a month and year to view and download prayer times for Gujrat, Pakistan (Hanafi Method).</p>
 
       <div class="calendar-controls">
         <div class="control-group">
-          <select id="month-select"></select>
+          <select id="month-select">
+            <option value="all">All Months (Full Year)</option>
+          </select>
           <select id="year-select"></select>
           <button id="load-btn" class="btn">Load</button>
           <button id="download-btn" class="btn ghost">Download PDF</button>
@@ -73,7 +75,7 @@
 
   <footer class="site-footer">
     <div class="footer-grid">
-      <div class="footer-left"><small data-en-html="© <span id='current-year'></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>Email us</a>" data-urdu-html="© <span id='current-year'></span> محمود مسجد — محمود آباد، گجرات، پنجاب، پاکستان | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>ای میل کریں</a>">© <span id="current-year"></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class="footer-mail" href="mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A">Email us</a></small></div>
+      <small data-en-html="© <span id='current-year'></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>Email us</a>" data-urdu-html="© <span id='current-year'></span> محمود مسجد — محمود آباد، گجرات، پنجاب، پاکستان | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>ای میل کریں</a>">© <span id="current-year"></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class="footer-mail" href="mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A">Email us</a></small>
       <div class="footer-right" aria-label="Follow Mahmood Masjid on social media">
         <div class="social-links">
           <a class="social-link" href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><img src="assets/img/fblogo.png" alt="Facebook"></a>
