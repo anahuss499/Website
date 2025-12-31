@@ -237,7 +237,42 @@ a.btn, .main-nav .nav-links a{min-height:40px;display:inline-flex;align-items:ce
 .prayer-table thead th:nth-child(n+3),
 .prayer-table tbody td:nth-child(n+3){text-align:center}
 .table-wrap{overflow-x:auto;border-radius:8px}
-@media (max-width:800px){.quran-grid{flex-direction:column}.container{padding:16px}.main-nav a{padding:8px}.clock-card .clock-grid{flex-direction:column;align-items:flex-start}}
+
+/* Full Year Calendar Styles */
+.full-year-header{display:flex;align-items:center;justify-content:center;gap:16px;margin:24px 0 16px;padding:20px;background:linear-gradient(135deg, rgba(50,205,50,0.08), rgba(50,205,50,0.02));border-radius:12px;box-shadow:var(--elevation-2)}
+.year-logo{width:64px;height:64px;border-radius:12px;box-shadow:0 0 20px rgba(50,205,50,0.4);border:3px solid rgba(50,205,50,0.3)}
+.year-header-text{text-align:center}
+.mosque-name{font-size:1.8rem;font-weight:800;color:#042204;margin:0 0 6px 0;letter-spacing:-0.5px}
+.mosque-address{font-size:0.95rem;color:var(--muted);margin:0}
+.year-title{text-align:center;font-size:1.6rem;font-weight:700;color:var(--text);margin:0 0 32px 0}
+.full-year-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;margin:24px auto 0;max-width:100%;justify-items:center;align-items:start}
+.month-container{background:var(--card-bg);border-radius:8px;padding:8px;box-shadow:var(--elevation-2);transition:transform .2s ease, box-shadow .2s ease;aspect-ratio:1/1;display:flex;flex-direction:column;width:100%;max-width:100%}
+.month-container:hover{transform:translateY(-4px);box-shadow:var(--elevation)}
+.month-title{text-align:center;font-size:0.85rem;font-weight:700;color:var(--green);margin:0 0 6px 0;padding-bottom:4px;border-bottom:2px solid rgba(50,205,50,0.2);flex-shrink:0}
+.compact-prayer-table{width:100%;border-collapse:collapse;font-size:0.5rem;table-layout:fixed;flex-grow:1}
+.compact-prayer-table thead th{background:linear-gradient(90deg,rgba(50,205,50,0.15), rgba(50,205,50,0.05));padding:2px 1px;font-weight:700;color:#042204;border-bottom:1px solid rgba(0,0,0,0.08);white-space:nowrap;font-size:0.48rem;text-align:center;line-height:1.1}
+.compact-prayer-table tbody td{padding:2px 1px;border-bottom:1px solid rgba(0,0,0,0.03);text-align:center;font-size:0.48rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
+.compact-prayer-table tbody tr:hover{background:rgba(50,205,50,0.04)}
+.compact-prayer-table tbody td:first-child,.compact-prayer-table tbody td:nth-child(2){font-weight:600;color:var(--green)}
+
+@media (max-width:1200px){
+  .full-year-grid{grid-template-columns:repeat(2, 1fr);gap:16px}
+  .month-container{aspect-ratio:auto}
+}
+@media (max-width:800px){
+  .quran-grid{flex-direction:column}
+  .container{padding:16px}
+  .main-nav a{padding:8px}
+  .clock-card .clock-grid{flex-direction:column;align-items:flex-start}
+  .full-year-grid{grid-template-columns:1fr;gap:16px}
+  .full-year-header{flex-direction:column;text-align:center}
+  .mosque-name{font-size:1.4rem}
+  .year-title{font-size:1.3rem}
+  .compact-prayer-table{font-size:0.45rem}
+  .compact-prayer-table thead th{font-size:0.42rem;padding:2px 1px}
+  .compact-prayer-table tbody td{font-size:0.42rem;padding:2px 1px}
+  .month-container{aspect-ratio:auto}
+}
 /* small helper */
 .time-val{font-weight:700}
 

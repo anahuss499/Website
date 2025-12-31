@@ -1,6 +1,6 @@
 // main.js - handles clock, prayer times, and next-prayer countdown
 const PK_TZ = 'Asia/Karachi';
-const GUJRAT_LAT = 32.5734, GUJRAT_LON = 74.0781; // Gujrat city coords
+const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758; // Gujrat, Fatehpur, Pakistan
 
 let nextPrayer = null;
 let countdownInterval = null;
@@ -19,8 +19,8 @@ function updateLocalTime(){
 
 async function fetchPrayerTimes(){
   try{
-    // Use AlAdhan API with method=1 (University of Islamic Sciences, Karachi)
-    const url = `https://api.aladhan.com/v1/timings?latitude=${GUJRAT_LAT}&longitude=${GUJRAT_LON}&method=1`;
+    // Use AlAdhan API with method=1 (University of Islamic Sciences, Karachi) and school=1 (Hanafi madhab)
+    const url = `https://api.aladhan.com/v1/timings?latitude=${GUJRAT_LAT}&longitude=${GUJRAT_LON}&method=1&school=1`;
     const res = await fetch(url);
     const data = await res.json();
     if(data.code !== 200){ throw new Error('Prayer API error'); }
