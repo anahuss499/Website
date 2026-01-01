@@ -292,8 +292,16 @@ a.btn, .main-nav .nav-links a{min-height:40px;display:inline-flex;align-items:ce
 .surah-item:focus{outline:2px solid var(--green)}
 
 /* Azkar styles */
-.azkar .arab{font-family: 'Jameel Noori Nastaleeq','Noto Naskh Arabic', serif;direction:rtl;font-size:1.35rem;color:#081707;margin:6px 0}
-.azkar ol, .azkar ul{padding-left:18px}
+.azkar .arab{font-family: 'Noto Naskh Arabic', 'Amiri', 'Scheherazade New', serif;direction:rtl;font-size:1.5rem;color:#042204;line-height:2.2;margin:0 0 16px 0;padding:16px;background:linear-gradient(135deg, rgba(50,205,50,0.05), rgba(50,205,50,0.02));border-radius:8px;border-right:3px solid var(--green);text-align:right}
+.azkar ol, .azkar ul{padding-left:0;list-style:none}
+.azkar li{background:var(--card-bg);padding:20px;margin:16px 0;border-radius:12px;box-shadow:var(--elevation-2);border-left:4px solid var(--green);transition:transform .2s ease, box-shadow .2s ease}
+.azkar li:hover{transform:translateX(-4px);box-shadow:var(--elevation)}
+.azkar .translation{margin:12px 0;padding:12px;background:rgba(50,205,50,0.03);border-radius:6px;line-height:1.8}
+.azkar .translation strong{color:var(--green);font-size:0.9rem;display:block;margin-bottom:6px}
+.azkar .trans-en{font-size:1rem;color:#333;margin-bottom:10px;line-height:1.7}
+.azkar .trans-ur{font-family:'Jameel Noori Nastaleeq',serif;font-size:1.1rem;color:#333;direction:rtl;text-align:right;line-height:1.9}
+.azkar .section-title{color:var(--green);border-bottom:2px solid rgba(50,205,50,0.3);padding-bottom:8px;margin:32px 0 20px 0}
+.azkar .reference{font-size:0.85rem;color:#666;font-style:italic;margin-top:12px;padding:8px;background:rgba(0,0,0,0.02);border-radius:4px}
 
 /* Quran responsive and Indo-Pak styles */
 .surah-select{display:none;width:100%;padding:10px;border-radius:8px;border:2px solid rgba(50,205,50,0.2);margin-top:10px;background:transparent;color:var(--text);font-size:1rem;transition:all .18s ease}
