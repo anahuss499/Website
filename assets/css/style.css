@@ -378,7 +378,8 @@ h1, h2, h3{font-family:'Orbitron',sans-serif;color:var(--text);letter-spacing:0.
 body.urdu-mode [data-urdu]{font-family:'Jameel Noori Nastaleeq',serif;direction:rtl;text-align:right}
 body.urdu-mode .hero-left{direction:rtl;text-align:right}
 body.urdu-mode .next-prayer{direction:rtl}
-body.urdu-mode .nav-links a span{direction:rtl}
+body.urdu-mode .nav-links a span[data-urdu]{font-family:'Jameel Noori Nastaleeq',serif;direction:rtl}
+body.urdu-mode .brand span[data-urdu]{font-family:'Jameel Noori Nastaleeq',serif;font-size:1.4rem;direction:rtl}
 
 /* Mosque Comparison Section */
 .mosque-comparison{background:linear-gradient(180deg, rgba(50,205,50,0.02), #fff);padding:28px;border-radius:12px;margin:20px 0;border:1px solid rgba(50,205,50,0.1)}
