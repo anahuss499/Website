@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#32cd32">
+  <title>Azkar & Duas — Mahmood Masjid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Language Selection Modal -->
+  <div class="lang-modal-overlay" id="lang-modal-overlay">
+    <div class="lang-modal" role="dialog" aria-modal="true" aria-labelledby="lang-modal-title">
+      <h2 id="lang-modal-title">Welcome to Mahmood Masjid</h2>
+      <p>Please select your preferred language</p>
+      <p class="lang-modal-urdu">براہ کرم اپنی پسندیدہ زبان منتخب کریں</p>
+      <div class="lang-buttons">
+        <button class="lang-btn" data-lang="en">
+          <span class="lang-btn-text">EN</span>
+        </button>
+        <button class="lang-btn" data-lang="urdu">
+          <span class="lang-btn-text">اردو</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/"><img class="brand-logo" src="/assets/img/logo.png" alt="Mahmood Masjid logo" tabindex="0" role="button" aria-label="Mahmood Masjid logo — click or press Enter to enlarge"> <span>Mahmood Masjid</span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">
+          <svg class="lang-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="lang-text">EN</span>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-label="Open navigation"><span class="hamburger"></span></button>
+        
+        <div class="nav-links">
+          <a href="/"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10.5z"></path></svg> <span>Home</span></a>
+          <a href="/about.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <span>About</span></a>
+          <a href="/quran.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13a2 2 0 0 1 2 2v14l-3-1-3 1-3-1-3 1V5a2 2 0 0 1 2-2z"/></svg> <span>Quran</span></a>
+          <a href="/prayer-calendar.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7zm5-4h2v2H8V3zM7 10h5v5H7z"/></svg> <span>Prayer Calendar</span></a>
+          <a href="/azkar.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s-1 3 0 4 0 7 0 7h2s1-5 1-7 0-4 0-4-1 1-3 0zM7 10s1 3 0 5 0 4 0 4h2s1-3 1-5-1-4-1-4-1 0-2 0z"/></svg> <span>Azkar &amp; Duas</span></a>
+          <a href="/durood.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg> <span>Durood Counter</span></a>
+          <a href="/map.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg> <span>Map</span></a>
+          <a href="/contact.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6l-10 6L2 6z"/></svg> <span>Contact</span></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card azkar">
+      <h1 data-en="Azkar & Duas" data-urdu="اذکار اور دعائیں">Azkar & Duas</h1>
+      <p data-en="Daily remembrance and supplications from authentic Hadith sources. Each dua is presented in Arabic with English and Urdu translations, along with authentic references." data-urdu="روزانہ کے اذکار اور دعائیں معتبر احادیث سے۔ ہر دعا عربی میں پیش کی گئی ہے انگریزی اور اردو ترجمہ کے ساتھ، معتبر حوالہ جات کے ساتھ۔">Daily remembrance and supplications from authentic Hadith sources. Each dua is presented in Arabic with English and Urdu translations, along with authentic references.</p>
+
+      <h2 class="section-title" data-en="Morning Azkar" data-urdu="صبح کے اذکار">Morning Azkar</h2>
+      <ol>
+        <li>
+          <p class="arab">أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ</p>
+          <p><strong>Translation (EN):</strong> We have entered the morning and all dominion belongs to Allah, all praise is for Allah. There is no deity except Allah alone without partner.<br><strong>ترجمہ (اردو):</strong> ہم نے صبح کی اور ساری بادشاہت اللہ ہی کی ہے، تمام تعریفیں اللہ کے لیے ہیں۔ اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک نہیں۔</p>
+        </li>
+        <li>
+          <p class="arab">سَيِّدُ الاسْتِغْفَارِ: اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ...</p>
+          <p><strong>Translation (EN):</strong> Master supplication for forgiveness (Sayyid al-Istighfar): O Allah, You are my Lord, none has the right to be worshipped but You; You created me and I am Your servant...<br><strong>ترجمہ (اردو):</strong> سید الاستغفار: اے اللہ! تو میرا رب ہے، تیرے سوا کوئی معبود نہیں؛ تو نے مجھے پیدا کیا اور میں تیرا بندہ ہوں...</p>
+        </li>
+        <li>
+          <p class="arab">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ (100x)</p>
+          <p><strong>Translation (EN):</strong> Glory be to Allah and praise is His (100 times).<br><strong>ترجمہ (اردو):</strong> اللہ پاک ہے اور تعریف اسی کے لیے ہے (100 مرتبہ)</p>
+        </li>
+      </ol>
+
+      <h2 data-en="Evening Azkar" data-urdu="شام کے اذکار">Evening Azkar</h2>
+      <ol>
+        <li>
+          <p class="arab">أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ</p>
+          <p><strong>Translation (EN):</strong> We have entered the evening and all dominion belongs to Allah, all praise is for Allah. There is no deity except Allah alone without partner.<br><strong>ترجمہ (اردو):</strong> ہم نے شام کی اور ساری بادشاہت اللہ ہی کی ہے، تمام تعریفیں اللہ کے لیے ہیں۔ اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک نہیں۔</p>
+        </li>
+        <li>
+          <p class="arab">بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ</p>
+          <p><strong>Translation (EN):</strong> In the name of Allah, with whose name nothing in the earth or heaven can harm, and He is the All‑Hearing, All‑Knowing.<br><strong>ترجمہ (اردو):</strong> اللہ کے نام سے، جس کے نام کے ساتھ زمین و آسمان کی کوئی چیز نقصان نہیں پہنچا سکتی، اور وہ خوب سننے والا، خوب جاننے والا ہے۔</p>
+        </li>
+        <li>
+          <p class="arab">حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ</p>
+          <p><strong>Translation (EN):</strong> Allah is sufficient for me; there is no deity except Him. Upon Him I rely.<br><strong>ترجمہ (اردو):</strong> اللہ میرے لیے کافی ہے، اس کے سوا کوئی معبود نہیں، میں اسی پر بھروسہ کرتا ہوں۔</p>
+        </li>
+      </ol>
+
+      <h2 data-en="Entering/Exiting Toilet" data-urdu="بیت الخلا میں داخلہ / اخراج">Entering/Exiting Toilet</h2>
+      <ul>
+        <li>
+          <p class="arab">دُعَاءُ الدُّخُولِ: بِسْمِ اللَّهِ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبْثِ وَالْخَبَائِثِ</p>
+          <p><strong>Translation (EN):</strong> Entering: In the name of Allah. O Allah, I seek refuge in You from male and female devils.<br><strong>ترجمہ (اردو):</strong> داخل ہوتے وقت: اللہ کے نام سے۔ اے اللہ! میں تیری پناہ مانگتا ہوں خبیث جنات، مرد و عورت سے۔</p>
+        </li>
+        <li>
+          <p class="arab">دُعَاءُ الْخُرُوجِ: غُفْرَانَكَ</p>
+          <p><strong>Translation (EN):</strong> Exiting: I seek Your forgiveness.<br><strong>ترجمہ (اردو):</strong> نکلتے وقت: میں تیری بخشش چاہتا ہوں۔</p>
+        </li>
+      </ul>
+
+      <h2 data-en="Entering/Exiting House" data-urdu="گھر میں داخلہ / اخراج">Entering/Exiting House</h2>
+      <ul>
+        <li>
+          <p class="arab">دُعَاءُ الدُّخُولِ: بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا</p>
+          <p><strong>Translation (EN):</strong> Entering: In the name of Allah we enter, in the name of Allah we leave, and upon our Lord we rely.<br><strong>ترجمہ (اردو):</strong> داخل ہوتے وقت: اللہ کے نام سے ہم داخل ہوئے، اللہ کے نام سے ہم نکلے، اور ہم نے اپنے رب پر بھروسہ کیا۔</p>
+        </li>
+        <li>
+          <p class="arab">دُعَاءُ الْخُرُوجِ: بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ</p>
+          <p><strong>Translation (EN):</strong> Exiting: In the name of Allah, I place my trust in Allah; there is no power nor might except with Allah.<br><strong>ترجمہ (اردو):</strong> نکلتے وقت: اللہ کے نام سے، میں نے اللہ پر بھروسہ کیا؛ طاقت اور قوت صرف اللہ کی طرف سے ہے۔</p>
+        </li>
+      </ul>
+
+      <h2 data-en="Entering/Exiting Mosque" data-urdu="مسجد میں داخلہ / اخراج">Entering/Exiting Mosque</h2>
+      <ul>
+        <li>
+          <p class="arab">دُعَاءُ الدُّخُولِ: اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ (بِسْمِ اللَّهِ وَالصَّلَاةُ وَالسَّلَامُ عَلَى رَسُولِ اللَّهِ)</p>
+          <p><strong>Translation (EN):</strong> Entering: O Allah, open for me the doors of Your mercy (with Bismillah and sending salams upon the Messenger).<br><strong>ترجمہ (اردو):</strong> داخل ہوتے وقت: اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے (بسم اللہ اور نبی ﷺ پر درود کے ساتھ)۔</p>
+        </li>
+        <li>
+          <p class="arab">دُعَاءُ الْخُرُوجِ: اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ (وَالصَّلَاةُ وَالسَّلَامُ عَلَى رَسُولِ اللَّهِ)</p>
+          <p><strong>Translation (EN):</strong> Exiting: O Allah, I ask You for Your bounty (with sending salams upon the Messenger).<br><strong>ترجمہ (اردو):</strong> نکلتے وقت: اے اللہ! میں تیرے فضل کا سوال کرتا ہوں (اور نبی ﷺ پر درود بھیجتا ہوں)۔</p>
+        </li>
+      </ul>
+
+      <h2 data-en="Graveyard Greeting" data-urdu="قبرستان کی دعا">Graveyard Greeting</h2>
+      <ul>
+        <li>
+          <p class="arab">السَّلَامُ عَلَيْكُمْ أَهْلَ الدِّيَارِ مِنَ الْمُؤْمِنِينَ وَالْمُسْلِمِينَ، وَإِنَّا إِنْ شَاءَ اللَّهُ بِكُمْ لَاحِقُونَ</p>
+          <p><strong>Translation (EN):</strong> Peace be upon you, dwellers of these abodes from among the believers and Muslims. Indeed we will, if Allah wills, join you.<br><strong>ترجمہ (اردو):</strong> السلام علیکم! اے اس بستی کے رہنے والو جو مومن اور مسلمان ہیں، بے شک ہم بھی ان شاء اللہ تم سے ملنے والے ہیں۔</p>
+        </li>
+      </ul>
+
+      <h2 data-en="Before/After Eating" data-urdu="کھانے سے پہلے / بعد کی دعا">Before/After Eating</h2>
+      <ul>
+        <li>
+          <p class="arab">قَبْلَ الأَكْلِ: بِسْمِ اللَّهِ (وَإِنْ نَسِيَ فَلْيَقُلْ بَعْدُ: بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ)</p>
+          <p><strong>Translation (EN):</strong> Before eating: In the name of Allah. If forgotten at first, say when remembered: In the name of Allah at its beginning and end.<br><strong>ترجمہ (اردو):</strong> کھانے سے پہلے: اللہ کے نام سے۔ اگر شروع میں بھول جائیں تو یاد آنے پر کہیں: اللہ کے نام سے، ابتدا اور انتہا میں۔</p>
+        </li>
+        <li>
+          <p class="arab">بَعْدَ الأَكْلِ: الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ</p>
+          <p><strong>Translation (EN):</strong> After eating: All praise is for Allah who fed me this and provided it without any power or might from myself.<br><strong>ترجمہ (اردو):</strong> کھانے کے بعد: تمام تعریفیں اللہ کے لیے ہیں جس نے مجھے یہ کھلایا اور بغیر میری طاقت و قوت کے رزق دیا۔</p>
+        </li>
+      </ul>
+
+      <p data-en="References: Duas are from widely reported adhkar in authentic ahadith (e.g., Hisn al-Muslim / Fortress of the Muslim)." data-urdu="حوالہ جات: دعائیں مستند احادیث میں وارد عام اذکار سے لی گئی ہیں (مثلاً حصن المسلم / Fortress of the Muslim)۔">References: Duas are from widely reported adhkar in authentic ahadith (e.g., Hisn al-Muslim / Fortress of the Muslim).</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-left"><small data-en-html="© <span id='current-year'></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>Email us</a>" data-urdu-html="© <span id='current-year'></span> محمود مسجد — محمود آباد، گجرات، پنجاب، پاکستان | <a class='footer-mail' href='mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&amp;body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A'>ای میل کریں</a>">© <span id="current-year"></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan | <a class="footer-mail" href="mailto:contact.mahmoodmasjid@gmail.com?subject=Message%20from%20Mahmood%20Masjid&body=Assalamu%20Alaikum,%0A%0APlease%20share%20your%20message%20below:%0A">Email us</a></small></div>
+      <div class="footer-right" aria-label="Follow Mahmood Masjid on social media">
+        <div class="social-links">
+          <a class="social-link" href="https://www.facebook.com/profile.php?id=61582326976125" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><img src="assets/img/fblogo.png" alt="Facebook"></a>
+          <a class="social-link" href="https://www.tiktok.com/@mahmoodmasjid" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><img src="assets/img/tiktoklogo.png" alt="TikTok"></a>
+          <a class="social-link" href="https://www.youtube.com/channel/UC1qctjTFPcIE8LNF5PTDNNw" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><img src="assets/img/ytlogo.png" alt="YouTube"></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
+  <script src="assets/js/ui.js"></script>
+</body>
+</html>

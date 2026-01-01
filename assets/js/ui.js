@@ -189,6 +189,8 @@
       // Update language toggle button to show opposite language
       const langText = document.querySelector('.lang-text');
       if(langText) langText.textContent = 'EN';
+      // Update next prayer name if available
+      updateNextPrayerName();
     } else {
       body.classList.remove('urdu-mode');
       applyText('[data-urdu]', 'data-en');
@@ -197,8 +199,30 @@
       // Update language toggle button to show opposite language
       const langText = document.querySelector('.lang-text');
       if(langText) langText.textContent = 'UR';
+      // Update next prayer name if available
+      updateNextPrayerName();
     }
     try{ localStorage.setItem('lang', urdu ? 'urdu' : 'en'); } catch(e){}
+  }
+
+  // Helper function to update next prayer name in the correct language
+  function updateNextPrayerName(){
+    // This will be called when language is toggled
+    // Check if nextPrayer exists in main.js and update the display
+    if(typeof window.nextPrayer !== 'undefined' && window.nextPrayer){
+      const nameEl = document.getElementById('next-name');
+      if(nameEl){
+        const urduNames = {
+          'Fajr': 'فجر',
+          'Dhuhr': 'ظہر',
+          'Asr': 'عصر',
+          'Maghrib': 'مغرب',
+          'Isha': 'عشاء'
+        };
+        const isUrdu = body.classList.contains('urdu-mode');
+        nameEl.textContent = isUrdu && urduNames[window.nextPrayer.name] ? urduNames[window.nextPrayer.name] : window.nextPrayer.name;
+      }
+    }
   }
 
   const langToggle = document.getElementById('lang-toggle');

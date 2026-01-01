@@ -2,7 +2,8 @@
 const PK_TZ = 'Asia/Karachi';
 const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758; // Gujrat, Fatehpur, Pakistan
 
-let nextPrayer = null;
+// Make nextPrayer globally accessible
+window.nextPrayer = null;
 let countdownInterval = null;
 
 function updateLocalTime(){
@@ -19,15 +20,20 @@ function updateLocalTime(){
 
 async function fetchPrayerTimes(){
   try{
+    console.log('Fetching prayer times...');
     // Use AlAdhan API with method=1 (University of Islamic Sciences, Karachi) and school=1 (Hanafi madhab)
     const url = `https://api.aladhan.com/v1/timings?latitude=${GUJRAT_LAT}&longitude=${GUJRAT_LON}&method=1&school=1`;
     const res = await fetch(url);
     const data = await res.json();
+    console.log('Prayer API response received');
     if(data.code !== 200){ throw new Error('Prayer API error'); }
     const timings = data.data.timings;
     const mapping = ['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'];
     mapping.forEach(name=>{
-      const li = Array.from(document.querySelectorAll('.prayer-list li')).find(l => l.textContent.includes(name));
+      const li = Array.from(document.querySelectorAll('.prayer-list li')).find(l => {
+        const nameSpan = l.querySelector('.prayer-name');
+        return nameSpan && nameSpan.getAttribute('data-en') === name;
+      });
       if(li && timings[name]){ li.querySelector('.time-val').textContent = timings[name].split(' ')[0]; }
     });
     document.getElementById('prayer-updated').textContent = data.data.date.readable + ' (Hijri: ' + data.data.date.hijri.date + ')';
@@ -56,6 +62,7 @@ async function fetchPrayerTimes(){
       dt.setHours(hh,mm,0,0);
       next = {name: 'Fajr', dt, time: t};
     }
+    console.log('Next prayer calculated:', next);
     setNextPrayer(next);
   }catch(err){
     console.error('Prayer times error',err);
@@ -63,25 +70,49 @@ async function fetchPrayerTimes(){
 }
 
 function setNextPrayer(obj){
-  nextPrayer = obj;
+  console.log('setNextPrayer called with:', obj);
+  window.nextPrayer = obj;
   const nameEl = document.getElementById('next-name');
   const timeEl = document.getElementById('next-time');
-  if(nameEl) nameEl.textContent = obj.name;
-  if(timeEl) timeEl.textContent = obj.time;
+  
+  // Set next prayer name with translation support
+  if(nameEl) {
+    // Map English prayer names to Urdu
+    const urduNames = {
+      'Fajr': 'فجر',
+      'Dhuhr': 'ظہر',
+      'Asr': 'عصر',
+      'Maghrib': 'مغرب',
+      'Isha': 'عشاء'
+    };
+    
+    // Check if Urdu mode is active
+    const isUrdu = document.body.classList.contains('urdu-mode');
+    nameEl.textContent = isUrdu && urduNames[obj.name] ? urduNames[obj.name] : obj.name;
+    console.log('Next prayer name set to:', nameEl.textContent);
+  }
+  
+  if(timeEl) {
+    timeEl.textContent = obj.time;
+    console.log('Next prayer time set to:', obj.time);
+  }
   // highlight active prayer in list
   document.querySelectorAll('.prayer-list li').forEach(li=>{
-    li.classList.toggle('active', li.textContent.trim().startsWith(obj.name));
+    const nameSpan = li.querySelector('.prayer-name');
+    const isActive = nameSpan && nameSpan.getAttribute('data-en') === obj.name;
+    li.classList.toggle('active', isActive);
   });
   if(countdownInterval) clearInterval(countdownInterval);
   countdownInterval = setInterval(updateCountdown,1000);
   updateCountdown();
+  console.log('Countdown started');
 }
 
 function updateCountdown(){
-  if(!nextPrayer) return;
+  if(!window.nextPrayer) return;
   const pkNowStr = new Date().toLocaleString('en-US',{timeZone:PK_TZ});
   const pkNow = new Date(pkNowStr);
-  const diff = nextPrayer.dt - pkNow;
+  const diff = window.nextPrayer.dt - pkNow;
   if(diff <= 0){ fetchPrayerTimes(); return; }
   const s = Math.floor(diff/1000)%60;
   const m = Math.floor(diff/60000)%60;

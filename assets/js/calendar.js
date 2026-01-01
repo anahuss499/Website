@@ -140,7 +140,22 @@ async function loadFullYearCalendar(year){
       const days = json.data;
       const monthLabel = new Date(year,m-1,1).toLocaleString('en-US',{month:'long'});
       const monthLabelUrdu = ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'][m-1];
-      const displayMonth = isUrdu ? monthLabelUrdu : monthLabel;
+      
+      // Get Islamic month names from the data
+      const firstDay = days[0];
+      const lastDay = days[days.length - 1];
+      const hijriMonthStart = firstDay.date.hijri.month.en;
+      const hijriMonthEnd = lastDay.date.hijri.month.en;
+      const hijriMonthStartAr = firstDay.date.hijri.month.ar;
+      const hijriMonthEndAr = lastDay.date.hijri.month.ar;
+      
+      // Determine if month spans two Hijri months
+      const hijriDisplay = hijriMonthStart === hijriMonthEnd 
+        ? (isUrdu ? hijriMonthStartAr : hijriMonthStart)
+        : (isUrdu ? `${hijriMonthStartAr} / ${hijriMonthEndAr}` : `${hijriMonthStart} / ${hijriMonthEnd}`);
+      
+      const gregMonth = isUrdu ? monthLabelUrdu : monthLabel;
+      const displayMonth = `${gregMonth}<br><span style="font-size:0.75em;color:#666;font-weight:500;">${hijriDisplay}</span>`;
       
       // Create month table
       html += `<div class="month-container">
@@ -191,6 +206,13 @@ async function loadFullYearCalendar(year){
     }
     
     html += `</div>`;
+    
+    // Add moon sighting note
+    const moonNote = isUrdu 
+      ? '<p class="moon-sighting-note" style="text-align:center;margin-top:20px;padding:12px;background:rgba(50,205,50,0.08);border-radius:8px;color:#042204;font-size:0.85rem;font-style:italic;font-family:Jameel Noori Nastaleeq, serif;">* نوٹ: حجری تاریخیں چاند دیکھنے کی بنیاد پر تبدیل ہو سکتی ہیں</p>'
+      : '<p class="moon-sighting-note" style="text-align:center;margin-top:20px;padding:12px;background:rgba(50,205,50,0.08);border-radius:8px;color:#042204;font-size:0.85rem;font-style:italic;">* Note: Dates may vary slightly based on moon sighting</p>';
+    html += moonNote;
+    
     area.innerHTML = html;
     
     // Hide download button for full year view
@@ -231,7 +253,21 @@ async function downloadFullYearPDF(year){
     const days = json.data;
     const monthLabelUrdu = ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'][m-1];
     const monthLabel = new Date(year,m-1,1).toLocaleString('en-US',{month:'short'});
-    const displayMonth = isUrdu ? monthLabelUrdu : monthLabel;
+    
+    // Get Islamic month names
+    const firstDay = days[0];
+    const lastDay = days[days.length - 1];
+    const hijriMonthStart = firstDay.date.hijri.month.en;
+    const hijriMonthEnd = lastDay.date.hijri.month.en;
+    const hijriMonthStartAr = firstDay.date.hijri.month.ar;
+    const hijriMonthEndAr = lastDay.date.hijri.month.ar;
+    
+    const hijriDisplay = hijriMonthStart === hijriMonthEnd 
+      ? (isUrdu ? hijriMonthStartAr : hijriMonthStart)
+      : (isUrdu ? `${hijriMonthStartAr}/${hijriMonthEndAr}` : `${hijriMonthStart}/${hijriMonthEnd}`);
+    
+    const gregMonth = isUrdu ? monthLabelUrdu : monthLabel;
+    const displayMonth = `${gregMonth}<br><span style="font-size:3.2px;color:#666;">${hijriDisplay}</span>`;
     
     let tableHTML = `<div style="break-inside:avoid;margin-bottom:1px;">
       <h4 style="text-align:center;font-size:4.5px;margin:0 0 0.5px 0;color:#32cd32;font-weight:700;line-height:0.95;${isUrdu ? 'font-family:Jameel Noori Nastaleeq;' : ''}">${displayMonth}</h4>
@@ -281,6 +317,10 @@ async function downloadFullYearPDF(year){
     monthsHTML += tableHTML;
   }
   
+  const moonNote = isUrdu
+    ? '<p style="text-align:center;margin-top:1.5px;padding:1px;background:rgba(50,205,50,0.08);border-radius:1px;color:#042204;font-size:3.5px;font-style:italic;font-family:Jameel Noori Nastaleeq;">* نوٹ: حجری تاریخیں چاند دیکھنے کی بنیاد پر تبدیل ہو سکتی ہیں</p>'
+    : '<p style="text-align:center;margin-top:1.5px;padding:1px;background:rgba(50,205,50,0.08);border-radius:1px;color:#042204;font-size:3.5px;font-style:italic;">* Note: Dates may vary slightly based on moon sighting</p>';
+  
   const html = `
     <div style="padding:2px;font-family:Arial,sans-serif;">
       <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:2px;">
@@ -294,6 +334,7 @@ async function downloadFullYearPDF(year){
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;">
         ${monthsHTML}
       </div>
+      ${moonNote}
     </div>
   `;
   
