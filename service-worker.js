@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mahmood-masjid-v2';
+const CACHE_NAME = 'mahmood-masjid-v3';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
