@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test Notifications</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 16px;
+      background: #32cd32;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #2ab82a;
+    }
+    .urdu {
+      background: #ff6b6b;
+    }
+    .urdu:hover {
+      background: #ee5a52;
+    }
+    .status {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>📱 Notification Test</h1>
+  <div id="status" class="status"></div>
+  
+  <button onclick="enableNotifications()">🔔 Step 1: Enable Notifications</button>
+  
+  <h2>📖 Quran Notifications</h2>
+  <button onclick="testNotif('📖 Daily Quran Reading', '✨ Time to read and reflect on the Quran')">Test Quran (English)</button>
+  <button class="urdu" onclick="testNotif('📖 روزانہ قرآن کی تلاوت', 'قرآن کو پڑھنے اور غور و فکر کرنے کا وقت ہے')">Test Quran (Urdu)</button>
+  
+  <h2>🤲 Durood Notifications</h2>
+  <button onclick="testNotif('🤲 Durood on Prophet Muhammad', '✨ Send blessings upon the Prophet Muhammad')">Test Durood (English)</button>
+  <button class="urdu" onclick="testNotif('🤲 درود شریف', 'حضرت محمد صلی اللہ علیہ وسلم پر درود بھیجیں')">Test Durood (Urdu)</button>
+  
+  <h2>🕌 Prayer Time Notifications</h2>
+  <button onclick="testNotif('🕌 Fajr Prayer Time', 'It\\'s time for Fajr prayer')">Fajr (English)</button>
+  <button class="urdu" onclick="testNotif('🕌 فجر کا وقت', 'فجر کی نماز کا وقت ہو گیا ہے')">فجر (Urdu)</button>
+  
+  <button onclick="testNotif('🕌 Dhuhr Prayer Time', 'It\\'s time for Dhuhr prayer')">Dhuhr (English)</button>
+  <button class="urdu" onclick="testNotif('🕌 ظہر کا وقت', 'ظہر کی نماز کا وقت ہو گیا ہے')">ظہر (Urdu)</button>
+  
+  <button onclick="testNotif('🕌 Asr Prayer Time', 'It\\'s time for Asr prayer')">Asr (English)</button>
+  <button class="urdu" onclick="testNotif('🕌 عصر کا وقت', 'عصر کی نماز کا وقت ہو گیا ہے')">عصر (Urdu)</button>
+  
+  <button onclick="testNotif('🕌 Maghrib Prayer Time', 'It\\'s time for Maghrib prayer')">Maghrib (English)</button>
+  <button class="urdu" onclick="testNotif('🕌 مغرب کا وقت', 'مغرب کی نماز کا وقت ہو گیا ہے')">مغرب (Urdu)</button>
+  
+  <button onclick="testNotif('🕌 Isha Prayer Time', 'It\\'s time for Isha prayer')">Isha (English)</button>
+  <button class="urdu" onclick="testNotif('🕌 عشاء کا وقت', 'عشاء کی نماز کا وقت ہو گیا ہے')">عشاء (Urdu)</button>
+  
+  <script>
+    function updateStatus() {
+      const status = document.getElementById('status');
+      if (!('Notification' in window)) {
+        status.innerHTML = '❌ Your browser doesn\\'t support notifications';
+        status.style.background = '#ffcccc';
+      } else if (Notification.permission === 'granted') {
+        status.innerHTML = '✅ Notifications enabled! Click any button above to test';
+        status.style.background = '#ccffcc';
+      } else if (Notification.permission === 'denied') {
+        status.innerHTML = '❌ Notifications blocked. Enable them in your browser settings';
+        status.style.background = '#ffcccc';
+      } else {
+        status.innerHTML = '⚠️ Click "Step 1: Enable Notifications" first';
+        status.style.background = '#ffffcc';
+      }
+    }
+    
+    async function enableNotifications() {
+      if (!('Notification' in window)) {
+        alert('Your browser doesn\\'t support notifications');
+        return;
+      }
+      
+      const permission = await Notification.requestPermission();
+      updateStatus();
+      
+      if (permission === 'granted') {
+        alert('Great! Now click any button below to see a notification');
+      }
+    }
+    
+    function testNotif(title, body) {
+      if (Notification.permission !== 'granted') {
+        alert('Please enable notifications first by clicking the button at the top!');
+        return;
+      }
+      
+      new Notification(title, {
+        body: body,
+        icon: '/assets/img/logo.png',
+        badge: '/assets/img/logo.png'
+      });
+    }
+    
+    updateStatus();
+  </script>
+</body>
+</html>
