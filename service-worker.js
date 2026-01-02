@@ -1,4 +1,5 @@
-const CACHE_NAME = 'mahmood-masjid-v3';
+const CACHE_NAME = 'mahmood-masjid-v5';
+const NETWORK_FIRST_PATHS = ['/prayer-calendar.html', '/assets/js/calendar.js'];
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
@@ -46,34 +47,47 @@ self.addEventListener('activate', event => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', event => {
-  // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      if (response) {
-        return response;
-      }
-      return fetch(event.request)
-        .then(response => {
-          // Don't cache if not a success response
-          if (!response || response.status !== 200 || response.type === 'error') {
-            return response;
-          }
-          // Clone the response before caching
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
-          });
-          return response;
-        })
-        .catch(() => {
-          // Return a custom offline page if available
-          return caches.match('/index.html');
-        });
-    })
-  );
+  const url = new URL(event.request.url);
+  const isNetworkFirst = NETWORK_FIRST_PATHS.some(path => url.pathname.endsWith(path));
+
+  if (isNetworkFirst) {
+    event.respondWith(networkFirst(event.request));
+  } else {
+    event.respondWith(cacheFirst(event.request));
+  }
 });
+
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request, { cache: 'reload' });
+    if (networkResponse && networkResponse.status === 200 && networkResponse.type !== 'error') {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (err) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    return caches.match('/index.html');
+  }
+}
+
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.status === 200 && networkResponse.type !== 'error') {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (err) {
+    return caches.match('/index.html');
+  }
+}
 
 // Handle push notifications
 self.addEventListener('push', event => {
