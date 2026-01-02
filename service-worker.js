@@ -1,7 +1,9 @@
-const CACHE_NAME = 'mahmood-masjid-v1';
+const CACHE_NAME = 'mahmood-masjid-v2';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
+  '/notification-preview.html',
+  '/test-notifications.html',
   '/quran.html',
   '/azkar.html',
   '/durood.html',
