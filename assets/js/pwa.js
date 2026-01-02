@@ -34,6 +34,77 @@ function getCurrentLanguage() {
   }
 }
 
+// Get localized prayer names
+function getPrayerNames() {
+  const language = getCurrentLanguage();
+  
+  if (language === 'urdu') {
+    return {
+      Fajr: 'فجر',
+      Dhuhr: 'ظہر',
+      Asr: 'عصر',
+      Maghrib: 'مغرب',
+      Isha: 'عشاء'
+    };
+  } else {
+    return {
+      Fajr: 'Fajr',
+      Dhuhr: 'Dhuhr',
+      Asr: 'Asr',
+      Maghrib: 'Maghrib',
+      Isha: 'Isha'
+    };
+  }
+}
+
+// Fetch prayer times from API
+async function fetchPrayerTimes() {
+  const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758;
+  try {
+    const url = `https://api.aladhan.com/v1/timings?latitude=${GUJRAT_LAT}&longitude=${GUJRAT_LON}&method=1&school=1`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.code !== 200) throw new Error('Prayer API error');
+    return data.data.timings;
+  } catch (error) {
+    console.error('Failed to fetch prayer times:', error);
+    return null;
+  }
+}
+
+// Get prayer time notifications
+async function getPrayerNotifications() {
+  const language = getCurrentLanguage();
+  const prayerNames = getPrayerNames();
+  const timings = await fetchPrayerTimes();
+  
+  if (!timings) return [];
+  
+  const notifications = [];
+  const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  
+  prayers.forEach(prayer => {
+    const time = timings[prayer]?.split(' ')[0]; // Get HH:MM format
+    if (!time) return;
+    
+    if (language === 'urdu') {
+      notifications.push({
+        title: `🕌 ${prayerNames[prayer]} کا وقت`,
+        body: `${prayerNames[prayer]} کی نماز کا وقت ہو گیا ہے`,
+        time: time
+      });
+    } else {
+      notifications.push({
+        title: `🕌 ${prayerNames[prayer]} Prayer Time`,
+        body: `It's time for ${prayerNames[prayer]} prayer`,
+        time: time
+      });
+    }
+  });
+  
+  return notifications;
+}
+
 // Get notifications in the user's language with emojis
 function getLocalizedNotifications() {
   const language = getCurrentLanguage();
@@ -67,15 +138,25 @@ function getLocalizedNotifications() {
   }
 }
 
-// Schedule daily notifications for Quran and Durood
-function scheduleDefaultNotifications() {
-  const notifications = getLocalizedNotifications();
+// Schedule daily notifications for Quran, Durood, and Prayer Times
+async function scheduleDefaultNotifications() {
+  const baseNotifications = getLocalizedNotifications();
+  const prayerNotifications = await getPrayerNotifications();
+  
+  const allNotifications = [...baseNotifications, ...prayerNotifications];
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.controller?.postMessage({
+  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({
       type: 'SCHEDULE_NOTIFICATION',
-      notifications: notifications
+      notifications: allNotifications
     });
+  }
+  
+  // Store prayer times for later use
+  try {
+    localStorage.setItem('prayerNotifications', JSON.stringify(prayerNotifications));
+  } catch (e) {
+    console.error('Failed to store prayer notifications:', e);
   }
 }
 
@@ -96,7 +177,7 @@ function saveNotificationSettings(settings) {
 }
 
 // Schedule notifications based on settings
-function scheduleNotifications(settings) {
+async function scheduleNotifications(settings) {
   if (!settings.enabled) return;
 
   const language = getCurrentLanguage();
@@ -135,6 +216,12 @@ function scheduleNotifications(settings) {
       });
     }
   }
+  
+  // Add prayer time notifications if enabled
+  if (settings.prayerTimesEnabled !== false) {
+    const prayerNotifications = await getPrayerNotifications();
+    notifications.push(...prayerNotifications);
+  }
 
   if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({
@@ -172,7 +259,46 @@ function showInstallPrompt() {
 document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
   requestNotificationPermission();
+  
+  // Update prayer times daily
+  updatePrayerTimesDaily();
 });
+
+// Update prayer times daily (since they change each day)
+function updatePrayerTimesDaily() {
+  // Update immediately
+  scheduleDailyPrayerUpdate();
+  
+  // Update at midnight every day
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 5, 0, 0); // 12:05 AM
+  
+  const timeUntilMidnight = tomorrow - now;
+  
+  setTimeout(() => {
+    scheduleDailyPrayerUpdate();
+    // Then repeat every 24 hours
+    setInterval(scheduleDailyPrayerUpdate, 24 * 60 * 60 * 1000);
+  }, timeUntilMidnight);
+}
+
+// Schedule prayer time updates
+async function scheduleDailyPrayerUpdate() {
+  if (Notification.permission === 'granted') {
+    const baseNotifications = getLocalizedNotifications();
+    const prayerNotifications = await getPrayerNotifications();
+    const allNotifications = [...baseNotifications, ...prayerNotifications];
+    
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type: 'SCHEDULE_NOTIFICATION',
+        notifications: allNotifications
+      });
+    }
+  }
+}
 
 // Check for app installed
 window.addEventListener('appinstalled', () => {
