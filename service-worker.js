@@ -1,5 +1,5 @@
-const CACHE_NAME = 'mahmood-masjid-v5';
-const NETWORK_FIRST_PATHS = ['/prayer-calendar.html', '/assets/js/calendar.js'];
+const CACHE_NAME = 'mahmood-masjid-v8';
+const NETWORK_FIRST_PATHS = ['/prayer-calendar.html', '/assets/js/calendar.js', '/assets/js/main.js', '/assets/js/pwa.js', '/index.html', '/'];
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
