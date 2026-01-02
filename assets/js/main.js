@@ -1,6 +1,56 @@
 // main.js - handles clock, prayer times, and next-prayer countdown
 const PK_TZ = 'Asia/Karachi';
 const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758; // Gujrat, Fatehpur, Pakistan
+const JUMMAH_TIME = '14:00'; // Fixed Jummah time (2:00 PM) for Fridays
+
+function buildPkDate(base, year, month, day, timeStr){
+  const [hh, mm] = timeStr.split(' ')[0].split(':').map(Number);
+  const d = new Date(base);
+  d.setFullYear(Number(year), Number(month)-1, Number(day));
+  d.setHours(hh, mm, 0, 0);
+  return d;
+}
+
+function shouldShowJummah(pkNow, maghribToday, isThursday, isFriday){
+  if(isThursday) return pkNow >= maghribToday; // from Thu Maghrib onward
+  if(isFriday) return pkNow < maghribToday;    // until Fri Maghrib
+  return false;
+}
+
+function isFridayPk(){
+  const pkNow = new Date(new Date().toLocaleString('en-US',{timeZone:PK_TZ}));
+  const weekday = pkNow.toLocaleDateString('en-US',{weekday:'long', timeZone:PK_TZ});
+  return weekday === 'Friday';
+}
+
+function updateJummahBanner(show){
+  const banner = document.getElementById('jummah-banner');
+  if(!banner) return;
+  banner.style.display = show ? '' : 'none';
+}
+
+function initJummahDownload(){
+  const btn = document.getElementById('jummah-download-btn');
+  if(!btn) return;
+  btn.addEventListener('click', async ()=>{
+    const card = document.getElementById('jummah-share-card');
+    if(!card){ return; }
+    if(typeof html2canvas === 'undefined'){
+      alert('Download unavailable offline. Please check your connection.');
+      return;
+    }
+    try{
+      const canvas = await html2canvas(card, { backgroundColor:'#f8f5ec', scale:2 });
+      const link = document.createElement('a');
+      link.download = 'Jummah-Mubarak-Mahmood-Masjid.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }catch(err){
+      console.warn('Jummah card download failed', err);
+      alert('Could not generate the image. Please try again.');
+    }
+  });
+}
 
 // Make nextPrayer globally accessible
 window.nextPrayer = null;
@@ -28,6 +78,11 @@ async function fetchPrayerTimes(){
     console.log('Prayer API response received');
     if(data.code !== 200){ throw new Error('Prayer API error'); }
     const timings = data.data.timings;
+    const weekdayEn = data.data.date.gregorian.weekday.en;
+    const isFriday = weekdayEn === 'Friday';
+    const isThursday = weekdayEn === 'Thursday';
+
+    // Base prayers from API
     const mapping = ['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'];
     mapping.forEach(name=>{
       const li = Array.from(document.querySelectorAll('.prayer-list li')).find(l => {
@@ -36,16 +91,33 @@ async function fetchPrayerTimes(){
       });
       if(li && timings[name]){ li.querySelector('.time-val').textContent = timings[name].split(' ')[0]; }
     });
+
+    // PK now and today's Maghrib for conditional Jummah display
+    const pkNowStr = new Date().toLocaleString('en-US',{timeZone:PK_TZ});
+    const pkNow = new Date(pkNowStr);
+    const [day, month, year] = data.data.date.gregorian.date.split('-').map(Number); // dd-mm-yyyy
+    const maghribToday = buildPkDate(pkNow, year, month, day, timings['Maghrib']);
+    const showJummah = shouldShowJummah(pkNow, maghribToday, isThursday, isFriday);
+    updateJummahBanner(showJummah);
+
+    // Jummah: show only in the Thursday-after-Maghrib to Friday-before-Maghrib window
+    const jummahLi = Array.from(document.querySelectorAll('.prayer-list li')).find(l => {
+      const nameSpan = l.querySelector('.prayer-name');
+      return nameSpan && nameSpan.getAttribute('data-en') === 'Jummah';
+    });
+    if(jummahLi){
+      jummahLi.style.display = showJummah ? '' : 'none';
+      jummahLi.querySelector('.time-val').textContent = showJummah ? JUMMAH_TIME : '—';
+    }
     document.getElementById('prayer-updated').textContent = data.data.date.readable + ' (Hijri: ' + data.data.date.hijri.date + ')';
     document.getElementById('hijri').textContent = 'Hijri: ' + data.data.date.hijri.date + ' AH';
 
     // Compute next prayer using PK local date/time
-    const pkNowStr = new Date().toLocaleString('en-US',{timeZone:PK_TZ});
-    const pkNow = new Date(pkNowStr);
-    const [day, month, year] = data.data.date.gregorian.date.split('-').map(Number); // dd-mm-yyyy
     const candidates = [];
-    ['Fajr','Dhuhr','Asr','Maghrib','Isha'].forEach(name=>{
-      const t = timings[name].split(' ')[0];
+    const middayName = isFriday ? 'Jummah' : 'Dhuhr';
+    const middayTime = isFriday ? JUMMAH_TIME : timings['Dhuhr'].split(' ')[0];
+    ['Fajr',middayName,'Asr','Maghrib','Isha'].forEach(name=>{
+      const t = name === 'Jummah' ? middayTime : timings[name].split(' ')[0];
       const [hh,mm] = t.split(':').map(Number);
       const dt = new Date(pkNow);
       dt.setFullYear(Number(year), Number(month)-1, Number(day));
@@ -81,6 +153,7 @@ function setNextPrayer(obj){
     const urduNames = {
       'Fajr': 'فجر',
       'Dhuhr': 'ظہر',
+      'Jummah': 'جمعہ',
       'Asr': 'عصر',
       'Maghrib': 'مغرب',
       'Isha': 'عشاء'
@@ -99,7 +172,7 @@ function setNextPrayer(obj){
   // highlight active prayer in list
   document.querySelectorAll('.prayer-list li').forEach(li=>{
     const nameSpan = li.querySelector('.prayer-name');
-    const isActive = nameSpan && nameSpan.getAttribute('data-en') === obj.name;
+    const isActive = nameSpan && nameSpan.getAttribute('data-en') === obj.name && li.style.display !== 'none';
     li.classList.toggle('active', isActive);
   });
   if(countdownInterval) clearInterval(countdownInterval);
@@ -144,3 +217,4 @@ setInterval(fetchPrayerTimes,1000*60*60);
 
 // set current year
 document.getElementById('current-year').textContent = new Date().getFullYear();
+initJummahDownload();

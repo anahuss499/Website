@@ -297,6 +297,9 @@ async function scheduleDailyPrayerUpdate() {
         notifications: allNotifications
       });
     }
+
+    // Send a once-per-Friday greeting in the user's language
+    await sendJummahMubarakIfFriday();
   }
 }
 
@@ -308,3 +311,37 @@ window.addEventListener('appinstalled', () => {
     installBtn.style.display = 'none';
   }
 });
+
+// Send a single Jummah Mubarak notification each Friday (PK timezone)
+async function sendJummahMubarakIfFriday(){
+  if(Notification.permission !== 'granted') return;
+  const pkNow = new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Karachi'}));
+  const weekday = pkNow.toLocaleDateString('en-US',{weekday:'long', timeZone:'Asia/Karachi'});
+  if(weekday !== 'Friday') return;
+
+  const todayKey = pkNow.toLocaleDateString('en-CA',{timeZone:'Asia/Karachi'}); // YYYY-MM-DD
+  try{
+    const lastSent = localStorage.getItem('jummahMubarakSent');
+    if(lastSent === todayKey) return;
+  }catch(err){ /* ignore storage errors */ }
+
+  const lang = getCurrentLanguage();
+  const title = lang === 'urdu' ? 'جمعہ مبارک' : 'Jummah Mubarak';
+  const body = lang === 'urdu'
+    ? 'اللہ آپ کی جمعہ کو برکت دے'
+    : 'May Allah bless your Jummah';
+
+  try{
+    const reg = await navigator.serviceWorker.getRegistration();
+    if(reg){
+      await reg.showNotification(title, {
+        body,
+        icon: '/assets/img/logo.png',
+        badge: '/assets/img/logo.png',
+        tag: 'jummah-mubarak',
+        renotify: false
+      });
+      localStorage.setItem('jummahMubarakSent', todayKey);
+    }
+  }catch(err){ console.warn('Jummah notification failed', err); }
+}
