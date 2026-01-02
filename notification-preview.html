@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#32cd32">
+  <title>Notification Preview — Mahmood Masjid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .preview-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .preview-section {
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(50, 205, 50, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(50, 205, 50, 0.3);
+    }
+    .preview-section h2 {
+      margin-top: 0;
+      color: #32cd32;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+    .preview-btn {
+      padding: 12px 20px;
+      background: #32cd32;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+    .preview-btn:hover {
+      background: #2ab82a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(50, 205, 50, 0.3);
+    }
+    .preview-btn:active {
+      transform: translateY(0);
+    }
+    .preview-btn.urdu {
+      background: #ff6b6b;
+      font-family: 'Noto Naskh Arabic', serif;
+    }
+    .preview-btn.urdu:hover {
+      background: #ee5a52;
+    }
+    .lang-toggle-preview {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .permission-status {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .permission-granted {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .permission-denied {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .permission-default {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #32cd32;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    .info-box {
+      padding: 15px;
+      background: #e7f3ff;
+      border-left: 4px solid #2196F3;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-container">
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <h1>🔔 Notification Preview</h1>
+    
+    <div class="info-box">
+      <strong>ℹ️ Instructions:</strong>
+      <p>Click the buttons below to test how each notification will appear on your device. Make sure to grant notification permission when prompted.</p>
+    </div>
+    
+    <div id="permission-status"></div>
+    
+    <button id="request-permission" class="preview-btn" style="font-size: 16px; padding: 15px 30px;">
+      🔔 Enable Notifications
+    </button>
+    
+    <div class="lang-toggle-preview">
+      <button class="preview-btn" onclick="setPreviewLang('en')">English Preview</button>
+      <button class="preview-btn urdu" onclick="setPreviewLang('urdu')">اردو پیش نظارہ</button>
+    </div>
+    
+    <div class="preview-section">
+      <h2>📖 Quran & 🤲 Durood Notifications</h2>
+      <div class="btn-group">
+        <button class="preview-btn" onclick="showQuranNotification('en')">📖 Quran (English)</button>
+        <button class="preview-btn urdu" onclick="showQuranNotification('urdu')">📖 قرآن (اردو)</button>
+        <button class="preview-btn" onclick="showDuroodNotification('en')">🤲 Durood (English)</button>
+        <button class="preview-btn urdu" onclick="showDuroodNotification('urdu')">🤲 درود (اردو)</button>
+      </div>
+    </div>
+    
+    <div class="preview-section">
+      <h2>🕌 Prayer Time Notifications</h2>
+      <h3 style="color: #666; font-size: 16px;">English</h3>
+      <div class="btn-group">
+        <button class="preview-btn" onclick="showPrayerNotification('Fajr', 'en')">🕌 Fajr</button>
+        <button class="preview-btn" onclick="showPrayerNotification('Dhuhr', 'en')">🕌 Dhuhr</button>
+        <button class="preview-btn" onclick="showPrayerNotification('Asr', 'en')">🕌 Asr</button>
+        <button class="preview-btn" onclick="showPrayerNotification('Maghrib', 'en')">🕌 Maghrib</button>
+        <button class="preview-btn" onclick="showPrayerNotification('Isha', 'en')">🕌 Isha</button>
+      </div>
+      
+      <h3 style="color: #666; font-size: 16px; margin-top: 20px;">اردو</h3>
+      <div class="btn-group">
+        <button class="preview-btn urdu" onclick="showPrayerNotification('Fajr', 'urdu')">🕌 فجر</button>
+        <button class="preview-btn urdu" onclick="showPrayerNotification('Dhuhr', 'urdu')">🕌 ظہر</button>
+        <button class="preview-btn urdu" onclick="showPrayerNotification('Asr', 'urdu')">🕌 عصر</button>
+        <button class="preview-btn urdu" onclick="showPrayerNotification('Maghrib', 'urdu')">🕌 مغرب</button>
+        <button class="preview-btn urdu" onclick="showPrayerNotification('Isha', 'urdu')">🕌 عشاء</button>
+      </div>
+    </div>
+    
+    <div class="preview-section">
+      <h2>🎯 Test All Notifications</h2>
+      <div class="btn-group">
+        <button class="preview-btn" onclick="showAllNotifications('en')" style="font-size: 16px;">
+          Show All (English)
+        </button>
+        <button class="preview-btn urdu" onclick="showAllNotifications('urdu')" style="font-size: 16px;">
+          سب دکھائیں (اردو)
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Check notification permission status
+    function checkPermissionStatus() {
+      const statusDiv = document.getElementById('permission-status');
+      const requestBtn = document.getElementById('request-permission');
+      
+      if (!('Notification' in window)) {
+        statusDiv.innerHTML = '<div class="permission-denied">❌ Your browser does not support notifications</div>';
+        requestBtn.style.display = 'none';
+        return;
+      }
+      
+      const permission = Notification.permission;
+      
+      if (permission === 'granted') {
+        statusDiv.innerHTML = '<div class="permission-granted">✅ Notifications enabled! Click any button below to test.</div>';
+        requestBtn.style.display = 'none';
+      } else if (permission === 'denied') {
+        statusDiv.innerHTML = '<div class="permission-denied">❌ Notifications blocked. Please enable them in your browser settings.</div>';
+        requestBtn.style.display = 'none';
+      } else {
+        statusDiv.innerHTML = '<div class="permission-default">⚠️ Click the button below to enable notifications</div>';
+        requestBtn.style.display = 'block';
+      }
+    }
+    
+    // Request notification permission
+    document.getElementById('request-permission').addEventListener('click', async () => {
+      const permission = await Notification.requestPermission();
+      checkPermissionStatus();
+    });
+    
+    // Show notification helper
+    function showNotification(title, body, icon = '/assets/img/logo.png') {
+      if (Notification.permission !== 'granted') {
+        alert('Please enable notifications first!');
+        return;
+      }
+      
+      new Notification(title, {
+        body: body,
+        icon: icon,
+        badge: icon,
+        tag: 'preview-notification',
+        requireInteraction: false
+      });
+    }
+    
+    // Quran notifications
+    function showQuranNotification(lang) {
+      if (lang === 'urdu') {
+        showNotification('📖 روزانہ قرآن کی تلاوت', 'قرآن کو پڑھنے اور غور و فکر کرنے کا وقت ہے');
+      } else {
+        showNotification('📖 Daily Quran Reading', '✨ Time to read and reflect on the Quran');
+      }
+    }
+    
+    // Durood notifications
+    function showDuroodNotification(lang) {
+      if (lang === 'urdu') {
+        showNotification('🤲 درود شریف', 'حضرت محمد صلی اللہ علیہ وسلم پر درود بھیجیں');
+      } else {
+        showNotification('🤲 Durood on Prophet Muhammad', '✨ Send blessings upon the Prophet Muhammad (Peace Be Upon Him)');
+      }
+    }
+    
+    // Prayer notifications
+    function showPrayerNotification(prayer, lang) {
+      const prayerNames = {
+        en: {
+          Fajr: 'Fajr',
+          Dhuhr: 'Dhuhr',
+          Asr: 'Asr',
+          Maghrib: 'Maghrib',
+          Isha: 'Isha'
+        },
+        urdu: {
+          Fajr: 'فجر',
+          Dhuhr: 'ظہر',
+          Asr: 'عصر',
+          Maghrib: 'مغرب',
+          Isha: 'عشاء'
+        }
+      };
+      
+      if (lang === 'urdu') {
+        showNotification(
+          `🕌 ${prayerNames.urdu[prayer]} کا وقت`,
+          `${prayerNames.urdu[prayer]} کی نماز کا وقت ہو گیا ہے`
+        );
+      } else {
+        showNotification(
+          `🕌 ${prayerNames.en[prayer]} Prayer Time`,
+          `It's time for ${prayerNames.en[prayer]} prayer`
+        );
+      }
+    }
+    
+    // Show all notifications with delay
+    async function showAllNotifications(lang) {
+      if (Notification.permission !== 'granted') {
+        alert('Please enable notifications first!');
+        return;
+      }
+      
+      const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+      
+      showQuranNotification(lang);
+      await delay(1500);
+      
+      showDuroodNotification(lang);
+      await delay(1500);
+      
+      for (const prayer of prayers) {
+        showPrayerNotification(prayer, lang);
+        await delay(1500);
+      }
+    }
+    
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    function setPreviewLang(lang) {
+      localStorage.setItem('lang', lang);
+      alert(lang === 'urdu' ? 'زبان اردو میں تبدیل ہو گئی' : 'Language set to English');
+    }
+    
+    // Initialize
+    checkPermissionStatus();
+  </script>
+</body>
+</html>
