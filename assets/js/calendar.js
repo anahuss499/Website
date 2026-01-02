@@ -1,6 +1,7 @@
 // calendar.js - fetch monthly prayer times and enable CSV download
 const LAT = 32.5847, LON = 74.0758; // Gujrat, Fatehpur, Pakistan
 const METHOD = 1; // University of Islamic Sciences, Karachi - Sunni Hanafi method (Isha: 18° below horizon)
+const JUMMAH_TIME = '14:00'; // Fixed Jummah time (2:00 PM) year-round
 
 function populateSelectors(){
   const monthSelect = document.getElementById('month-select');
@@ -41,6 +42,7 @@ async function loadCalendar(){
       <th data-en="Ishraq" data-urdu="اشراق">Ishraq</th>
       <th data-en="Duha al Kubra" data-urdu="چاشت کبریٰ">Duha al Kubra</th>
       <th data-en="Dhuhr" data-urdu="ظہر">Dhuhr</th>
+      <th data-en="Jummah" data-urdu="جمعہ">Jummah</th>
       <th data-en="Asr" data-urdu="عصر">Asr</th>
       <th data-en="Maghrib" data-urdu="مغرب">Maghrib</th>
       <th data-en="Isha" data-urdu="عشاء">Isha</th>
@@ -49,6 +51,7 @@ async function loadCalendar(){
     days.forEach(d=>{
       const g = d.date.gregorian.date;
       const h = d.date.hijri.date;
+      const weekday = d.date.gregorian.weekday.en;
       const t = d.timings;
       const fajr = sanitizeTime(t.Fajr);
       const sunrise = sanitizeTime(t.Sunrise);
@@ -58,8 +61,9 @@ async function loadCalendar(){
       const isha = sanitizeTime(t.Isha);
       const ishraq = addMinutesToTime(sunrise, 20); // Ishraq ≈ sunrise + 20 minutes
       const duhaKubra = subtractMinutesFromTime(dhuhr, 45); // Duha al Kubra ≈ 45 minutes before Dhuhr
-      html += `<tr><td>${g}</td><td>${h}</td><td>${fajr}</td><td>${sunrise}</td><td>${ishraq}</td><td>${duhaKubra}</td><td>${dhuhr}</td><td>${asr}</td><td>${maghrib}</td><td>${isha}</td></tr>`;
-      rows.push({date:g,hijri:h,fajr, sunrise, ishraq, duhaKubra, dhuhr, asr, maghrib, isha});
+      const jummah = weekday === 'Friday' ? JUMMAH_TIME : '—';
+      html += `<tr><td>${g}</td><td>${h}</td><td>${fajr}</td><td>${sunrise}</td><td>${ishraq}</td><td>${duhaKubra}</td><td>${dhuhr}</td><td>${jummah}</td><td>${asr}</td><td>${maghrib}</td><td>${isha}</td></tr>`;
+      rows.push({date:g,hijri:h,fajr, sunrise, ishraq, duhaKubra, dhuhr, jummah, asr, maghrib, isha});
     });
     html += `</tbody></table></div>`;
     area.innerHTML = html;
@@ -113,6 +117,7 @@ async function loadFullYearCalendar(year){
       ishraq: isUrdu ? 'اشراق' : 'Ishraq',
       duha: isUrdu ? 'چاشت' : 'Duha',
       dhuhr: isUrdu ? 'ظہر' : 'Dhuhr',
+      jummah: isUrdu ? 'جمعہ' : 'Jummah',
       asr: isUrdu ? 'عصر' : 'Asr',
       maghrib: isUrdu ? 'مغرب' : 'Maghrib',
       isha: isUrdu ? 'عشاء' : 'Isha'
@@ -169,6 +174,7 @@ async function loadFullYearCalendar(year){
             <th>${labels.ishraq}</th>
             <th>${labels.duha}</th>
             <th>${labels.dhuhr}</th>
+            <th>${labels.jummah}</th>
             <th>${labels.asr}</th>
             <th>${labels.maghrib}</th>
             <th>${labels.isha}</th>
@@ -178,6 +184,7 @@ async function loadFullYearCalendar(year){
       days.forEach(d=>{
         const date = d.date.gregorian.day;
         const hijri = d.date.hijri.day;
+        const weekday = d.date.gregorian.weekday.en;
         const t = d.timings;
         const fajr = sanitizeTime(t.Fajr);
         const sunrise = sanitizeTime(t.Sunrise);
@@ -187,6 +194,7 @@ async function loadFullYearCalendar(year){
         const isha = sanitizeTime(t.Isha);
         const ishraq = addMinutesToTime(sunrise, 20);
         const duhaKubra = subtractMinutesFromTime(dhuhr, 45);
+        const jummah = weekday === 'Friday' ? JUMMAH_TIME : '—';
         
         html += `<tr>
           <td>${date}</td>
@@ -196,6 +204,7 @@ async function loadFullYearCalendar(year){
           <td>${ishraq}</td>
           <td>${duhaKubra}</td>
           <td>${dhuhr}</td>
+          <td>${jummah}</td>
           <td>${asr}</td>
           <td>${maghrib}</td>
           <td>${isha}</td>
@@ -237,6 +246,7 @@ async function downloadFullYearPDF(year){
     ishraq: isUrdu ? 'اشراق' : 'Ish',
     duha: isUrdu ? 'چاشت' : 'Duha',
     dhuhr: isUrdu ? 'ظہر' : 'Dhuhr',
+    jummah: isUrdu ? 'جمعہ' : 'Jum',
     asr: isUrdu ? 'عصر' : 'Asr',
     maghrib: isUrdu ? 'مغرب' : 'Mag',
     isha: isUrdu ? 'عشاء' : 'Isha'
@@ -280,6 +290,7 @@ async function downloadFullYearPDF(year){
           <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.ishraq}</th>
           <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.duha}</th>
           <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.dhuhr}</th>
+          <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.jummah}</th>
           <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.asr}</th>
           <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.maghrib}</th>
           <th style="border:0.2px solid #aaa;padding:0.4px;font-size:3.3px;">${labels.isha}</th>
@@ -289,6 +300,7 @@ async function downloadFullYearPDF(year){
     days.forEach(d=>{
       const date = d.date.gregorian.day;
       const hijri = d.date.hijri.day;
+      const weekday = d.date.gregorian.weekday.en;
       const t = d.timings;
       const fajr = sanitizeTime(t.Fajr);
       const sunrise = sanitizeTime(t.Sunrise);
@@ -298,6 +310,7 @@ async function downloadFullYearPDF(year){
       const isha = sanitizeTime(t.Isha);
       const ishraq = addMinutesToTime(sunrise, 20);
       const duhaKubra = subtractMinutesFromTime(dhuhr, 45);
+      const jummah = weekday === 'Friday' ? JUMMAH_TIME : '—';
       
       tableHTML += `<tr>
         <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${date}</td>
@@ -307,6 +320,7 @@ async function downloadFullYearPDF(year){
         <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${ishraq}</td>
         <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${duhaKubra}</td>
         <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${dhuhr}</td>
+        <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${jummah}</td>
         <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${asr}</td>
         <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${maghrib}</td>
         <td style="border:0.2px solid #aaa;padding:0.4px;text-align:center;">${isha}</td>
@@ -364,6 +378,7 @@ function downloadPDF(rows, month, year){
     ishraq: isUrdu ? 'اشراق' : 'Ishraq',
     duha: isUrdu ? 'چاشت کبریٰ' : 'Duha al Kubra',
     dhuhr: isUrdu ? 'ظہر' : 'Dhuhr',
+    jummah: isUrdu ? 'جمعہ' : 'Jummah',
     asr: isUrdu ? 'عصر' : 'Asr',
     maghrib: isUrdu ? 'مغرب' : 'Maghrib',
     isha: isUrdu ? 'عشاء' : 'Isha'
@@ -390,6 +405,7 @@ function downloadPDF(rows, month, year){
             <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.ishraq}</th>
             <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.duha}</th>
             <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.dhuhr}</th>
+            <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.jummah}</th>
             <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.asr}</th>
             <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.maghrib}</th>
             <th style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${hdr.isha}</th>
@@ -405,6 +421,7 @@ function downloadPDF(rows, month, year){
               <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.ishraq}</td>
               <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.duhaKubra}</td>
               <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.dhuhr}</td>
+              <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.jummah}</td>
               <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.asr}</td>
               <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.maghrib}</td>
               <td style="border: 1px solid #ddd; padding: 5px; text-align: center; white-space:nowrap;">${r.isha}</td>
