@@ -40,7 +40,7 @@ function initJummahDownload(){
       return;
     }
     try{
-      const canvas = await html2canvas(card, { backgroundColor:'#f8f5ec', scale:2 });
+      const canvas = await html2canvas(card, { backgroundColor:'#f8f5ec', scale:2, allowTaint:true, useCORS:true });
       const link = document.createElement('a');
       link.download = 'Jummah-Mubarak-Mahmood-Masjid.png';
       link.href = canvas.toDataURL('image/png');
@@ -50,6 +50,39 @@ function initJummahDownload(){
       alert('Could not generate the image. Please try again.');
     }
   });
+}
+
+function updateJummahLanguage(){
+  const isUrdu = document.body.classList.contains('urdu-mode');
+  const msgEn = document.getElementById('jummah-msg-en');
+  const msgUrdu = document.getElementById('jummah-msg-urdu');
+  const blessingEn = document.getElementById('jummah-blessing-en');
+  const blessingUrdu = document.getElementById('jummah-blessing-urdu');
+  const descEn = document.getElementById('jummah-desc-en');
+  const descUrdu = document.getElementById('jummah-desc-urdu');
+  const btnEn = document.getElementById('jummah-btn-en');
+  const btnUrdu = document.getElementById('jummah-btn-urdu');
+  const addrEn = document.getElementById('jummah-addr-en');
+  const addrUrdu = document.getElementById('jummah-addr-urdu');
+  const connectEn = document.getElementById('jummah-connect-en');
+  const connectUrdu = document.getElementById('jummah-connect-urdu');
+  const donateLabelEn = document.getElementById('jummah-donate-label-en');
+  const donateLabelUrdu = document.getElementById('jummah-donate-label-urdu');
+  
+  if(msgEn) msgEn.style.display = isUrdu ? 'none' : '';
+  if(msgUrdu) msgUrdu.style.display = isUrdu ? '' : 'none';
+  if(blessingEn) blessingEn.style.display = isUrdu ? 'none' : '';
+  if(blessingUrdu) blessingUrdu.style.display = isUrdu ? '' : 'none';
+  if(descEn) descEn.style.display = isUrdu ? 'none' : '';
+  if(descUrdu) descUrdu.style.display = isUrdu ? '' : 'none';
+  if(btnEn) btnEn.style.display = isUrdu ? 'none' : '';
+  if(btnUrdu) btnUrdu.style.display = isUrdu ? '' : 'none';
+  if(addrEn) addrEn.style.display = isUrdu ? 'none' : '';
+  if(addrUrdu) addrUrdu.style.display = isUrdu ? '' : 'none';
+  if(connectEn) connectEn.style.display = isUrdu ? 'none' : '';
+  if(connectUrdu) connectUrdu.style.display = isUrdu ? '' : 'none';
+  if(donateLabelEn) donateLabelEn.style.display = isUrdu ? 'none' : '';
+  if(donateLabelUrdu) donateLabelUrdu.style.display = isUrdu ? '' : 'none';
 }
 
 // Make nextPrayer globally accessible
@@ -218,3 +251,4 @@ setInterval(fetchPrayerTimes,1000*60*60);
 // set current year
 document.getElementById('current-year').textContent = new Date().getFullYear();
 initJummahDownload();
+updateJummahLanguage();

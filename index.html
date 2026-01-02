@@ -70,27 +70,36 @@
         <div style="flex:1;min-width:240px;">
           <div style="font-family:'Jameel Noori Nastaleeq',serif;font-size:28px;color:#0b5f35;line-height:1.2;">جمعہ مبارک</div>
           <div style="font-family:'Inter',sans-serif;font-size:16px;color:#0b5f35;font-weight:700;letter-spacing:0.4px;">Jummah Mubarak</div>
-          <p style="margin:6px 0 0;color:#3c3c3c;font-size:14px;max-width:520px;">Share the khayr — download and send this card to friends and family.</p>
+          <p id="jummah-desc-en" style="margin:6px 0 0;color:#3c3c3c;font-size:14px;max-width:520px;">Share the khayr — download and send this card to friends and family.</p>
+          <p id="jummah-desc-urdu" style="margin:6px 0 0;color:#3c3c3c;font-size:14px;max-width:520px;font-family:'Jameel Noori Nastaleeq',serif;display:none;">اس کارڈ کو اپنے دوستوں اور خاندان کے ساتھ شیئر کریں۔</p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button id="jummah-download-btn" class="btn" style="min-width:170px;">Download Jummah Card</button>
+          <button id="jummah-download-btn" class="btn" style="min-width:170px;"><span id="jummah-btn-en">Download Jummah Card</span><span id="jummah-btn-urdu" style="display:none;">جمعہ کارڈ ڈاؤن لوڈ کریں</span></button>
         </div>
       </div>
-      <div id="jummah-share-card" style="margin-top:14px;padding:16px;border-radius:14px;background:#fff;border:1px solid #e6e0d1;box-shadow:0 6px 20px rgba(0,0,0,0.05);max-width:760px;">
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <img src="/assets/img/logo.png" alt="Mahmood Masjid logo" style="width:64px;height:64px;border-radius:8px;box-shadow:0 4px 12px rgba(50,205,50,0.3);border:2px solid rgba(50,205,50,0.35);">
-          <div style="flex:1;min-width:200px;">
-            <div style="font-family:'Jameel Noori Nastaleeq',serif;font-size:24px;color:#0b5f35;line-height:1.1;">جمعہ مبارک</div>
-            <div style="font-family:'Inter',sans-serif;font-size:14px;color:#1f1f1f;font-weight:700;">Jummah Mubarak</div>
-            <div style="font-size:13px;color:#444;margin-top:4px;line-height:1.35;">Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan</div>
-          </div>
+      <div id="jummah-share-card" style="margin-top:14px;padding:6px;border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,0.55),rgba(249,244,230,0.55)),url('/assets/img/Masjid1.jpg');background-size:cover;background-attachment:fixed;background-position:center;border:1px solid #e6e0d1;box-shadow:0 10px 28px rgba(0,0,0,0.06);max-width:500px;width:100%;aspect-ratio:1;margin-left:auto;margin-right:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+        <img src="/assets/img/jummah-mubarak.png" alt="Jummah Mubarak" style="width:200px;height:auto;margin:0 auto 4px;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.08));" crossOrigin="anonymous">
+        <div id="jummah-msg-en" style="font-family:'Inter',sans-serif;font-size:14px;color:#0f3d2e;font-weight:800;letter-spacing:0.3px;margin-bottom:4px;">from Mahmood Masjid</div>
+        <div id="jummah-msg-urdu" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:15px;color:#0f3d2e;font-weight:700;margin-bottom:4px;display:none;">محمود مسجد سے</div>
+        <div style="display:flex;justify-content:center;gap:12px;align-items:center;margin-bottom:3px;flex-wrap:wrap;">
+          <img src="/assets/img/logo.png" alt="Mahmood Masjid logo" style="width:48px;height:48px;border-radius:10px;box-shadow:0 6px 16px rgba(50,205,50,0.32);border:2px solid rgba(50,205,50,0.35);">
         </div>
-        <div style="margin-top:12px;font-size:13px;color:#3c3c3c;line-height:1.5;">May your prayers be accepted and your day be filled with mercy and blessings.</div>
-        <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span style="font-size:13px;color:#444;">Connect:</span>
-          <img src="/assets/img/fblogo.png" alt="Facebook" style="width:28px;height:28px;border-radius:6px;border:1px solid #e0e0e0;">
-          <img src="/assets/img/tiktoklogo.png" alt="TikTok" style="width:28px;height:28px;border-radius:6px;border:1px solid #e0e0e0;">
-          <img src="/assets/img/ytlogo.png" alt="YouTube" style="width:28px;height:28px;border-radius:6px;border:1px solid #e0e0e0;">
+        <div id="jummah-addr-en" style="font-size:11px;color:#383838;line-height:1.3;max-width:620px;margin:0 auto 3px;">Mahmood Abad, Gujrat, Punjab, Pakistan</div>
+        <div id="jummah-addr-urdu" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:11px;color:#383838;line-height:1.3;max-width:620px;margin:0 auto 3px;display:none;">محمود آباد، گجرات، پنجاب، پاکستان</div>
+        <div id="jummah-blessing-en" style="font-size:10px;color:#2f2f2f;line-height:1.3;max-width:640px;margin:0 auto 4px;">May Allah ﷻ Almighty accept your prayers and fill your day with mercy and blessings.</div>
+        <div id="jummah-blessing-urdu" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:11px;color:#2f2f2f;line-height:1.3;max-width:640px;margin:0 auto 4px;display:none;">اللہ ﷻ قدیر تمہاری نمازوں کو قبول کرے اور تمہارا دن رحمت اور برکت سے بھرا ہو۔</div>
+        <div style="display:flex;justify-content:center;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:3px;">
+          <span id="jummah-connect-en" style="font-size:10px;color:#0f3d2e;font-weight:600;">Socials:</span>
+          <span id="jummah-connect-urdu" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:11px;color:#0f3d2e;font-weight:600;display:none;">سوشلز:</span>
+          <img src="/assets/img/fblogo.png" alt="Facebook" style="width:24px;height:24px;border-radius:10px;border:2px solid #1877F2;box-shadow:0 4px 12px rgba(24,119,242,0.25);background:#fff;transition:all 0.3s ease;cursor:pointer;" onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 16px rgba(24,119,242,0.35);'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 12px rgba(24,119,242,0.25);'">
+          <img src="/assets/img/tiktoklogo.png" alt="TikTok" style="width:24px;height:24px;border-radius:10px;border:2px solid #000;box-shadow:0 4px 12px rgba(0,0,0,0.25);background:#fff;transition:all 0.3s ease;cursor:pointer;" onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35);'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.25);'">
+          <img src="/assets/img/ytlogo.png" alt="YouTube" style="width:24px;height:24px;border-radius:10px;border:2px solid #FF0000;box-shadow:0 4px 12px rgba(255,0,0,0.25);background:#fff;transition:all 0.3s ease;cursor:pointer;" onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 16px rgba(255,0,0,0.35);'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 12px rgba(255,0,0,0.25);'">
+        </div>
+        <div style="font-size:10px;color:#0f3d2e;font-weight:600;margin-top:3px;margin-bottom:4px;">@mahmoodmasjid</div>
+        <div style="border-top:1px solid rgba(11,95,53,0.15);padding-top:4px;margin-top:4px;width:100%;">
+          <div id="jummah-donate-label-en" style="font-size:10px;color:#0f3d2e;font-weight:600;margin-bottom:1px;">Support Us:</div>
+          <div id="jummah-donate-label-urdu" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:11px;color:#0f3d2e;font-weight:600;margin-bottom:1px;display:none;">ہمیں سپورٹ کریں:</div>
+          <div id="jummah-donate-number" style="font-size:10px;color:#1a1a1a;font-weight:700;letter-spacing:0.4px;word-break:break-word;">PK41ABPA0010154454310012</div>
         </div>
       </div>
     </section>
