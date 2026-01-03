@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mahmoodmasjid.com/"/>
+    <xhtml:link rel="alternate" hreflang="ur" href="https://www.mahmoodmasjid.com/"/>
+  </url>
+  
+  <!-- About Page -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/about.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Quran Page -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/quran.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Prayer Calendar -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/prayer-calendar.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Azkar Page -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/azkar.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Durood Counter -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/durood.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Map Page -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/map.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/contact.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Social Page -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/social.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
