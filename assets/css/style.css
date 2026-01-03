@@ -678,22 +678,28 @@ body.urdu-mode .social-card h2{
   }
 }
 
-/* Animated Side Menu Styles */
+/* Splash Screen - Only show in installed app */
 .splash-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transition: opacity 0.6s ease-out;
-  pointer-events: auto;
+  display: none;
 }
 
-.splash-screen.hide {
-  opacity: 0;
-  pointer-events: none;
+@media (display-mode: standalone) {
+  .splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.6s ease-out;
+    pointer-events: auto;
+  }
+
+  .splash-screen.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .splash-content {
@@ -719,13 +725,13 @@ body.urdu-mode .social-card h2{
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.4) blur(2px);
+  filter: brightness(0.3) blur(1px);
 }
 
 .splash-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6));
   z-index: 1;
 }
 
@@ -739,24 +745,33 @@ body.urdu-mode .social-card h2{
 
 .splash-message {
   font-family: 'Noto Naskh Arabic', serif;
-  font-size: clamp(3rem, 10vw, 5rem);
+  font-size: clamp(3.5rem, 12vw, 6rem);
   font-weight: 700;
   margin: 0 0 16px;
   letter-spacing: 2px;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 30px rgba(50, 205, 50, 0.3);
+  text-shadow: 
+    0 0 40px rgba(50, 205, 50, 0.8),
+    0 8px 20px rgba(0, 0, 0, 0.8),
+    0 0 60px rgba(50, 205, 50, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.9);
   direction: rtl;
   animation: splashScale 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #ffffff;
+  filter: drop-shadow(0 0 10px rgba(50, 205, 50, 0.6));
 }
 
 .splash-subtitle {
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1rem, 4vw, 1.8rem);
-  font-weight: 600;
+  font-size: clamp(1.3rem, 5vw, 2.2rem);
+  font-weight: 700;
   margin: 0;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 3px;
+  text-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(50, 205, 50, 0.6);
+  color: #ffffff;
   animation: splashFadeIn 1.4s ease-out;
+  text-transform: uppercase;
 }
 
 @keyframes splashFadeIn {
