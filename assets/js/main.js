@@ -291,27 +291,36 @@ function initSideMenu() {
 
   // Swipe to open/close menu
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
+  let touchEndY = 0;
 
   document.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
   }, false);
 
   document.addEventListener('touchend', (e) => {
     touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
     handleSwipe();
   }, false);
 
   function handleSwipe() {
-    const swipeDistance = touchStartX - touchEndX;
+    const swipeDistanceX = touchEndX - touchStartX;
+    const swipeDistanceY = Math.abs(touchEndY - touchStartY);
     const minSwipeDistance = 50; // Minimum swipe distance in pixels
+    const screenWidth = window.innerWidth;
 
-    // Swipe from left to right (open menu)
-    if (swipeDistance < -minSwipeDistance) {
+    // Ignore vertical swipes
+    if (swipeDistanceY > 100) return;
+
+    // Open menu: swipe from right edge towards left
+    if (touchStartX > screenWidth - 50 && swipeDistanceX < -minSwipeDistance) {
       sideMenu.classList.add('open');
     }
-    // Swipe from right to left (close menu)
-    else if (swipeDistance > minSwipeDistance) {
+    // Close menu: swipe from left towards right
+    else if (sideMenu.classList.contains('open') && swipeDistanceX > minSwipeDistance) {
       sideMenu.classList.remove('open');
     }
   }
