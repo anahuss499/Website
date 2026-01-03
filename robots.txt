@@ -1,0 +1,15 @@
+# Robots.txt for Mahmood Masjid
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.mahmoodmasjid.com/sitemap.xml
+
+# Disallow service worker and test pages from indexing
+Disallow: /service-worker.js
+Disallow: /test-notifications.html
+
+# Crawl delay (optional - reduces server load)
+Crawl-delay: 1
