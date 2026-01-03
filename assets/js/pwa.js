@@ -15,12 +15,23 @@ function registerServiceWorker() {
 
 // Request notification permission
 function requestNotificationPermission() {
-  if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission().then(permission => {
-      if (permission === 'granted') {
-        scheduleDefaultNotifications();
-      }
-    });
+  if ('Notification' in window) {
+    if (Notification.permission === 'default') {
+      Notification.requestPermission().then(permission => {
+        console.log('Notification permission:', permission);
+        if (permission === 'granted') {
+          console.log('Notifications granted, scheduling...');
+          scheduleDefaultNotifications();
+        }
+      });
+    } else if (Notification.permission === 'granted') {
+      console.log('Notifications already granted');
+      scheduleDefaultNotifications();
+    } else {
+      console.log('Notifications blocked:', Notification.permission);
+    }
+  } else {
+    console.log('Notifications not supported');
   }
 }
 
@@ -140,16 +151,39 @@ function getLocalizedNotifications() {
 
 // Schedule daily notifications for Quran, Durood, and Prayer Times
 async function scheduleDefaultNotifications() {
+  // Check if notifications are actually enabled
+  if (Notification.permission !== 'granted') {
+    console.log('Cannot schedule notifications - permission not granted');
+    return;
+  }
+  
   const baseNotifications = getLocalizedNotifications();
   const prayerNotifications = await getPrayerNotifications();
   
   const allNotifications = [...baseNotifications, ...prayerNotifications];
+  console.log('Scheduling notifications:', allNotifications);
 
+  // Use service worker controller if available
   if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({
       type: 'SCHEDULE_NOTIFICATION',
       notifications: allNotifications
     });
+  }
+  
+  // Also directly register with service worker registration
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) {
+        registration.postMessage({
+          type: 'SCHEDULE_NOTIFICATION',
+          notifications: allNotifications
+        });
+      }
+    } catch (e) {
+      console.error('Failed to post message to service worker:', e);
+    }
   }
   
   // Store prayer times for later use
@@ -258,10 +292,13 @@ function showInstallPrompt() {
 // Initialize PWA on page load
 document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
-  requestNotificationPermission();
   
-  // Update prayer times daily
-  updatePrayerTimesDaily();
+  // Add a small delay to ensure service worker is registered before requesting permission
+  setTimeout(() => {
+    requestNotificationPermission();
+    // Update prayer times daily
+    updatePrayerTimesDaily();
+  }, 500);
 });
 
 // Update prayer times daily (since they change each day)

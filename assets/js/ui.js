@@ -84,6 +84,42 @@
     }
   });
 
+  // Swipe gesture detection for menu (installed app only)
+  function isInstalledApp(){
+    return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  }
+
+  if(isInstalledApp()){
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const swipeThreshold = 100; // pixels
+
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    document.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+
+    function handleSwipe() {
+      const diff = touchStartX - touchEndX;
+      
+      // Swiped left (close menu)
+      if(diff > swipeThreshold && body.classList.contains('nav-open')){
+        body.classList.remove('nav-open');
+        document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));
+      }
+      
+      // Swiped right (open menu) - only if nav-open is not already open
+      if(diff < -swipeThreshold && !body.classList.contains('nav-open')){
+        body.classList.add('nav-open');
+        document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','true'));
+      }
+    }
+  }
+
   // Logo modal support
   let logoModal = null;
   function createLogoModal(){

@@ -150,9 +150,12 @@ const scheduledNotifications = [];
 self.addEventListener('message', event => {
   if (event.data.type === 'SCHEDULE_NOTIFICATION') {
     const notifications = event.data.notifications || [];
+    console.log('[ServiceWorker] Received SCHEDULE_NOTIFICATION message:', notifications);
+    
     // Clear previous schedules
     scheduledNotifications.length = 0;
-    // Schedule new notifications
+    
+    // Store notifications and schedule them
     notifications.forEach(notif => {
       scheduledNotifications.push(notif);
       scheduleNotificationAtTime(notif.title, notif.body, notif.time);
@@ -162,27 +165,33 @@ self.addEventListener('message', event => {
 
 function scheduleNotificationAtTime(title, body, timeStr) {
   const [hours, minutes] = timeStr.split(':').map(Number);
+  console.log(`[ServiceWorker] Scheduling notification for ${timeStr}: "${title}"`);
   
   function checkAndNotify() {
     const now = new Date();
     const currentHours = now.getHours();
     const currentMinutes = now.getMinutes();
     
+    // Show notification if current time matches scheduled time
     if (currentHours === hours && currentMinutes === minutes) {
+      console.log(`[ServiceWorker] Showing notification: "${title}" at ${currentHours}:${currentMinutes}`);
       self.registration.showNotification(title, {
         body: body,
         icon: '/assets/img/logo.png',
         badge: '/assets/img/logo.png',
-        tag: 'daily-reminder',
+        tag: 'daily-reminder-' + timeStr,
         requireInteraction: true,
         actions: [
           { action: 'open', title: 'Open' },
           { action: 'close', title: 'Dismiss' }
         ]
-      });
+      }).catch(err => console.error('[ServiceWorker] Notification error:', err));
     }
   }
   
   // Check every minute
-  setInterval(checkAndNotify, 60000);
+  const intervalId = setInterval(checkAndNotify, 60000);
+  
+  // Also check immediately
+  checkAndNotify();
 }
