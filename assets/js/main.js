@@ -252,3 +252,59 @@ setInterval(fetchPrayerTimes,1000*60*60);
 document.getElementById('current-year').textContent = new Date().getFullYear();
 initJummahDownload();
 updateJummahLanguage();
+
+// Side Menu Functionality
+function initSideMenu() {
+  const sideMenu = document.getElementById('side-menu');
+  const sideMenuToggle = document.getElementById('side-menu-toggle');
+  const sideMenuOverlay = document.getElementById('side-menu-overlay');
+  const sideMenuItems = document.querySelectorAll('.side-menu-item');
+
+  if (!sideMenu || !sideMenuToggle) return;
+
+  // Toggle menu on button click
+  sideMenuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sideMenu.classList.toggle('open');
+  });
+
+  // Close menu on overlay click
+  if (sideMenuOverlay) {
+    sideMenuOverlay.addEventListener('click', () => {
+      sideMenu.classList.remove('open');
+    });
+  }
+
+  // Close menu on item click
+  sideMenuItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      sideMenu.classList.remove('open');
+    });
+  });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      sideMenu.classList.remove('open');
+    }
+  });
+
+  // Set active menu item based on current page
+  const currentPath = window.location.pathname;
+  sideMenuItems.forEach((item) => {
+    const href = item.getAttribute('href');
+    if (href === currentPath || (currentPath === '/' && href === '/')) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+}
+
+// Initialize side menu when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSideMenu);
+} else {
+  initSideMenu();
+}
+

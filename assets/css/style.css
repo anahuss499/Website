@@ -677,3 +677,210 @@ body.urdu-mode .social-card h2{
     height:56px;
   }
 }
+
+/* Animated Side Menu Styles */
+.side-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: #ffffff;
+  border-radius: 0 16px 16px 0;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  padding-bottom: 60px;
+}
+
+.side-menu.open {
+  transform: translateX(0);
+}
+
+.side-menu-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+}
+
+.side-menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.side-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  position: relative;
+  cursor: pointer;
+}
+
+.side-menu-item:hover {
+  background: rgba(50, 205, 50, 0.08);
+  border-left-color: var(--green);
+  transform: translateX(4px);
+}
+
+.side-menu-item.active {
+  background: linear-gradient(90deg, rgba(50, 205, 50, 0.15), rgba(50, 205, 50, 0.05));
+  border-left-color: var(--green);
+  color: var(--green);
+  font-weight: 600;
+}
+
+.side-menu-item.active::after {
+  content: '';
+  position: absolute;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(50, 205, 50, 0.6);
+}
+
+.side-menu-icon {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  color: inherit;
+  fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.side-menu-item:hover .side-menu-icon {
+  transform: scale(1.1);
+}
+
+.side-menu-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.side-menu-toggle {
+  position: fixed;
+  left: 16px;
+  bottom: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(50, 205, 50, 0.2), rgba(50, 205, 50, 0.08));
+  border: 2px solid var(--green);
+  color: var(--green);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(50, 205, 50, 0.2);
+}
+
+.side-menu-toggle:hover {
+  background: var(--green);
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(50, 205, 50, 0.35);
+}
+
+.side-menu.open ~ .side-menu-toggle {
+  left: 264px;
+  bottom: 20px;
+}
+
+.toggle-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.toggle-icon::before,
+.toggle-icon::after,
+.toggle-icon > span {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.side-menu.open ~ .side-menu-toggle .toggle-icon::before {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.side-menu.open ~ .side-menu-toggle .toggle-icon::after {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.side-menu.open ~ .side-menu-toggle .toggle-icon > span {
+  opacity: 0;
+}
+
+.side-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 998;
+}
+
+.side-menu.open ~ .side-menu-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  .side-menu {
+    width: 240px;
+    border-radius: 0 12px 12px 0;
+  }
+
+  .side-menu-item {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .side-menu-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .side-menu-label {
+    font-size: 0.9rem;
+  }
+
+  .profile-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .profile-name {
+    font-size: 0.95rem;
+  }
+
+  .side-menu.open ~ .side-menu-toggle {
+    left: 224px;
+  }
+}
