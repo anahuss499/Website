@@ -797,15 +797,15 @@ body.urdu-mode .social-card h2{
 /* Animated Side Menu Styles */
 .side-menu {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
   width: 280px;
   height: 100vh;
   background: #ffffff;
-  border-radius: 0 16px 16px 0;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 16px 0 0 16px;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
   z-index: 999;
-  transform: translateX(-100%);
+  transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   overflow-y: auto;
   padding-bottom: 60px;
@@ -813,7 +813,7 @@ body.urdu-mode .social-card h2{
 
 .side-menu.open {
   transform: translateX(0);
-  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.2);
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.2);
 }
 
 .side-menu-content {
@@ -891,7 +891,7 @@ body.urdu-mode .social-card h2{
 
 .side-menu-toggle {
   position: fixed;
-  left: 16px;
+  right: 16px;
   bottom: 20px;
   width: 50px;
   height: 50px;
@@ -916,7 +916,7 @@ body.urdu-mode .social-card h2{
 }
 
 .side-menu.open ~ .side-menu-toggle {
-  left: 264px;
+  right: 296px;
   bottom: 20px;
   background: linear-gradient(135deg, var(--green), #28a428);
   border-color: #28a428;
@@ -1000,6 +1000,6 @@ body.urdu-mode .social-card h2{
   }
 
   .side-menu.open ~ .side-menu-toggle {
-    left: 224px;
+    right: 256px;
   }
 }

@@ -306,12 +306,12 @@ function initSideMenu() {
     const swipeDistance = touchStartX - touchEndX;
     const minSwipeDistance = 50; // Minimum swipe distance in pixels
 
-    // Swipe from right to left (open menu)
-    if (swipeDistance > minSwipeDistance) {
+    // Swipe from left to right (open menu)
+    if (swipeDistance < -minSwipeDistance) {
       sideMenu.classList.add('open');
     }
-    // Swipe from left to right (close menu)
-    else if (swipeDistance < -minSwipeDistance) {
+    // Swipe from right to left (close menu)
+    else if (swipeDistance > minSwipeDistance) {
       sideMenu.classList.remove('open');
     }
   }
