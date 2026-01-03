@@ -289,6 +289,33 @@ function initSideMenu() {
     }
   });
 
+  // Swipe to open/close menu
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, false);
+
+  document.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, false);
+
+  function handleSwipe() {
+    const swipeDistance = touchStartX - touchEndX;
+    const minSwipeDistance = 50; // Minimum swipe distance in pixels
+
+    // Swipe from right to left (open menu)
+    if (swipeDistance > minSwipeDistance) {
+      sideMenu.classList.add('open');
+    }
+    // Swipe from left to right (close menu)
+    else if (swipeDistance < -minSwipeDistance) {
+      sideMenu.classList.remove('open');
+    }
+  }
+
   // Set active menu item based on current page
   const currentPath = window.location.pathname;
   sideMenuItems.forEach((item) => {
