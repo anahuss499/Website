@@ -1,5 +1,12 @@
-// Splash Screen Management
+// Splash Screen Management - Only for installed app (standalone mode)
 function hideSplashScreen() {
+  // Check if running in standalone mode (installed app)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                       window.navigator.standalone === true ||
+                       document.referrer.includes('android-app://');
+  
+  if (!isStandalone) return; // Don't show splash on website
+  
   const splashScreen = document.getElementById('splash-screen');
   if (splashScreen) {
     splashScreen.classList.add('hide');
