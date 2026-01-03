@@ -55,10 +55,17 @@
     btn.setAttribute('aria-expanded', String(open));
     if(open) body.classList.add('nav-open'); else body.classList.remove('nav-open');
   }
+  function closeSideMenuIfOpen(){
+    const sideMenu = document.getElementById('side-menu');
+    if(sideMenu && sideMenu.classList.contains('open')){
+      sideMenu.classList.remove('open');
+    }
+  }
   toggle.forEach(btn=>{
     btn.addEventListener('click', (e)=>{
       e.stopPropagation();
       e.preventDefault();
+      closeSideMenuIfOpen();
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       setOpen(btn, !expanded);
     });
@@ -73,9 +80,12 @@
 
   // close nav on escape
   document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape' && body.classList.contains('nav-open')){
-      body.classList.remove('nav-open');
-      document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));
+    if(e.key === 'Escape'){
+      if(body.classList.contains('nav-open')){
+        body.classList.remove('nav-open');
+        document.querySelectorAll('.nav-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));
+      }
+      closeSideMenuIfOpen();
     }
   });
   // close nav on resize > breakpoint
