@@ -1,3 +1,26 @@
+// Splash Screen Management
+function hideSplashScreen() {
+  const splashScreen = document.getElementById('splash-screen');
+  if (splashScreen) {
+    splashScreen.classList.add('hide');
+    // Remove splash screen after fade out
+    setTimeout(() => {
+      splashScreen.remove();
+    }, 600);
+  }
+}
+
+// Hide splash screen when page is fully loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit to show splash screen, then hide it
+    setTimeout(hideSplashScreen, 800);
+  });
+} else {
+  // Page already loaded
+  setTimeout(hideSplashScreen, 800);
+}
+
 // main.js - handles clock, prayer times, and next-prayer countdown
 const PK_TZ = 'Asia/Karachi';
 const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758; // Gujrat, Fatehpur, Pakistan
