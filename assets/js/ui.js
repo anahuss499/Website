@@ -56,7 +56,9 @@
     if(open) body.classList.add('nav-open'); else body.classList.remove('nav-open');
   }
   toggle.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      e.preventDefault();
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       setOpen(btn, !expanded);
     });

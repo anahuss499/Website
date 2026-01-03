@@ -259,14 +259,24 @@ function initSideMenu() {
   const sideMenuToggle = document.getElementById('side-menu-toggle');
   const sideMenuOverlay = document.getElementById('side-menu-overlay');
   const sideMenuItems = document.querySelectorAll('.side-menu-item');
+  const body = document.body;
 
   if (!sideMenu || !sideMenuToggle) return;
 
-  // Toggle menu on button click
+  // Toggle menu on button click - only open side menu, close any nav menu
   sideMenuToggle.addEventListener('click', (e) => {
     e.stopPropagation();
+    e.preventDefault();
+    
+    // Close main nav if it's open
+    if (body.classList.contains('nav-open')) {
+      body.classList.remove('nav-open');
+      document.querySelectorAll('.nav-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    }
+    
+    // Toggle side menu
     sideMenu.classList.toggle('open');
-  });
+  }, { capture: true });
 
   // Close menu on overlay click
   if (sideMenuOverlay) {
