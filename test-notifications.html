@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Notifications - Mahmood Masjid</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .test-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f9f7f2;
+      border-radius: 12px;
+    }
+    .test-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      border-left: 4px solid #32cd32;
+    }
+    .test-section h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    .status {
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-weight: 500;
+    }
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+    button {
+      background: #32cd32;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #28a428;
+    }
+    .log-box {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .log-entry {
+      padding: 2px 0;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <h1>📢 Notification Testing</h1>
+    
+    <div class="test-section">
+      <h3>1. Permission Status</h3>
+      <div id="permission-status" class="status info">Checking...</div>
+      <button onclick="checkPermission()">Check Permission</button>
+      <button onclick="requestPermission()">Request Permission</button>
+    </div>
+
+    <div class="test-section">
+      <h3>2. Service Worker Status</h3>
+      <div id="sw-status" class="status info">Checking...</div>
+      <button onclick="checkServiceWorker()">Check Service Worker</button>
+    </div>
+
+    <div class="test-section">
+      <h3>3. Send Test Notifications</h3>
+      <button onclick="testNotification()">Test Notification (Immediate)</button>
+      <button onclick="testQuranNotif()">Test Quran Notification</button>
+      <button onclick="testPrayerNotif()">Test Prayer Notification</button>
+      <button onclick="testDuroodNotif()">Test Durood Notification</button>
+      <div id="test-result" style="margin-top: 10px;"></div>
+    </div>
+
+    <div class="test-section">
+      <h3>4. Schedule Notifications</h3>
+      <p>Schedule notifications for specific times:</p>
+      <input type="time" id="notif-time" value="14:30">
+      <button onclick="scheduleTestNotification()">Schedule Notification</button>
+      <div id="schedule-result" style="margin-top: 10px;"></div>
+    </div>
+
+    <div class="test-section">
+      <h3>5. Debug Logs</h3>
+      <button onclick="clearLogs()">Clear Logs</button>
+      <div class="log-box" id="log-box"></div>
+    </div>
+  </div>
+
+  <script>
+    // Override console to capture logs
+    const logBox = document.getElementById('log-box');
+    const originalLog = console.log;
+    const originalError = console.error;
+
+    console.log = function(...args) {
+      originalLog.apply(console, args);
+      const message = args.map(arg => {
+        if (typeof arg === 'object') {
+          try { return JSON.stringify(arg, null, 2); } catch(e) { return String(arg); }
+        }
+        return String(arg);
+      }).join(' ');
+      addLog(message);
+    };
+
+    console.error = function(...args) {
+      originalError.apply(console, args);
+      const message = 'ERROR: ' + args.map(arg => {
+        if (typeof arg === 'object') {
+          try { return JSON.stringify(arg, null, 2); } catch(e) { return String(arg); }
+        }
+        return String(arg);
+      }).join(' ');
+      addLog(message, 'error');
+    };
+
+    function addLog(message, type = 'log') {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      const time = new Date().toLocaleTimeString();
+      entry.textContent = `[${time}] ${message}`;
+      if (type === 'error') entry.style.color = 'red';
+      logBox.appendChild(entry);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function clearLogs() {
+      logBox.innerHTML = '';
+    }
+
+    function checkPermission() {
+      if (!('Notification' in window)) {
+        showStatus('permission-status', 'Notifications not supported in this browser', 'error');
+        return;
+      }
+
+      const permission = Notification.permission;
+      const status = {
+        'granted': 'Notifications are ENABLED ✓',
+        'denied': 'Notifications are BLOCKED ✗',
+        'default': 'Notifications not yet requested'
+      };
+
+      showStatus('permission-status', status[permission] || 'Unknown status', 
+        permission === 'granted' ? 'success' : permission === 'denied' ? 'error' : 'info');
+      console.log('Notification.permission:', permission);
+    }
+
+    function requestPermission() {
+      if (!('Notification' in window)) {
+        showStatus('permission-status', 'Notifications not supported', 'error');
+        return;
+      }
+
+      console.log('Requesting notification permission...');
+      Notification.requestPermission().then(permission => {
+        console.log('Permission granted:', permission);
+        checkPermission();
+      });
+    }
+
+    function checkServiceWorker() {
+      if (!('serviceWorker' in navigator)) {
+        showStatus('sw-status', 'Service Workers not supported', 'error');
+        return;
+      }
+
+      console.log('Checking service worker...');
+      navigator.serviceWorker.getRegistration().then(registration => {
+        if (registration) {
+          showStatus('sw-status', 'Service Worker registered ✓ (v8)', 'success');
+          console.log('Service Worker registered:', registration);
+        } else {
+          showStatus('sw-status', 'Service Worker not found - registering...', 'info');
+          navigator.serviceWorker.register('/service-worker.js').then(reg => {
+            console.log('Service Worker registered:', reg);
+            showStatus('sw-status', 'Service Worker registered ✓', 'success');
+          }).catch(err => {
+            console.error('Service Worker registration failed:', err);
+            showStatus('sw-status', 'Service Worker registration failed: ' + err.message, 'error');
+          });
+        }
+      }).catch(err => {
+        console.error('Error checking service worker:', err);
+        showStatus('sw-status', 'Error: ' + err.message, 'error');
+      });
+    }
+
+    function testNotification() {
+      if (Notification.permission !== 'granted') {
+        showStatus('test-result', 'Permission not granted. Request permission first.', 'error');
+        return;
+      }
+
+      navigator.serviceWorker.getRegistration().then(registration => {
+        if (!registration) {
+          showStatus('test-result', 'Service Worker not registered', 'error');
+          return;
+        }
+
+        console.log('Sending test notification...');
+        registration.showNotification('Test Notification', {
+          body: 'This is a test notification from Mahmood Masjid',
+          icon: '/assets/img/logo.png',
+          badge: '/assets/img/logo.png',
+          tag: 'test-notification',
+          requireInteraction: true
+        }).then(() => {
+          showStatus('test-result', 'Test notification sent! Check your notifications.', 'success');
+          console.log('Test notification sent successfully');
+        }).catch(err => {
+          showStatus('test-result', 'Error sending notification: ' + err.message, 'error');
+          console.error('Notification error:', err);
+        });
+      });
+    }
+
+    function testQuranNotif() {
+      if (Notification.permission !== 'granted') {
+        showStatus('test-result', 'Permission not granted', 'error');
+        return;
+      }
+
+      navigator.serviceWorker.getRegistration().then(registration => {
+        console.log('Sending Quran notification...');
+        registration.showNotification('📖 Daily Quran Reading', {
+          body: '✨ Time to read and reflect on the Quran',
+          icon: '/assets/img/logo.png',
+          badge: '/assets/img/logo.png',
+          tag: 'quran-notification',
+          requireInteraction: true
+        }).then(() => {
+          showStatus('test-result', 'Quran notification sent!', 'success');
+        }).catch(err => {
+          showStatus('test-result', 'Error: ' + err.message, 'error');
+          console.error(err);
+        });
+      });
+    }
+
+    function testPrayerNotif() {
+      if (Notification.permission !== 'granted') {
+        showStatus('test-result', 'Permission not granted', 'error');
+        return;
+      }
+
+      navigator.serviceWorker.getRegistration().then(registration => {
+        console.log('Sending Prayer notification...');
+        registration.showNotification('🕌 Fajr Prayer Time', {
+          body: 'It\'s time for Fajr prayer',
+          icon: '/assets/img/logo.png',
+          badge: '/assets/img/logo.png',
+          tag: 'prayer-notification',
+          requireInteraction: true
+        }).then(() => {
+          showStatus('test-result', 'Prayer notification sent!', 'success');
+        }).catch(err => {
+          showStatus('test-result', 'Error: ' + err.message, 'error');
+        });
+      });
+    }
+
+    function testDuroodNotif() {
+      if (Notification.permission !== 'granted') {
+        showStatus('test-result', 'Permission not granted', 'error');
+        return;
+      }
+
+      navigator.serviceWorker.getRegistration().then(registration => {
+        console.log('Sending Durood notification...');
+        registration.showNotification('🤲 Durood on Prophet Muhammad', {
+          body: '✨ Send blessings upon the Prophet Muhammad',
+          icon: '/assets/img/logo.png',
+          badge: '/assets/img/logo.png',
+          tag: 'durood-notification',
+          requireInteraction: true
+        }).then(() => {
+          showStatus('test-result', 'Durood notification sent!', 'success');
+        }).catch(err => {
+          showStatus('test-result', 'Error: ' + err.message, 'error');
+        });
+      });
+    }
+
+    function scheduleTestNotification() {
+      const timeInput = document.getElementById('notif-time');
+      const time = timeInput.value;
+
+      if (!time) {
+        showStatus('schedule-result', 'Please select a time', 'error');
+        return;
+      }
+
+      if (Notification.permission !== 'granted') {
+        showStatus('schedule-result', 'Permission not granted', 'error');
+        return;
+      }
+
+      navigator.serviceWorker.getRegistration().then(registration => {
+        if (!registration) {
+          showStatus('schedule-result', 'Service Worker not registered', 'error');
+          return;
+        }
+
+        console.log(`Scheduling notification for ${time}...`);
+        registration.postMessage({
+          type: 'SCHEDULE_NOTIFICATION',
+          notifications: [{
+            title: '📢 Scheduled Test Notification',
+            body: `This notification was scheduled for ${time}`,
+            time: time
+          }]
+        });
+
+        showStatus('schedule-result', `Notification scheduled for ${time}. Check back at that time.`, 'success');
+      });
+    }
+
+    function showStatus(elementId, message, type) {
+      const element = document.getElementById(elementId);
+      element.textContent = message;
+      element.className = 'status ' + type;
+      console.log(`[${type.toUpperCase()}] ${message}`);
+    }
+
+    // Initial checks
+    window.addEventListener('load', () => {
+      console.log('=== Notification Test Page Loaded ===');
+      checkPermission();
+      checkServiceWorker();
+    });
+  </script>
+</body>
+</html>

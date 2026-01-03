@@ -560,3 +560,120 @@ body.urdu-mode .confirm-modal h2{font-family:'Jameel Noori Nastaleeq',serif;dire
   .confirm-icon{font-size:3rem}
   .confirm-yes-btn,.confirm-no-btn{padding:12px 24px;font-size:0.9rem}
 }
+
+/* Installed App (Standalone) Styles */
+@media (display-mode: standalone){
+  /* Show Social menu item in installed app */
+  .app-only-menu-item{
+    display:inline-flex !important;
+  }
+  
+  /* Hide footer social icons in installed app (moved to dedicated page) */
+  .app-footer-socials{
+    display:none !important;
+  }
+}
+
+/* Social Cards Styling */
+.social-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  gap:20px;
+  margin:20px 0;
+}
+
+.social-card{
+  background:var(--card-bg);
+  border:1px solid var(--glass-border);
+  border-radius:12px;
+  overflow:hidden;
+  transition:all 0.3s ease;
+  box-shadow:var(--elevation-2);
+}
+
+.social-card-link{
+  display:flex;
+  flex-direction:column;
+  padding:24px;
+  text-decoration:none;
+  color:inherit;
+  height:100%;
+  transition:all 0.3s ease;
+}
+
+.social-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--elevation);
+  border-color:rgba(50,205,50,0.3);
+}
+
+.social-card:hover .social-card-icon{
+  transform:scale(1.1);
+}
+
+.social-card-icon{
+  width:64px;
+  height:64px;
+  margin-bottom:16px;
+  transition:transform 0.3s ease;
+  filter:drop-shadow(0 4px 12px rgba(50,205,50,0.2));
+}
+
+.social-card h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:1.4rem;
+  margin:12px 0 8px;
+  color:var(--text);
+  letter-spacing:0.5px;
+}
+
+body.urdu-mode .social-card h2{
+  font-family:'Jameel Noori Nastaleeq',serif;
+  direction:rtl;
+  font-size:1.5rem;
+}
+
+.social-card p{
+  flex:1;
+  color:var(--muted);
+  font-size:0.95rem;
+  margin:0 0 16px;
+  line-height:1.5;
+}
+
+.social-btn{
+  display:inline-block;
+  background:linear-gradient(90deg, var(--green), rgba(50,205,50,0.85));
+  color:#fff;
+  padding:10px 16px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:0.9rem;
+  text-align:center;
+  transition:all 0.3s ease;
+  box-shadow:0 4px 12px rgba(50,205,50,0.25);
+  align-self:flex-start;
+  letter-spacing:0.3px;
+}
+
+.social-card:hover .social-btn{
+  background:linear-gradient(90deg, #28a428, rgba(40,164,40,0.85));
+  transform:translateX(2px);
+  box-shadow:0 6px 16px rgba(50,205,50,0.35);
+}
+
+@media (max-width:640px){
+  .social-cards{
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+  
+  .social-card h2{
+    font-size:1.2rem;
+  }
+  
+  .social-card-icon{
+    width:56px;
+    height:56px;
+  }
+}
