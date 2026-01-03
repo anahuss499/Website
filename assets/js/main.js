@@ -1,33 +1,3 @@
-// Splash Screen Management - Only for installed app (standalone mode)
-function hideSplashScreen() {
-  // Check if running in standalone mode (installed app)
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                       window.navigator.standalone === true ||
-                       document.referrer.includes('android-app://');
-  
-  if (!isStandalone) return; // Don't show splash on website
-  
-  const splashScreen = document.getElementById('splash-screen');
-  if (splashScreen) {
-    splashScreen.classList.add('hide');
-    // Remove splash screen after fade out
-    setTimeout(() => {
-      splashScreen.remove();
-    }, 600);
-  }
-}
-
-// Hide splash screen when page is fully loaded
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit to show splash screen, then hide it
-    setTimeout(hideSplashScreen, 800);
-  });
-} else {
-  // Page already loaded
-  setTimeout(hideSplashScreen, 800);
-}
-
 // main.js - handles clock, prayer times, and next-prayer countdown
 const PK_TZ = 'Asia/Karachi';
 const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758; // Gujrat, Fatehpur, Pakistan
