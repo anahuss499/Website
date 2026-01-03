@@ -65,9 +65,12 @@
     btn.addEventListener('click', (e)=>{
       e.stopPropagation();
       e.preventDefault();
-      closeSideMenuIfOpen();
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      setOpen(btn, !expanded);
+      // Toggle side menu instead of old dropdown
+      const sideMenu = document.getElementById('side-menu');
+      if(sideMenu){
+        sideMenu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', sideMenu.classList.contains('open'));
+      }
     });
   });
 
