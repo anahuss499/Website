@@ -289,38 +289,47 @@ function initSideMenu() {
     }
   });
 
-  // Swipe to open/close menu
+  // Swipe to open/close menu - Right-to-left opens, left-to-right closes
   let touchStartX = 0;
   let touchStartY = 0;
   let touchEndX = 0;
   let touchEndY = 0;
+  let isSwiping = false;
 
   document.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  }, false);
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isSwiping = true;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isSwiping) return;
+    touchEndX = e.touches[0].clientX;
+    touchEndY = e.touches[0].clientY;
+  }, { passive: true });
 
   document.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
+    if (!isSwiping) return;
+    isSwiping = false;
     handleSwipe();
-  }, false);
+  }, { passive: true });
 
   function handleSwipe() {
     const swipeDistanceX = touchEndX - touchStartX;
     const swipeDistanceY = Math.abs(touchEndY - touchStartY);
-    const minSwipeDistance = 50; // Minimum swipe distance in pixels
-    const screenWidth = window.innerWidth;
+    const minSwipeDistance = 80; // Minimum swipe distance in pixels
 
-    // Ignore vertical swipes
-    if (swipeDistanceY > 100) return;
+    // Ignore if mostly vertical swipe
+    if (swipeDistanceY > Math.abs(swipeDistanceX)) return;
 
-    // Open menu: swipe from right edge towards left
-    if (touchStartX > screenWidth - 50 && swipeDistanceX < -minSwipeDistance) {
+    const isMenuOpen = sideMenu.classList.contains('open');
+
+    // Swipe RIGHT to LEFT (negative distance) = OPEN menu
+    if (!isMenuOpen && swipeDistanceX < -minSwipeDistance) {
       sideMenu.classList.add('open');
     }
-    // Close menu: swipe from left towards right
-    else if (sideMenu.classList.contains('open') && swipeDistanceX > minSwipeDistance) {
+    // Swipe LEFT to RIGHT (positive distance) = CLOSE menu
+    else if (isMenuOpen && swipeDistanceX > minSwipeDistance) {
       sideMenu.classList.remove('open');
     }
   }
