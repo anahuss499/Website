@@ -109,7 +109,11 @@
   }
 
   // Open settings modal
-  function openSettings() {
+  function openSettings(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     counterNameInput.value = counterName;
     counterTargetInput.value = target;
     settingsOverlay.classList.add('active');
