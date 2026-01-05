@@ -390,22 +390,25 @@ body.urdu-mode .brand span[data-urdu]{font-family:'Jameel Noori Nastaleeq',serif
 .mosque-item{background:#fff;border-radius:10px;overflow:hidden;box-shadow:var(--elevation-2);transition:transform .18s ease,box-shadow .18s ease;border:1px solid rgba(0,0,0,0.04)}
 .mosque-item:hover{transform:translateY(-6px);box-shadow:var(--elevation)}
 .mosque-gallery{width:100%;background:linear-gradient(180deg,#f5f5f5,#fff)}
-.mosque-main-img{width:100%;height:260px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.mosque-main-img img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s ease}
-.mosque-thumbnails{display:flex;gap:8px;padding:10px;background:rgba(0,0,0,0.02);overflow-x:auto}
-.mosque-thumbnails .thumb{width:70px;height:55px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all .18s ease;flex-shrink:0}
+.mosque-main-img{width:100%;aspect-ratio:16/9;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:10px}
+.mosque-main-img img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s ease;object-position:center}
+.mosque-thumbnails{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;padding:12px;background:rgba(0,0,0,0.02);align-items:start;justify-items:center}
+.thumb-figure{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:120px;text-align:center}
+.mosque-thumbnails .thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all .18s ease;box-shadow:0 4px 14px rgba(0,0,0,0.05)}
 .mosque-thumbnails .thumb:hover{border-color:var(--green);transform:scale(1.05)}
 .mosque-thumbnails .thumb.active{border-color:var(--green);box-shadow:0 0 0 2px rgba(50,205,50,0.2)}
+.thumb-caption{font-size:0.75rem;color:var(--muted);text-align:center;line-height:1.3;min-height:1.3em}
 .mosque-info{padding:20px}
 .mosque-info h3{margin:0 0 12px;color:var(--green);font-size:1.3rem;font-family:'Orbitron',sans-serif}
 .mosque-info p{margin:0;color:var(--muted);line-height:1.6;font-size:0.95rem}
 
-/* Lightbox for image zoom */
-.lightbox{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95);align-items:center;justify-content:center;animation:fadeIn 0.3s ease}
-.lightbox-content{max-width:90%;max-height:90%;object-fit:contain;border:4px solid var(--green);border-radius:8px;box-shadow:0 0 40px rgba(50,205,50,0.4),0 0 80px rgba(50,205,50,0.2);animation:zoomIn 0.3s ease}
-.lightbox-close{position:absolute;top:30px;right:45px;color:var(--green);font-size:50px;font-weight:bold;cursor:pointer;transition:all 0.3s ease;text-shadow:2px 2px 4px rgba(0,0,0,0.8)}
+.lightbox{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95);align-items:center;justify-content:center;animation:fadeIn 0.3s ease;padding:0 80px}
+.lightbox-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;gap:16px}
+.lightbox-room-label{color:var(--green);font-size:1.1rem;font-weight:600;text-align:center;text-shadow:2px 2px 8px rgba(0,0,0,0.8);letter-spacing:0.5px;min-height:1.5em}
+.lightbox-content{max-width:100%;max-height:80vh;object-fit:contain;border:4px solid var(--green);border-radius:8px;box-shadow:0 0 40px rgba(50,205,50,0.4),0 0 80px rgba(50,205,50,0.2);animation:zoomIn 0.3s ease}
+.lightbox-close{position:absolute;top:30px;right:45px;color:var(--green);font-size:50px;font-weight:bold;cursor:pointer;transition:all 0.3s ease;text-shadow:2px 2px 4px rgba(0,0,0,0.8);z-index:10001}
 .lightbox-close:hover,.lightbox-close:focus{color:#fff;transform:scale(1.1)}
-.lightbox-prev,.lightbox-next{position:absolute;top:50%;transform:translateY(-50%);color:var(--green);font-size:60px;font-weight:bold;cursor:pointer;padding:20px;user-select:none;transition:all 0.3s ease;text-shadow:2px 2px 8px rgba(0,0,0,0.8);background:rgba(0,0,0,0.3);border-radius:4px}
+.lightbox-prev,.lightbox-next{position:fixed;top:50%;transform:translateY(-50%);color:var(--green);font-size:60px;font-weight:bold;cursor:pointer;padding:20px;user-select:none;transition:all 0.3s ease;text-shadow:2px 2px 8px rgba(0,0,0,0.8);background:rgba(0,0,0,0.3);border-radius:4px;z-index:10000}
 .lightbox-prev{left:20px}
 .lightbox-next{right:20px}
 .lightbox-prev:hover,.lightbox-next:hover{color:#fff;background:rgba(50,205,50,0.2);transform:translateY(-50%) scale(1.15)}
@@ -416,11 +419,13 @@ body.urdu-mode .brand span[data-urdu]{font-family:'Jameel Noori Nastaleeq',serif
 @media (max-width:768px){
   .mosque-grid{grid-template-columns:1fr;gap:18px}
   .mosque-comparison{padding:20px}
-  .mosque-main-img{height:220px}
-  .mosque-thumbnails .thumb{width:60px;height:45px}
+  .mosque-main-img{aspect-ratio:16/9}
+  .thumb-figure{min-width:100px}
+  .mosque-thumbnails .thumb{aspect-ratio:16/9}
+  .lightbox{padding:0 60px}
   .lightbox-prev,.lightbox-next{font-size:40px;padding:12px}
-  .lightbox-prev{left:10px}
-  .lightbox-next{right:10px}
+  .lightbox-prev{left:0}
+  .lightbox-next{right:0}
   .lightbox-close{top:15px;right:20px;font-size:40px}
 }
 
