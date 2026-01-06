@@ -68,6 +68,7 @@ function getPrayerNames() {
   }
 }
 
+
 // Fetch prayer times from API
 async function fetchPrayerTimes() {
   const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758;
