@@ -2,6 +2,10 @@
 const PK_TZ = 'Asia/Karachi';
 const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758; // Gujrat, Fatehpur, Pakistan
 const JUMMAH_TIME = '14:00'; // Fixed Jummah time (2:00 PM) for Fridays
+// Globals for Jummah auto-toggle window
+let gMaghribToday = null;
+let gIsThursday = false;
+let gIsFriday = false;
 
 function buildPkDate(base, year, month, day, timeStr){
   const [hh, mm] = timeStr.split(' ')[0].split(':').map(Number);
@@ -27,6 +31,15 @@ function updateJummahBanner(show){
   const banner = document.getElementById('jummah-banner');
   if(!banner) return;
   banner.style.display = show ? '' : 'none';
+}
+
+// Re-evaluate Jummah visibility periodically so it flips exactly at Maghrib
+function reevaluateJummah(){
+  if(!gMaghribToday) return;
+  const pkNowStr = new Date().toLocaleString('en-US',{timeZone:PK_TZ});
+  const pkNow = new Date(pkNowStr);
+  const show = shouldShowJummah(pkNow, gMaghribToday, gIsThursday, gIsFriday);
+  updateJummahBanner(show);
 }
 
 function initJummahDownload(){
@@ -114,6 +127,8 @@ async function fetchPrayerTimes(){
     const weekdayEn = data.data.date.gregorian.weekday.en;
     const isFriday = weekdayEn === 'Friday';
     const isThursday = weekdayEn === 'Thursday';
+    gIsFriday = isFriday;
+    gIsThursday = isThursday;
 
     // Base prayers from API
     const mapping = ['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'];
@@ -130,6 +145,7 @@ async function fetchPrayerTimes(){
     const pkNow = new Date(pkNowStr);
     const [day, month, year] = data.data.date.gregorian.date.split('-').map(Number); // dd-mm-yyyy
     const maghribToday = buildPkDate(pkNow, year, month, day, timings['Maghrib']);
+    gMaghribToday = maghribToday;
     const showJummah = shouldShowJummah(pkNow, maghribToday, isThursday, isFriday);
     updateJummahBanner(showJummah);
 
@@ -247,6 +263,8 @@ updateLocalTime(); setInterval(updateLocalTime,1000);
 fetchPrayerTimes(); scheduleDailyRefresh();
 // update prayer times hourly as a fallback
 setInterval(fetchPrayerTimes,1000*60*60);
+// ensure Jummah window flips exactly at Maghrib without waiting for hourly refresh
+setInterval(reevaluateJummah, 60*1000);
 
 // set current year
 document.getElementById('current-year').textContent = new Date().getFullYear();
