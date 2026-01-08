@@ -76,4 +76,28 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Fajr Namaz Time Pakistan 2026 (SEO landing) -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/fajr-namaz-time-pakistan-2026/</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Pakistan Prayer Timings 2026 (SEO landing) -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/pakistan-prayer-timings-2026/</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Mosque Near Me (SEO landing) -->
+  <url>
+    <loc>https://www.mahmoodmasjid.com/mosque-near-me/</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
