@@ -81,6 +81,10 @@ function updateJummahLanguage(){
   const connectUrdu = document.getElementById('jummah-connect-urdu');
   const donateLabelEn = document.getElementById('jummah-donate-label-en');
   const donateLabelUrdu = document.getElementById('jummah-donate-label-urdu');
+  const reminderEn = document.getElementById('jummah-reminder-en');
+  const reminderUrdu = document.getElementById('jummah-reminder-urdu');
+  const cardReminderEn = document.getElementById('jummah-card-reminder-en');
+  const cardReminderUrdu = document.getElementById('jummah-card-reminder-urdu');
   
   if(msgEn) msgEn.style.display = isUrdu ? 'none' : '';
   if(msgUrdu) msgUrdu.style.display = isUrdu ? '' : 'none';
@@ -96,6 +100,10 @@ function updateJummahLanguage(){
   if(connectUrdu) connectUrdu.style.display = isUrdu ? '' : 'none';
   if(donateLabelEn) donateLabelEn.style.display = isUrdu ? 'none' : '';
   if(donateLabelUrdu) donateLabelUrdu.style.display = isUrdu ? '' : 'none';
+  if(reminderEn) reminderEn.style.display = isUrdu ? 'none' : '';
+  if(reminderUrdu) reminderUrdu.style.display = isUrdu ? '' : 'none';
+  if(cardReminderEn) cardReminderEn.style.display = isUrdu ? 'none' : '';
+  if(cardReminderUrdu) cardReminderUrdu.style.display = isUrdu ? '' : 'none';
 }
 
 // Make nextPrayer globally accessible
