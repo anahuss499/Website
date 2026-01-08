@@ -324,6 +324,22 @@ h1, h2, h3{font-family:'Orbitron',sans-serif;color:var(--text);letter-spacing:0.
 .surah-title{text-align:center;margin:0 0 20px;font-size:1.6rem;color:var(--text);padding-bottom:12px;border-bottom:2px solid rgba(50,205,50,0.2)}
 .surah-title small{color:var(--muted);font-size:0.9rem;display:block;margin-top:6px} 
 
+/* Audio player styles for Quran recitation */
+.audio-player-container{background:linear-gradient(135deg, rgba(50,205,50,0.08), rgba(50,205,50,0.03));border:2px solid rgba(50,205,50,0.2);border-radius:12px;padding:20px;margin:20px 0;text-align:center}
+.audio-player-header{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;color:var(--text)}
+.audio-player-header .audio-icon{width:24px;height:24px;color:var(--green)}
+.audio-player-title{font-size:1.1rem;font-weight:600;color:var(--green)}
+.audio-player-container audio{border-radius:8px;background:rgba(255,255,255,0.5);outline:none}
+.audio-player-container audio::-webkit-media-controls-panel{background:rgba(50,205,50,0.1)}
+.download-audio{background:var(--green);color:white;border:none;padding:12px 24px;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s ease;display:inline-flex;align-items:center;justify-content:center;margin-top:10px}
+.download-audio:hover{background:#28a428;transform:translateY(-2px);box-shadow:0 4px 12px rgba(50,205,50,0.3)}
+.download-audio:active{transform:translateY(0)}
+@media (max-width:640px){
+  .audio-player-container{padding:15px}
+  .audio-player-title{font-size:0.95rem}
+  .download-audio{padding:10px 20px;font-size:0.9rem}
+}
+
 /* (Removed mushaf image/Archive viewer styles) */
 
 /* About page modern layout */

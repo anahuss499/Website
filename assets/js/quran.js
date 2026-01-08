@@ -322,6 +322,29 @@ async function loadSurah(number){
       const ayahs = indo[number];
       const titleName = meta.name || `Surah ${number}`;
       html += `<h2 class="surah-title">${titleName} <small>(${ayahs.length} ayahs)</small></h2>`;
+      
+      // Add audio player for Surah Yasin (36) - Qari Abdul Basit
+      if(number === 36){
+        html += `<div class="audio-player-container">
+          <div class="audio-player-header">
+            <svg class="audio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18V5l12-2v13M9 18c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm12-3c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
+            </svg>
+            <span class="audio-player-title">Recitation by Qari Abdul Basit</span>
+          </div>
+          <audio id="yasin-audio" controls preload="metadata" style="width: 100%; margin: 10px 0;">
+            <source src="assets/img/Surah-Yaseen-Tilawat-Beautiful-Quran-Recitation-by-Qari-Abdul-Basit-Full-HD-128.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+          <button class="btn download-audio" onclick="downloadYasinAudio()" style="margin-top: 10px;">
+            <svg style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            Download Audio
+          </button>
+        </div>`;
+      }
+      
       // Visual Bismillah for surahs except 9
       if(number !== 9){ html += '<div class="bismillah">بسم الله الرحمن الرحيم</div>'; }
       html += '<div class="ayahs">';
@@ -359,6 +382,29 @@ async function loadSurah(number){
       title = `${meta.urdu} — ${data.name}`;
     }
     html += `<h2 class="surah-title">${title} <small>(${data.numberOfAyahs} ayahs)</small></h2>`;
+    
+    // Add audio player for Surah Yasin (36) - Qari Abdul Basit
+    if(number === 36){
+      html += `<div class="audio-player-container">
+        <div class="audio-player-header">
+          <svg class="audio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18V5l12-2v13M9 18c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm12-3c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
+          </svg>
+          <span class="audio-player-title">Recitation by Qari Abdul Basit</span>
+        </div>
+        <audio id="yasin-audio" controls preload="metadata" style="width: 100%; margin: 10px 0;">
+          <source src="assets/img/Surah-Yaseen-Tilawat-Beautiful-Quran-Recitation-by-Qari-Abdul-Basit-Full-HD-128.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        <button class="btn download-audio" onclick="downloadYasinAudio()" style="margin-top: 10px;">
+          <svg style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Download Audio
+        </button>
+      </div>`;
+    }
+    
     const hasBismillah = data.number !== 9;
     if(hasBismillah){ html += '<div class="bismillah">بسم الله الرحمن الرحيم</div>'; }
     html += '<div class="ayahs">';
@@ -454,6 +500,17 @@ function setStatus(msg, type='info', autoHideMs){
   }
 }
 function clearStatus(){ if(!statusEl) return; statusEl.hidden = true; statusEl.textContent = ''; statusEl.classList.remove('is-loading','is-error'); }
+
+// Download audio function for Surah Yasin
+function downloadYasinAudio(){
+  const audioUrl = 'assets/img/Surah-Yaseen-Tilawat-Beautiful-Quran-Recitation-by-Qari-Abdul-Basit-Full-HD-128.mp3';
+  const link = document.createElement('a');
+  link.href = audioUrl;
+  link.download = 'Surah-Yasin-Abdul-Basit.mp3';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 // Tajweed toggle removed; no persistence needed
 
