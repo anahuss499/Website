@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#32cd32">
+  <title>Mosque Near Me — Find the Nearest Masjid</title>
+
+  <meta name="description" content="Find a mosque near you instantly. Allow location to see nearby masjids and open directions in Google Maps.">
+  <meta name="keywords" content="mosque near me, masjid near me, nearest mosque, Islamic center near me">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.mahmoodmasjid.com/mosque-near-me/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.mahmoodmasjid.com/mosque-near-me/">
+  <meta property="og:title" content="Mosque Near Me — Find the Nearest Masjid">
+  <meta property="og:description" content="Allow location to discover mosques near you and get directions.">
+  <meta property="og:image" content="https://www.mahmoodmasjid.com/assets/img/logo.png">
+  <meta property="og:site_name" content="Mahmood Masjid">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://www.mahmoodmasjid.com/mosque-near-me/">
+  <meta name="twitter:title" content="Mosque Near Me — Find the Nearest Masjid">
+  <meta name="twitter:description" content="One-tap to open nearby mosques in Google Maps.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Mosque Near Me",
+    "description": "Find mosques near your current location and open directions.",
+    "url": "https://www.mahmoodmasjid.com/mosque-near-me/"
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <style>.mini-map{height:55vh;border-radius:10px;border:0;width:100%;background:#f7f7f7;display:none}</style>
+</head>
+<body>
+  <!-- Language Selection Modal -->
+  <div class="lang-modal-overlay" id="lang-modal-overlay">
+    <div class="lang-modal" role="dialog" aria-modal="true" aria-labelledby="lang-modal-title">
+      <h2 id="lang-modal-title">Welcome to Mahmood Masjid</h2>
+      <p>Please select your preferred language</p>
+      <p class="lang-modal-urdu">براہ کرم اپنی پسندیدہ زبان منتخب کریں</p>
+      <div class="lang-buttons">
+        <button class="lang-btn" data-lang="en"><span class="lang-btn-text">EN</span></button>
+        <button class="lang-btn" data-lang="urdu"><span class="lang-btn-text">اردو</span></button>
+      </div>
+    </div>
+  </div>
+  <aside class="side-menu" id="side-menu">
+    <div class="side-menu-content">
+      <nav class="side-menu-nav">
+        <a href="/" class="side-menu-item"><span class="side-menu-label">Home</span></a>
+        <a href="/map.html" class="side-menu-item"><span class="side-menu-label">Our Mosque</span></a>
+        <a href="/prayer-calendar.html" class="side-menu-item"><span class="side-menu-label">Prayer Calendar</span></a>
+      </nav>
+    </div>
+    <button class="side-menu-toggle" id="side-menu-toggle" aria-label="Toggle side menu"><span class="toggle-icon"></span></button>
+  </aside>
+  <div class="side-menu-overlay" id="side-menu-overlay"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/"><img class="brand-logo" src="/assets/img/logo.png" alt="Mahmood Masjid logo"> <span>Mahmood Masjid</span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">
+          <svg class="lang-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="lang-text">EN</span>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-label="Open navigation"><span class="hamburger"></span></button>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/map.html">Our Mosque</a>
+          <a href="/prayer-calendar.html">Prayer Calendar</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1 data-en="Mosque Near Me" data-urdu="میرے قریب مسجد">Mosque Near Me</h1>
+      <p data-en="Allow location to quickly see mosques around you. We open the best available results in Google Maps so you can navigate instantly." data-urdu="قریب کی مساجد دیکھنے کے لیے مقام کی اجازت دیں۔ ہم گوگل میپس میں بہترین نتائج کھولتے ہیں تاکہ آپ فوراً راستہ اختیار کر سکیں۔">Allow location to quickly see mosques around you. We open the best available results in Google Maps so you can navigate instantly.</p>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+        <button id="find-btn" class="btn" data-en="Find Mosques Near Me" data-urdu="میرے قریب مساجد تلاش کریں">Find Mosques Near Me</button>
+        <a id="fallback-link" class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=mosque+near+me" target="_blank" rel="noopener" data-en="Open Google Maps" data-urdu="گوگل میپس کھولیں">Open Google Maps</a>
+      </div>
+
+      <div id="status" style="margin-top:12px;color:#333"></div>
+      <iframe id="map" class="mini-map" loading="lazy"></iframe>
+
+      <div class="card" style="margin-top:14px">
+        <h2 data-en="Tips" data-urdu="ہدایات">Tips</h2>
+        <ul>
+          <li><strong data-en="Allow location:" data-urdu="مقام کی اجازت دیں:">Allow location:</strong> <span data-en="Your browser will ask for permission. We only use it to open a nearby search." data-urdu="آپ کا براؤزر اجازت مانگے گا۔ ہم صرف قریب کی تلاش کھولنے کے لیے مقام استعمال کرتے ہیں۔">Your browser will ask for permission. We only use it to open a nearby search.</span></li>
+          <li><strong data-en="Filters:" data-urdu="فلٹرز:">Filters:</strong> <span data-en="In Google Maps, filter by rating or distance to find the best option quickly." data-urdu="گوگل میپس میں ریٹنگ یا فاصلے کے لحاظ سے فلٹر کریں تاکہ بہترین آپشن فوراً مل جائے۔">In Google Maps, filter by rating or distance to find the best option quickly.</span></li>
+          <li><strong data-en="Alternative apps:" data-urdu="متبادل ایپس:">Alternative apps:</strong> <span data-en="Apple Maps or other map apps work too — search for “mosque”." data-urdu="ایپل میپس یا دیگر نقشہ ایپس بھی کارآمد ہیں — 'mosque' تلاش کریں۔">Apple Maps or other map apps work too — search for “mosque”.</span></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <small>© <span id="current-year"></span> Mahmood Masjid — Mahmood Abad, Gujrat, Punjab, Pakistan</small>
+    </div>
+  </footer>
+
+  <script>
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+  const statusEl = document.getElementById('status');
+  const mapEl = document.getElementById('map');
+
+  function openMaps(lat,lon){
+    const url = `https://www.google.com/maps/search/?api=1&query=mosque&query_place_id=&center=${lat},${lon}`;
+    // Show inline view as well
+    mapEl.src = `https://maps.google.com/maps?q=mosque&t=&z=14&ie=UTF8&iwloc=&output=embed&ll=${lat},${lon}`;
+    mapEl.style.display = 'block';
+    window.open(url,'_blank','noopener');
+  }
+
+  document.getElementById('find-btn').addEventListener('click',()=>{
+    statusEl.textContent = 'Locating…';
+    if(!navigator.geolocation){
+      statusEl.textContent = 'Geolocation is not supported on this device. Use the Google Maps button above.';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const {latitude, longitude} = pos.coords;
+      statusEl.textContent = `Found your location. Showing mosques near you…`;
+      openMaps(latitude, longitude);
+    }, err=>{
+      statusEl.textContent = 'Location permission denied. Use the Google Maps button to search manually.';
+    },{enableHighAccuracy:true,timeout:10000,maximumAge:0});
+  });
+  </script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/pwa.js"></script>
+</body>
+</html>
