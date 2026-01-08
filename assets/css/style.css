@@ -202,11 +202,12 @@ a.btn, .main-nav .nav-links a{min-height:40px;display:inline-flex;align-items:ce
 }
 
 .surah-list{min-width:260px;max-height:60vh;overflow:auto;padding-right:8px}
-.surah-item{padding:6px;border-radius:6px;cursor:pointer;transition:all .15s ease;border-left:2px solid transparent}
+.surah-item{padding:6px;border-radius:6px;cursor:pointer;transition:all .15s ease;border-left:2px solid transparent;margin-bottom:8px}
 .surah-item:hover{background:rgba(50,205,50,0.08);border-left-color:var(--green)}
-.surah-item.active{background:linear-gradient(90deg,rgba(50,205,50,0.12), rgba(50,205,50,0.04));border-left-color:var(--green);font-weight:600}
+.surah-item.active{background:linear-gradient(90deg,rgba(50,205,50,0.12), rgba(50,205,50,0.04));border-left-color:var(--green);font-weight:600;padding:4px 6px}
+.surah-item.active::after{display:none}
 .surah-item .idx{font-weight:700;margin-right:6px;color:var(--green)}
-.surah-item::after{content:'';display:block;height:1px;margin:6px 0 0;background:linear-gradient(90deg,transparent,rgba(50,205,50,0.28),transparent)}
+.surah-item::after{display:none}
 .surah-item:last-child::after{display:none}
 .surah-item .surah-meta{display:flex;flex-direction:column;gap:2px}
 .surah-item .surah-meta .name-line{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--text)}
@@ -327,6 +328,7 @@ h1, h2, h3{font-family:'Orbitron',sans-serif;color:var(--text);letter-spacing:0.
 /* Audio player styles for Quran recitation */
 .audio-player-container{background:linear-gradient(135deg, rgba(50,205,50,0.08), rgba(50,205,50,0.03));border:2px solid rgba(50,205,50,0.2);border-radius:12px;padding:20px;margin:20px 0;text-align:center}
 .audio-player-header{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;color:var(--text)}
+.reciter-avatar{width:28px;height:28px;border-radius:50%;border:2px solid rgba(50,205,50,0.5);box-shadow:0 4px 10px rgba(50,205,50,0.2);object-fit:cover}
 .audio-player-header .audio-icon{width:24px;height:24px;color:var(--green)}
 .audio-player-title{font-size:1.1rem;font-weight:600;color:var(--green)}
 .audio-player-container audio{border-radius:8px;background:rgba(255,255,255,0.5);outline:none}

@@ -330,6 +330,7 @@ async function loadSurah(number){
             <svg class="audio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M9 18V5l12-2v13M9 18c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm12-3c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
             </svg>
+            <img class="reciter-avatar" src="assets/img/qari-abdul-basit.svg" alt="Qari Abdul Basit"/>
             <span class="audio-player-title">Recitation by Qari Abdul Basit</span>
           </div>
           <audio id="yasin-audio" controls preload="metadata" style="width: 100%; margin: 10px 0;">
@@ -388,8 +389,9 @@ async function loadSurah(number){
       html += `<div class="audio-player-container">
         <div class="audio-player-header">
           <svg class="audio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18V5l12-2v13M9 18c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm12-3c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
+            <path d="M9 18V5l12-2v13M9 18c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
           </svg>
+          <img class="reciter-avatar" src="assets/img/qari-abdul-basit.svg" alt="Qari Abdul Basit"/>
           <span class="audio-player-title">Recitation by Qari Abdul Basit</span>
         </div>
         <audio id="yasin-audio" controls preload="metadata" style="width: 100%; margin: 10px 0;">
