@@ -1,7 +1,7 @@
 /* Theme: user requested colors — updated with sharp UI tokens */
 :root{
   --green:#32cd32; /* accent */
-  --bg:#f5f5f5; /* page background */
+  --bg:#ffffff; /* page background */
   --text:#000000; /* primary text color */
   --muted:#6b6b6b;
   --card-bg: #ffffff;
@@ -15,7 +15,7 @@
  
 *{box-sizing:border-box}
 html,body{height:100%}
-body{font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--text); background: linear-gradient(180deg,var(--bg), #ffffff); -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+body{font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--text); background: #ffffff; -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 .container{max-width:var(--max-width);margin:0 auto;padding:28px}
 .site-header{background:transparent;backdrop-filter: blur(6px);border-bottom:1px solid var(--glass-border);position:sticky;top:0;z-index:60}
  
