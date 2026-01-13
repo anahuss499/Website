@@ -18,7 +18,7 @@ const URLS_TO_CACHE = [
   '/assets/js/counter.js',
   '/assets/js/quran.js',
   '/manifest.json',
-  '/assets/img/logo.png'
+  '/assets/img/logo.png?v=2'
 ];
 
 // Install event - cache essential files
