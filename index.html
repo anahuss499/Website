@@ -72,19 +72,20 @@
   <meta name="ICBM" content="32.5847, 74.0758">
   
   <!-- Fonts: Orbitron for headings, Inter for UI, Noto Naskh Arabic for Arabic text, Jameel Noori Nastaleeq for Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/assets/img/logo.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="assets/css/style.css"></noscript>
+  <!-- Favicon/icon links unified to existing logo asset -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo.png">
+  <link rel="apple-touch-icon" href="/assets/img/logo.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Mahmood Masjid">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
   <!-- Structured Data (Schema.org) for Search Engines -->
   <script type="application/ld+json">
@@ -358,8 +359,8 @@
     </footer>
   </main>
 
-  <script src="assets/js/main.js?v=9"></script>
-  <script src="assets/js/ui.js"></script>
-  <script src="assets/js/pwa.js"></script>
+  <script defer src="assets/js/main.js?v=9"></script>
+  <script defer src="assets/js/ui.js"></script>
+  <script defer src="assets/js/pwa.js"></script>
 </body>
 </html>

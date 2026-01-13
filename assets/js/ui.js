@@ -5,6 +5,25 @@
   // compact menu removed
   const breakpoint = 800;
   
+  // Lightweight perf tweaks: lazy-load images, async decode
+  function optimizeMedia(){
+    try{
+      document.querySelectorAll('img').forEach(img=>{
+        if(!img.classList.contains('brand-logo')){
+          if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+        }else{
+          img.setAttribute('loading','eager');
+          img.setAttribute('fetchpriority','high');
+          img.setAttribute('decoding','async');
+        }
+        if(!img.hasAttribute('decoding')) img.setAttribute('decoding','async');
+      });
+      document.querySelectorAll('iframe').forEach(f=>{
+        if(!f.hasAttribute('loading')) f.setAttribute('loading','lazy');
+      });
+    }catch(e){}
+  }
+  
   // Language selection modal on first visit
   function initLanguageModal(){
     const langModalOverlay = document.getElementById('lang-modal-overlay');
@@ -46,9 +65,10 @@
   
   // Initialize on page load
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', initLanguageModal);
+    document.addEventListener('DOMContentLoaded', ()=>{ initLanguageModal(); optimizeMedia(); });
   } else {
     initLanguageModal();
+    optimizeMedia();
   }
   
   function setOpen(btn, open){
