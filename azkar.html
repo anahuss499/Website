@@ -27,13 +27,13 @@
   <meta name="twitter:title" content="Azkar & Duas — Mahmood Masjid">
   <meta name="twitter:description" content="Daily Islamic supplications and Quranic duas.">
   
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Jameel+Noori+Nastaleeq&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/assets/img/logo.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo.png">
+  <link rel="preload" href="assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="assets/css/style.css"></noscript>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo.png">
   <link rel="apple-touch-icon" href="/assets/img/logo.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -335,8 +335,8 @@
     </div>
   </footer>
   <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/ui.js"></script>
-  <script src="assets/js/pwa.js"></script>
+  <script defer src="assets/js/main.js"></script>
+  <script defer src="assets/js/ui.js"></script>
+  <script defer src="assets/js/pwa.js"></script>
 </body>
 </html>

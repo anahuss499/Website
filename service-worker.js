@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mahmood-masjid-v8';
+const CACHE_NAME = 'mahmood-masjid-v9';
 const NETWORK_FIRST_PATHS = ['/prayer-calendar.html', '/assets/js/calendar.js', '/assets/js/main.js', '/assets/js/pwa.js', '/index.html', '/'];
 const URLS_TO_CACHE = [
   '/',
@@ -16,7 +16,9 @@ const URLS_TO_CACHE = [
   '/assets/js/ui.js',
   '/assets/js/calendar.js',
   '/assets/js/counter.js',
-  '/assets/js/quran.js'
+  '/assets/js/quran.js',
+  '/manifest.json',
+  '/assets/img/logo.png'
 ];
 
 // Install event - cache essential files
