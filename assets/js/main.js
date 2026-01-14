@@ -15,13 +15,18 @@
     const nameEl = document.getElementById('welcome-name');
     const closeBtn = document.getElementById('welcome-close');
     
-    if (!banner || !nameEl) return;
-
-    // Check if banner was dismissed in this session
-    if (sessionStorage.getItem('welcomeBannerDismissed') === 'true') {
+    if (!banner || !nameEl) {
+      console.log('Welcome banner elements not found');
       return;
     }
 
+    // Check if banner was dismissed in this session
+    if (sessionStorage.getItem('welcomeBannerDismissed') === 'true') {
+      console.log('Welcome banner was dismissed in this session');
+      return;
+    }
+
+    console.log('Showing welcome banner for:', userName);
     nameEl.textContent = userName;
     banner.style.display = 'block';
 
@@ -30,40 +35,59 @@
       closeBtn.addEventListener('click', function() {
         banner.style.display = 'none';
         sessionStorage.setItem('welcomeBannerDismissed', 'true');
-      });
+      }, { once: true });
     }
   }
 
-  // Wait for Firebase and check authentication
-  waitForFirebase(() => {
-    const auth = window.firebaseAuth;
-    const db = window.firebaseDB;
+  function initWelcomeBanner() {
+    console.log('Initializing welcome banner...');
+    
+    // Wait for Firebase and check authentication
+    waitForFirebase(() => {
+      console.log('Firebase is ready');
+      const auth = window.firebaseAuth;
+      const db = window.firebaseDB;
 
-    if (!auth || !db) return;
-
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
-          // Get user data from Firestore
-          const userDoc = await db.collection('users').doc(user.uid).get();
-          let displayName = user.displayName || user.email.split('@')[0];
-
-          if (userDoc.exists) {
-            const userData = userDoc.data();
-            displayName = userData.name || displayName;
-          }
-
-          // Show welcome banner
-          showWelcomeBanner(displayName);
-        } catch (error) {
-          console.error('Error loading user profile:', error);
-          // Fallback to basic display name
-          const displayName = user.displayName || user.email.split('@')[0];
-          showWelcomeBanner(displayName);
-        }
+      if (!auth || !db) {
+        console.log('Auth or DB not available');
+        return;
       }
+
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          console.log('User is logged in:', user.email);
+          try {
+            // Get user data from Firestore
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            let displayName = user.displayName || user.email.split('@')[0];
+
+            if (userDoc.exists) {
+              const userData = userDoc.data();
+              displayName = userData.name || displayName;
+              console.log('User data loaded from Firestore:', displayName);
+            }
+
+            // Show welcome banner
+            showWelcomeBanner(displayName);
+          } catch (error) {
+            console.error('Error loading user profile:', error);
+            // Fallback to basic display name
+            const displayName = user.displayName || user.email.split('@')[0];
+            showWelcomeBanner(displayName);
+          }
+        } else {
+          console.log('No user logged in');
+        }
+      });
     });
-  });
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWelcomeBanner);
+  } else {
+    initWelcomeBanner();
+  }
 })();
 
 const PK_TZ = 'Asia/Karachi';
