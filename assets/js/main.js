@@ -1,4 +1,71 @@
 // main.js - handles clock, prayer times, and next-prayer countdown
+
+// User Welcome Banner Functionality
+(function() {
+  function waitForFirebase(callback) {
+    if (typeof firebase !== 'undefined' && window.firebaseAuth && window.firebaseDB) {
+      callback();
+    } else {
+      setTimeout(() => waitForFirebase(callback), 100);
+    }
+  }
+
+  function showWelcomeBanner(userName) {
+    const banner = document.getElementById('user-welcome-banner');
+    const nameEl = document.getElementById('welcome-name');
+    const closeBtn = document.getElementById('welcome-close');
+    
+    if (!banner || !nameEl) return;
+
+    // Check if banner was dismissed in this session
+    if (sessionStorage.getItem('welcomeBannerDismissed') === 'true') {
+      return;
+    }
+
+    nameEl.textContent = userName;
+    banner.style.display = 'block';
+
+    // Close button handler
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
+        banner.style.display = 'none';
+        sessionStorage.setItem('welcomeBannerDismissed', 'true');
+      });
+    }
+  }
+
+  // Wait for Firebase and check authentication
+  waitForFirebase(() => {
+    const auth = window.firebaseAuth;
+    const db = window.firebaseDB;
+
+    if (!auth || !db) return;
+
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          // Get user data from Firestore
+          const userDoc = await db.collection('users').doc(user.uid).get();
+          let displayName = user.displayName || user.email.split('@')[0];
+
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            displayName = userData.name || displayName;
+          }
+
+          // Show welcome banner
+          showWelcomeBanner(displayName);
+        } catch (error) {
+          console.error('Error loading user profile:', error);
+          // Fallback to basic display name
+          const displayName = user.displayName || user.email.split('@')[0];
+          showWelcomeBanner(displayName);
+        }
+      }
+    });
+  });
+})();
+
 const PK_TZ = 'Asia/Karachi';
 const GUJRAT_LAT = 32.5847, GUJRAT_LON = 74.0758; // Gujrat, Fatehpur, Pakistan
 const JUMMAH_TIME = '14:00'; // Fixed Jummah time (2:00 PM) for Fridays

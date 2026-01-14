@@ -1231,7 +1231,100 @@ async function resendVerificationEmail() {
 
 ---
 
-## 9. Testing Checklist
+## 9. Welcome Banner on Home Page
+
+After a user creates an account and logs in, they will see a personalized welcome message on the home page (index.html).
+
+### How It Works
+
+1. **Automatic Detection**: When user visits the home page, Firebase checks if they're logged in
+2. **User Data Fetch**: Gets the user's name from Firestore
+3. **Welcome Display**: Shows an animated banner with:
+   - Islamic greeting: "Assalamu Alaikum"
+   - User's name in a prominent display
+   - Close button to dismiss
+4. **Session Memory**: Once dismissed, won't show again in the same browsing session
+
+### Implementation
+
+**HTML Structure** (automatically added to index.html):
+```html
+<div class="user-welcome-banner" id="user-welcome-banner" style="display:none;">
+  <div class="welcome-content">
+    <div class="welcome-icon">👤</div>
+    <div class="welcome-text">
+      <div class="welcome-greeting">Assalamu Alaikum</div>
+      <div class="welcome-name" id="welcome-name">Guest</div>
+    </div>
+    <button class="welcome-close" id="welcome-close">✕</button>
+  </div>
+</div>
+```
+
+**JavaScript Logic** (in main.js):
+```javascript
+// Wait for Firebase and check authentication
+waitForFirebase(() => {
+  const auth = window.firebaseAuth;
+  const db = window.firebaseDB;
+
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      // Get user data from Firestore
+      const userDoc = await db.collection('users').doc(user.uid).get();
+      let displayName = user.displayName || user.email.split('@')[0];
+
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        displayName = userData.name || displayName;
+      }
+
+      // Show welcome banner
+      showWelcomeBanner(displayName);
+    }
+  });
+});
+```
+
+### Styling Features
+
+- **Gradient Background**: Green-themed gradient matching site design
+- **Shimmer Effect**: Subtle animated shimmer for visual appeal
+- **Slide-Down Animation**: Smooth entrance animation
+- **Responsive Design**: Works perfectly on mobile and desktop
+- **Theme Consistency**: Matches the site's existing color scheme
+
+### Customization Options
+
+**Change Greeting Message:**
+```javascript
+// In main.js, modify the HTML:
+const greetingEl = document.getElementById('welcome-greeting');
+greetingEl.textContent = 'Welcome Back'; // English
+// or
+greetingEl.textContent = 'خوش آمدید'; // Urdu
+```
+
+**Auto-Hide After Delay:**
+```javascript
+// Add timeout in showWelcomeBanner function:
+setTimeout(() => {
+  banner.style.display = 'none';
+}, 10000); // Hide after 10 seconds
+```
+
+**Show on Every Visit:**
+```javascript
+// Remove sessionStorage check in showWelcomeBanner function
+// Delete these lines:
+if (sessionStorage.getItem('welcomeBannerDismissed') === 'true') {
+  return;
+}
+```
+
+---
+
+## 10. Testing Checklist
 
 - [ ] Firebase SDK loads without errors
 - [ ] User can sign up with email/password
@@ -1239,6 +1332,9 @@ async function resendVerificationEmail() {
 - [ ] **Verification email arrives in inbox**
 - [ ] **Email verification link works correctly**
 - [ ] User can log in with existing credentials
+- [ ] **Welcome banner appears on home page after login**
+- [ ] **Welcome banner shows correct user name**
+- [ ] **Welcome banner can be dismissed**
 - [ ] Google sign-in button works
 - [ ] New users appear in Firebase Authentication
 - [ ] User data saves to Firestore `users` collection
@@ -1252,7 +1348,7 @@ async function resendVerificationEmail() {
 
 ---
 
-## 9. Key Functions Reference
+## 11. Key Functions Reference
 
 ### Authentication Functions
 - `createUserAccount(name, email, password)` - Register new user
@@ -1271,7 +1367,7 @@ async function resendVerificationEmail() {
 
 ---
 
-## 10. Troubleshooting
+## 12. Troubleshooting
 
 **"Firebase is not defined"**
 - Ensure Firebase CDN scripts load before your scripts
