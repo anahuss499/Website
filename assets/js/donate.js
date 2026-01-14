@@ -43,32 +43,6 @@
           createdAt: new Date().toISOString(),
           createdBy: 'Admin',
           status: 'active'
-        },
-        {
-          id: generateId(),
-          title: 'Quran Classes for Children',
-          description: 'Support our Quran education program for children. Your donation provides books, teaching materials, and qualified teachers.',
-          goal: 150000,
-          raised: 87500,
-          donors: 32,
-          category: 'education',
-          deadline: '2026-05-15',
-          createdAt: new Date().toISOString(),
-          createdBy: 'Admin',
-          status: 'active'
-        },
-        {
-          id: generateId(),
-          title: 'Ramadan Food Distribution',
-          description: 'Help provide iftar meals and food packages to needy families during Ramadan. Every contribution feeds a family.',
-          goal: 200000,
-          raised: 156000,
-          donors: 78,
-          category: 'charity',
-          deadline: '2026-03-30',
-          createdAt: new Date().toISOString(),
-          createdBy: 'Admin',
-          status: 'active'
         }
       ];
       saveCampaigns(demoCampaigns);
