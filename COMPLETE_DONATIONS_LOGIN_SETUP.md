@@ -115,10 +115,17 @@ Complete authentication system with email/password and Google sign-in.
       // Update display name
       await user.updateProfile({ displayName: name });
 
+      // Send verification email
+      await user.sendEmailVerification({
+        url: window.location.origin + '/login.html',
+        handleCodeInApp: false
+      });
+
       // Store additional user data in Firestore
       await db.collection('users').doc(user.uid).set({
         name: name,
         email: email,
+        emailVerified: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
         preferences: {
@@ -127,7 +134,7 @@ Complete authentication system with email/password and Google sign-in.
         }
       });
 
-      return { success: true, user };
+      return { success: true, user, emailSent: true };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -402,8 +409,8 @@ Complete authentication system with email/password and Google sign-in.
       try {
         const result = await createUserAccount(name, email, password);
         if (result.success) {
-          showStatus(`✅ Account created! Welcome, ${name}!`);
-          setTimeout(() => window.location.href = '/', 1500);
+          showStatus(`✅ Account created! Verification email sent to ${email}. Please check your inbox.`);
+          setTimeout(() => window.location.href = '/', 2500);
         } else {
           showStatus(result.error, true);
           markFieldError(signupForm.email, result.error);
@@ -510,19 +517,6 @@ Complete donation system with campaign management and Firebase integration.
           donors: 45,
           category: 'maintenance',
           deadline: '2026-06-30',
-          createdAt: new Date().toISOString(),
-          createdBy: 'Admin',
-          status: 'active'
-        },
-        {
-          id: generateId(),
-          title: 'Quran Classes for Children',
-          description: 'Support our Quran education program for children.',
-          goal: 150000,
-          raised: 87500,
-          donors: 32,
-          category: 'education',
-          deadline: '2026-05-15',
           createdAt: new Date().toISOString(),
           createdBy: 'Admin',
           status: 'active'
@@ -1151,10 +1145,99 @@ service cloud.firestore {
 
 ---
 
-## 8. Testing Checklist
+## 8. Email Verification Setup
+
+### Customize Email Templates in Firebase Console
+
+1. Go to **Firebase Console** → **Authentication** → **Templates** tab
+2. Select **Email address verification**
+3. Customize the template:
+
+**From**: 
+- **From name**: Mahmood Masjid
+- **From email**: noreply@mahmoodmasjid.com (or your Firebase default)
+- **Reply-to**: contact.mahmoodmasjid@gmail.com
+
+**Email Template Example:**
+```
+Subject: Verify your email for Mahmood Masjid
+
+Assalamu Alaikum %DISPLAY_NAME%,
+
+Thank you for creating an account with Mahmood Masjid!
+
+Please verify your email address by clicking the link below:
+
+%LINK%
+
+This link will expire in 24 hours.
+
+If you didn't create this account, please ignore this email.
+
+JazakAllah Khair,
+Mahmood Masjid Team
+
+---
+www.mahmoodmasjid.com
+contact.mahmoodmasjid@gmail.com
+```
+
+4. Click **Save**
+
+### How Email Verification Works
+
+When a user creates an account:
+1. Firebase automatically sends a verification email to their address
+2. The email contains a unique verification link
+3. User clicks the link to verify their email
+4. Firebase marks their account as verified
+5. You can check `user.emailVerified` to confirm status
+
+### Optional: Require Email Verification
+
+To require users to verify before accessing features, add this check:
+
+```javascript
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    if (!user.emailVerified) {
+      showStatus('⚠️ Please verify your email to access all features.', true);
+      // Optionally redirect to a verification page
+    } else {
+      // User is verified, allow full access
+      loadUserProfile(user);
+    }
+  }
+});
+```
+
+### Resend Verification Email
+
+Add a button to let users resend the verification email:
+
+```javascript
+async function resendVerificationEmail() {
+  const user = auth.currentUser;
+  if (user && !user.emailVerified) {
+    try {
+      await user.sendEmailVerification();
+      alert('✅ Verification email sent! Check your inbox.');
+    } catch (error) {
+      alert('❌ Error sending email: ' + error.message);
+    }
+  }
+}
+```
+
+---
+
+## 9. Testing Checklist
 
 - [ ] Firebase SDK loads without errors
 - [ ] User can sign up with email/password
+- [ ] **Verification email is sent upon signup**
+- [ ] **Verification email arrives in inbox**
+- [ ] **Email verification link works correctly**
 - [ ] User can log in with existing credentials
 - [ ] Google sign-in button works
 - [ ] New users appear in Firebase Authentication

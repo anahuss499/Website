@@ -55,10 +55,17 @@
       // Update display name
       await user.updateProfile({ displayName: name });
 
+      // Send verification email
+      await user.sendEmailVerification({
+        url: window.location.origin + '/login.html',
+        handleCodeInApp: false
+      });
+
       // Store additional user data in Firestore
       await db.collection('users').doc(user.uid).set({
         name: name,
         email: email,
+        emailVerified: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
         preferences: {
@@ -67,7 +74,7 @@
         }
       });
 
-      return { success: true, user };
+      return { success: true, user, emailSent: true };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -480,8 +487,8 @@
 
       if (result.success) {
         signupForm.querySelectorAll('input').forEach(markFieldSuccess);
-        showStatus(`🎉 Account created! Welcome, ${name}!`);
-        setTimeout(() => { window.location.href = '/'; }, 2000);
+        showStatus(`✅ Account created! Verification email sent to ${email}. Please check your inbox.`);
+        setTimeout(() => { window.location.href = '/'; }, 2500);
       } else {
         // Handle specific Firebase errors
         let errorMessage = result.error;
