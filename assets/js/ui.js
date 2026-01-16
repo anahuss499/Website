@@ -311,6 +311,7 @@
       const isUrdu = body.classList.contains('urdu-mode');
       setLanguage(!isUrdu);
       if(typeof updateJummahLanguage === 'function') updateJummahLanguage();
+      if(typeof updateShabeMirajLanguage === 'function') updateShabeMirajLanguage();
     });
   }
 })();

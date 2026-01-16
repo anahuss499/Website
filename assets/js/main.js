@@ -97,6 +97,10 @@ const JUMMAH_TIME = '14:00'; // Fixed Jummah time (2:00 PM) for Fridays
 let gMaghribToday = null;
 let gIsThursday = false;
 let gIsFriday = false;
+// Globals for Shabe Miraj auto-toggle window
+let gMaghribTomorrow = null;
+let gIsShabe27Rajab = false;
+let gIsShabe28Rajab = false;
 
 function buildPkDate(base, year, month, day, timeStr){
   const [hh, mm] = timeStr.split(' ')[0].split(':').map(Number);
@@ -197,6 +201,120 @@ function updateJummahLanguage(){
   if(cardReminderUrdu) cardReminderUrdu.style.display = isUrdu ? '' : 'none';
 }
 
+// Shabe Miraj functions
+function shouldShowShabeMiraj(pkNow, maghribToday, maghribTomorrow, isShabe27Rajab, isShabe28Rajab){
+  if(isShabe27Rajab) return pkNow >= maghribToday; // from 26th Rajab Maghrib onward
+  if(isShabe28Rajab) return pkNow < maghribToday;  // until 27th Rajab Maghrib
+  return false;
+}
+
+function updateShabeMirajBanner(show){
+  const banner = document.getElementById('shabe-miraj-banner');
+  if(!banner) return;
+  banner.style.display = show ? '' : 'none';
+  console.log('Shabe Miraj banner display:', show);
+}
+
+// Re-evaluate Shabe Miraj visibility periodically so it flips exactly at Maghrib
+function reevaluateShabeMiraj(){
+  if(!gMaghribToday && !gMaghribTomorrow) return;
+  const pkNowStr = new Date().toLocaleString('en-US',{timeZone:PK_TZ});
+  const pkNow = new Date(pkNowStr);
+  const show = shouldShowShabeMiraj(pkNow, gMaghribToday, gMaghribTomorrow, gIsShabe27Rajab, gIsShabe28Rajab);
+  updateShabeMirajBanner(show);
+}
+
+function updateShabeMirajLanguage(){
+  const isUrdu = document.body.classList.contains('urdu-mode');
+  const reminderEn = document.getElementById('shabe-miraj-reminder-en');
+  const reminderUrdu = document.getElementById('shabe-miraj-reminder-urdu');
+  const descEn = document.getElementById('shabe-miraj-desc-en');
+  const descUrdu = document.getElementById('shabe-miraj-desc-urdu');
+  const btnEn = document.getElementById('shabe-miraj-btn-en');
+  const btnUrdu = document.getElementById('shabe-miraj-btn-urdu');
+  const connectEn = document.getElementById('shabe-miraj-connect-en');
+  const connectUrdu = document.getElementById('shabe-miraj-connect-urdu');
+  const donateLabelEn = document.getElementById('shabe-miraj-donate-label-en');
+  const donateLabelUrdu = document.getElementById('shabe-miraj-donate-label-urdu');
+  
+  if(reminderEn) reminderEn.style.display = isUrdu ? 'none' : '';
+  if(reminderUrdu) reminderUrdu.style.display = isUrdu ? '' : 'none';
+  if(descEn) descEn.style.display = isUrdu ? 'none' : '';
+  if(descUrdu) descUrdu.style.display = isUrdu ? '' : 'none';
+  if(btnEn) btnEn.style.display = isUrdu ? 'none' : '';
+  if(btnUrdu) btnUrdu.style.display = isUrdu ? '' : 'none';
+  if(connectEn) connectEn.style.display = isUrdu ? 'none' : '';
+  if(connectUrdu) connectUrdu.style.display = isUrdu ? '' : 'none';
+  if(donateLabelEn) donateLabelEn.style.display = isUrdu ? 'none' : '';
+  if(donateLabelUrdu) donateLabelUrdu.style.display = isUrdu ? '' : 'none';
+}
+
+function initShabeMirajDownload(){
+  const btn = document.getElementById('shabe-miraj-download-btn');
+  if(!btn) return;
+  btn.addEventListener('click', async ()=>{
+    // Create a simple card-like element for download
+    const cardDiv = document.createElement('div');
+    cardDiv.style.cssText = 'position:absolute;left:-9999px;width:600px;height:700px;padding:40px;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(0,0,0,0.7)),url(/assets/img/Masjid1.jpg);background-size:cover;background-position:center;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:\'Inter\',sans-serif;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.4);';
+    
+    const isUrdu = document.body.classList.contains('urdu-mode');
+    const message = isUrdu ? 'نبی کریم ﷺ کی معراج کی رات' : 'Night of the Prophet\'s Ascension';
+    const activities = isUrdu ? 'قرآن کریم • درود شریف • نوافل' : 'Quran • Durood • Nawafil';
+    const masjidText = 'محمود مسجد | Mahmood Masjid';
+    const location = 'Gujrat, Punjab, Pakistan';
+    const socialsLabel = isUrdu ? 'سوشلز' : 'Socials';
+    const supportLabel = isUrdu ? 'سپورٹ کریں' : 'Support';
+    
+    cardDiv.innerHTML = `
+      <img src="/assets/img/Shab-E-Miraj.png" alt="Shabe Miraj" style="width:280px;height:auto;margin-bottom:25px;filter:brightness(0) invert(1) drop-shadow(0 6px 16px rgba(0,0,0,0.7));">
+      
+      <div style="font-family:'Jameel Noori Nastaleeq',serif;font-size:19px;margin-bottom:10px;opacity:0.95;text-shadow:0 2px 6px rgba(0,0,0,0.6);line-height:1.5;">${message}</div>
+      
+      <div style="font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;font-weight:600;margin-bottom:30px;opacity:0.9;text-shadow:0 2px 6px rgba(0,0,0,0.6);letter-spacing:1px;">${activities}</div>
+      
+      <div style="border-top:2px solid rgba(255,255,255,0.6);padding-top:18px;width:85%;margin-bottom:18px;">
+        <div style="font-family:'Jameel Noori Nastaleeq',serif;font-size:14px;font-weight:700;margin-bottom:4px;text-shadow:0 2px 6px rgba(0,0,0,0.6);">${masjidText}</div>
+        <div style="font-size:12px;opacity:0.9;text-shadow:0 1px 4px rgba(0,0,0,0.6);">${location}</div>
+      </div>
+      
+      <div style="border-top:2px solid rgba(255,255,255,0.6);padding-top:18px;width:85%;margin-bottom:16px;">
+        <div style="font-family:'Jameel Noori Nastaleeq',serif;font-size:13px;font-weight:700;margin-bottom:10px;text-shadow:0 2px 6px rgba(0,0,0,0.6);">${socialsLabel}</div>
+        <div style="display:flex;justify-content:center;gap:14px;margin-bottom:8px;">
+          <img src="/assets/img/fblogo.png" alt="Facebook" style="width:26px;height:26px;border-radius:6px;background:#fff;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.4));">
+          <img src="/assets/img/tiktoklogo.png" alt="TikTok" style="width:26px;height:26px;border-radius:6px;background:#fff;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.4));">
+          <img src="/assets/img/ytlogo.png" alt="YouTube" style="width:26px;height:26px;border-radius:6px;background:#fff;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.4));">
+        </div>
+        <div style="font-size:12px;opacity:0.95;text-shadow:0 1px 4px rgba(0,0,0,0.6);">@mahmoodmasjid</div>
+      </div>
+      
+      <div style="border-top:2px solid rgba(255,255,255,0.6);padding-top:18px;width:85%;">
+        <div style="font-family:'Jameel Noori Nastaleeq',serif;font-size:13px;font-weight:700;margin-bottom:6px;text-shadow:0 2px 6px rgba(0,0,0,0.6);">${supportLabel}</div>
+        <div style="font-size:11px;letter-spacing:0.4px;font-weight:600;text-shadow:0 2px 6px rgba(0,0,0,0.6);">PK41ABPA0010154454310012</div>
+      </div>
+    `;
+    
+    document.body.appendChild(cardDiv);
+    
+    if(typeof html2canvas === 'undefined'){
+      alert('Download unavailable offline. Please check your connection.');
+      document.body.removeChild(cardDiv);
+      return;
+    }
+    try{
+      const canvas = await html2canvas(cardDiv, { backgroundColor:'transparent', scale:2, allowTaint:true, useCORS:true });
+      const link = document.createElement('a');
+      link.download = 'Shabe-Miraj-Mahmood-Masjid.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      document.body.removeChild(cardDiv);
+    }catch(err){
+      console.warn('Shabe Miraj card download failed', err);
+      alert('Could not generate the image. Please try again.');
+      document.body.removeChild(cardDiv);
+    }
+  });
+}
+
 // Make nextPrayer globally accessible
 window.nextPrayer = null;
 let countdownInterval = null;
@@ -257,6 +375,39 @@ async function fetchPrayerTimes(){
       jummahLi.style.display = showJummah ? '' : 'none';
       jummahLi.querySelector('.time-val').textContent = showJummah ? JUMMAH_TIME : '—';
     }
+
+    // Shabe Miraj logic (27th of Rajab - starting from Maghrib on 26th Rajab)
+    const hijriDate = data.data.date.hijri.date; // format: "dd-mm-yyyy"
+    const [hijriDay, hijriMonth, hijriYear] = hijriDate.split('-').map(Number);
+    const isShabe27Rajab = hijriMonth === 7 && hijriDay === 27; // 27 Rajab (Shabe Miraj night)
+    const isShabe28Rajab = hijriMonth === 7 && hijriDay === 28; // 28 Rajab (until Maghrib)
+    gIsShabe27Rajab = isShabe27Rajab;
+    gIsShabe28Rajab = isShabe28Rajab;
+    
+    console.log('Hijri Date:', hijriDate, 'Day:', hijriDay, 'Month:', hijriMonth);
+    console.log('Is 27 Rajab:', isShabe27Rajab, 'Is 28 Rajab:', isShabe28Rajab);
+    
+    // For Shabe Miraj, we need tomorrow's Maghrib if today is 27 Rajab
+    let maghribTomorrow = null;
+    if(isShabe27Rajab || isShabe28Rajab){
+      // Calculate tomorrow's date
+      const tomorrow = new Date(pkNow);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.toLocaleString('en-US',{timeZone:PK_TZ});
+      const tomorrowDate = new Date(tomorrowStr);
+      const tomorrowDay = tomorrowDate.getDate();
+      const tomorrowMonth = tomorrowDate.getMonth() + 1;
+      const tomorrowYear = tomorrowDate.getFullYear();
+      
+      // Tomorrow's Maghrib time (using today's Maghrib time as approximation)
+      maghribTomorrow = buildPkDate(pkNow, tomorrowYear, tomorrowMonth, tomorrowDay, timings['Maghrib']);
+      gMaghribTomorrow = maghribTomorrow;
+    }
+    
+    const showShabeMiraj = shouldShowShabeMiraj(pkNow, maghribToday, maghribTomorrow, isShabe27Rajab, isShabe28Rajab);
+    console.log('Show Shabe Miraj:', showShabeMiraj);
+    updateShabeMirajBanner(showShabeMiraj);
+
     document.getElementById('prayer-updated').textContent = data.data.date.readable + ' (Hijri: ' + data.data.date.hijri.date + ')';
     document.getElementById('hijri').textContent = 'Hijri: ' + data.data.date.hijri.date + ' AH';
 
@@ -364,11 +515,15 @@ fetchPrayerTimes(); scheduleDailyRefresh();
 setInterval(fetchPrayerTimes,1000*60*60);
 // ensure Jummah window flips exactly at Maghrib without waiting for hourly refresh
 setInterval(reevaluateJummah, 60*1000);
+// ensure Shabe Miraj window flips exactly at Maghrib without waiting for hourly refresh
+setInterval(reevaluateShabeMiraj, 60*1000);
 
 // set current year
 document.getElementById('current-year').textContent = new Date().getFullYear();
 initJummahDownload();
 updateJummahLanguage();
+initShabeMirajDownload();
+updateShabeMirajLanguage();
 
 // Side Menu Functionality
 function initSideMenu() {
