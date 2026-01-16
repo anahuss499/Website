@@ -152,10 +152,10 @@
       <p class="lead" data-en="Your donations help maintain our mosque, support community programs, and provide Islamic education. Every contribution makes a difference." data-urdu="آپ کے عطیات ہماری مسجد کی دیکھ بھال، کمیونٹی پروگراموں کی مدد، اور اسلامی تعلیم فراہم کرنے میں مدد کرتے ہیں۔ ہر تعاون فرق لاتا ہے۔">Your donations help maintain our mosque, support community programs, and provide Islamic education. Every contribution makes a difference.</p>
     </section>
 
-    <!-- Quick Donate Section -->
-    <section class="card quick-donate-section">
-      <h2 data-en="Quick Donation" data-urdu="فوری عطیہ">Quick Donation</h2>
-      <p data-en="Support our mosque with a one-time donation" data-urdu="ایک بار کے عطیہ سے ہماری مسجد کی مدد کریں">Support our mosque with a one-time donation</p>
+    <!-- Bank Account Information -->
+    <section class="card">
+      <h2 data-en="Donation Information" data-urdu="عطیہ کی معلومات">Donation Information</h2>
+      <p data-en="Support our mosque through bank transfer" data-urdu="بینک ٹرانسفر کے ذریعے ہماری مسجد کی مدد کریں">Support our mosque through bank transfer</p>
       
       <div class="bank-info" style="background:linear-gradient(135deg,rgba(50,205,50,0.08),rgba(50,205,50,0.02));padding:20px;border-radius:8px;margin:20px 0;border:2px solid rgba(50,205,50,0.2);">
         <h3 data-en="Bank Account Details" data-urdu="بینک اکاؤنٹ کی تفصیلات">Bank Account Details</h3>
@@ -169,38 +169,7 @@
           <div><strong data-en="Bank:" data-urdu="بینک:">Bank:</strong> Allied Bank Limited</div>
           <div><strong data-en="Branch:" data-urdu="برانچ:">Branch:</strong> Gujrat, Pakistan</div>
         </div>
-      </div>
-
-      <div class="donate-amounts">
-        <button class="amount-btn" data-amount="1000">Rs 1,000</button>
-        <button class="amount-btn" data-amount="2500">Rs 2,500</button>
-        <button class="amount-btn" data-amount="5000">Rs 5,000</button>
-        <button class="amount-btn" data-amount="10000">Rs 10,000</button>
-        <button class="amount-btn custom">Custom</button>
-      </div>
-
-      <div class="custom-amount-input" id="custom-amount-box" style="display:none;margin-top:15px;">
-        <label for="custom-amount" data-en="Enter Amount (PKR)" data-urdu="رقم درج کریں (PKR)">Enter Amount (PKR)</label>
-        <input type="number" id="custom-amount" class="contact-form" placeholder="Enter amount" min="100" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);margin-top:6px;">
-      </div>
-
-      <div class="donor-info" style="margin-top:20px;">
-        <h3 data-en="Donor Information (Optional)" data-urdu="عطیہ دہندہ کی معلومات (اختیاری)">Donor Information (Optional)</h3>
-        <form id="quick-donate-form" class="contact-form">
-          <label for="donor-name" data-en="Name" data-urdu="نام">Name</label>
-          <input type="text" id="donor-name" name="donor-name">
-          
-          <label for="donor-email" data-en="Email" data-urdu="ای میل">Email</label>
-          <input type="email" id="donor-email" name="donor-email">
-          
-          <label for="donor-phone" data-en="Phone (Optional)" data-urdu="فون (اختیاری)">Phone (Optional)</label>
-          <input type="tel" id="donor-phone" name="donor-phone">
-          
-          <label for="donor-message" data-en="Message or Dedication (Optional)" data-urdu="پیغام یا وقف (اختیاری)">Message or Dedication (Optional)</label>
-          <textarea id="donor-message" name="donor-message" rows="3"></textarea>
-          
-          <button type="submit" class="btn" style="width:100%;margin-top:15px;" data-en="Proceed to Donate" data-urdu="عطیہ کی طرف بڑھیں">Proceed to Donate</button>
-        </form>
+        <p style="margin-top:15px;color:var(--muted);font-size:0.9rem;" data-en="After making your donation, please email your receipt to contact.mahmoodmasjid@gmail.com" data-urdu="اپنا عطیہ دینے کے بعد، براہ کرم اپنی رسید contact.mahmoodmasjid@gmail.com پر ای میل کریں">After making your donation, please email your receipt to contact.mahmoodmasjid@gmail.com</p>
       </div>
     </section>
 
@@ -250,25 +219,6 @@
         </form>
       </div>
     </div>
-
-    <!-- Donation Stats -->
-    <section class="card">
-      <h2 data-en="Our Impact" data-urdu="ہمارا اثر">Our Impact</h2>
-      <div class="stats-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:20px;">
-        <div class="stat-card" style="text-align:center;padding:20px;background:linear-gradient(135deg,rgba(50,205,50,0.08),rgba(50,205,50,0.02));border-radius:8px;">
-          <div style="font-size:2.5rem;font-weight:700;color:var(--green);" id="total-raised">Rs 0</div>
-          <div data-en="Total Raised" data-urdu="کل جمع">Total Raised</div>
-        </div>
-        <div class="stat-card" style="text-align:center;padding:20px;background:linear-gradient(135deg,rgba(50,205,50,0.08),rgba(50,205,50,0.02));border-radius:8px;">
-          <div style="font-size:2.5rem;font-weight:700;color:var(--green);" id="total-donors">0</div>
-          <div data-en="Generous Donors" data-urdu="سخی عطیہ دہندگان">Generous Donors</div>
-        </div>
-        <div class="stat-card" style="text-align:center;padding:20px;background:linear-gradient(135deg,rgba(50,205,50,0.08),rgba(50,205,50,0.02));border-radius:8px;">
-          <div style="font-size:2.5rem;font-weight:700;color:var(--green);" id="active-campaigns">0</div>
-          <div data-en="Active Campaigns" data-urdu="فعال مہمات">Active Campaigns</div>
-        </div>
-      </div>
-    </section>
 
     <!-- Islamic Quotes on Charity -->
     <section class="card" style="background:linear-gradient(120deg,#f7f1e3,#fffbe6);border:2px solid rgba(50,205,50,0.2);">

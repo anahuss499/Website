@@ -1618,17 +1618,7 @@ body.urdu-mode .social-card h2{
 
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 
-.password-strength{height:4px;background:rgba(0,0,0,0.08);border-radius:999px;margin-top:-8px;overflow:hidden;display:none}
-.password-strength.show{display:block}
-.password-strength-bar{height:100%;width:0;transition:all 0.3s ease;border-radius:999px}
-.password-strength-bar.weak{width:33%;background:#ef4444}
-.password-strength-bar.medium{width:66%;background:#f59e0b}
-.password-strength-bar.strong{width:100%;background:#22c55e}
-.password-strength-text{font-size:0.85rem;margin-top:4px;font-weight:600;display:none}
-.password-strength-text.show{display:block}
-.password-strength-text.weak{color:#ef4444}
-.password-strength-text.medium{color:#f59e0b}
-.password-strength-text.strong{color:#22c55e}
+
 
 .auth-inline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .auth-check{display:inline-flex;align-items:center;gap:10px;font-size:0.94rem;color:var(--text);cursor:pointer;user-select:none}
@@ -1669,10 +1659,23 @@ body.urdu-mode .social-card h2{
   .auth-hero-aside{width:100%;min-width:auto}
 }
 
+/* Development Notice */
+.dev-notice{display:flex;align-items:flex-start;gap:16px;background:linear-gradient(135deg,rgba(249,165,11,0.08),rgba(249,165,11,0.04));border:2px solid rgba(249,165,11,0.3);border-radius:var(--radius);padding:18px;margin:20px 0;animation:slideInDown 0.5s ease}
+.dev-notice-icon{width:24px;height:24px;color:#f59e0b;flex-shrink:0;margin-top:2px;stroke-width:2.5}
+.dev-notice-content{flex:1}
+.dev-notice-content h3{margin:0 0 8px;font-size:1rem;font-weight:700;color:#d97706}
+.dev-notice-content p{margin:0 0 6px;font-size:0.95rem;color:var(--text)}
+.dev-notice-link{color:#f59e0b;font-weight:600;text-decoration:none;transition:all 0.2s ease}
+.dev-notice-link:hover{color:#d97706;text-decoration:underline}
+
+@keyframes slideInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
 @media (max-width:640px){
   .auth-hero h1{font-size:1.6rem}
   .auth-hero{padding:20px}
   .auth-card,.auth-side{padding:20px}
   .auth-tab{padding:12px 18px;font-size:0.95rem}
   .auth-submit{padding:13px 24px}
+  .dev-notice{flex-direction:column;gap:12px}
+  .dev-notice-icon{margin-top:0}
 }

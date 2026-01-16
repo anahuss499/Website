@@ -99,15 +99,22 @@
   async function loginWithGoogle() {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
+      // Add scopes for email and profile
+      provider.addScope('email');
+      provider.addScope('profile');
+      
       const result = await auth.signInWithPopup(provider);
       const user = result.user;
 
       // Check if user document exists, create if not
       const userDoc = await db.collection('users').doc(user.uid).get();
       if (!userDoc.exists) {
+        // New user - create account
         await db.collection('users').doc(user.uid).set({
-          name: user.displayName,
+          name: user.displayName || 'User',
           email: user.email,
+          emailVerified: user.emailVerified,
+          photoURL: user.photoURL || null,
           provider: 'google',
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
@@ -117,14 +124,17 @@
           }
         });
       } else {
-        // Update last login
+        // Existing user - update last login and email verification status
         await db.collection('users').doc(user.uid).update({
-          lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+          lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+          emailVerified: user.emailVerified,
+          photoURL: user.photoURL || null
         });
       }
 
-      return { success: true, user };
+      return { success: true, user, isNewUser: !userDoc.exists };
     } catch (error) {
+      console.error('Google Sign-In Error:', error);
       return { success: false, error: error.message };
     }
   }
@@ -167,57 +177,7 @@
   }catch(e){}
   setActiveTab(initialTab);
 
-  // Password strength checker
-  function checkPasswordStrength(password){
-    if(!password) return null;
-    let strength = 0;
-    if(password.length >= 8) strength++;
-    if(/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-    if(/\d/.test(password)) strength++;
-    if(/[^a-zA-Z0-9]/.test(password)) strength++;
-    if(strength <= 1) return 'weak';
-    if(strength <= 2) return 'medium';
-    return 'strong';
-  }
 
-  function updatePasswordStrength(input){
-    const password = input.value;
-    const wrapper = input.parentElement;
-    let strengthBar = wrapper.querySelector('.password-strength');
-    let strengthText = wrapper.querySelector('.password-strength-text');
-    
-    if(!strengthBar){
-      strengthBar = document.createElement('div');
-      strengthBar.className = 'password-strength';
-      strengthBar.innerHTML = '<div class="password-strength-bar"></div>';
-      input.after(strengthBar);
-      
-      strengthText = document.createElement('div');
-      strengthText.className = 'password-strength-text';
-      input.after(strengthText);
-    }
-    
-    const bar = strengthBar.querySelector('.password-strength-bar');
-    const strength = checkPasswordStrength(password);
-    
-    if(!password){
-      strengthBar.classList.remove('show');
-      strengthText.classList.remove('show');
-      return;
-    }
-    
-    strengthBar.classList.add('show');
-    strengthText.classList.add('show');
-    bar.className = 'password-strength-bar ' + (strength || '');
-    strengthText.className = 'password-strength-text show ' + (strength || '');
-    
-    const messages = {
-      weak: 'Weak password',
-      medium: 'Medium strength',
-      strong: 'Strong password'
-    };
-    strengthText.textContent = messages[strength] || '';
-  }
 
   function showStatus(message, isError){
     if(!statusEl) return;
@@ -373,19 +333,10 @@
     });
   }
 
-  // Add password strength checking to signup
+  // Clear field errors on input
   const signupPasswordInput = document.getElementById('signup-password');
   if(signupPasswordInput){
-    // Wrap input in div if not already wrapped
-    if(!signupPasswordInput.parentElement.classList.contains('input-wrapper')){
-      const wrapper = document.createElement('div');
-      wrapper.className = 'input-wrapper';
-      signupPasswordInput.parentNode.insertBefore(wrapper, signupPasswordInput);
-      wrapper.appendChild(signupPasswordInput);
-    }
-    
     signupPasswordInput.addEventListener('input', (e)=>{
-      updatePasswordStrength(e.target);
       clearFieldError(e.target);
     });
   }
@@ -406,15 +357,6 @@
   // Handle signup form
   const signupForm = document.getElementById('signup-form');
   if(signupForm){
-    // Wrap inputs if needed
-    signupForm.querySelectorAll('input').forEach(input=>{
-      if(!input.parentElement.classList.contains('input-wrapper')){
-        const wrapper = document.createElement('div');
-        wrapper.className = 'input-wrapper';
-        input.parentNode.insertBefore(wrapper, input);
-        wrapper.appendChild(input);
-      }
-    });
     signupForm.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const submitBtn = signupForm.querySelector('.auth-submit');
@@ -423,7 +365,7 @@
       const email = signupForm.email.value.trim().toLowerCase();
       const password = signupForm.password.value;
       const confirm = signupForm.confirm.value;
-      const agree = signupForm.agree?.checked;
+      const agree = signupForm.policy?.checked;
 
       // Clear previous errors
       signupForm.querySelectorAll('input').forEach(clearFieldError);
@@ -531,7 +473,14 @@
         const userData = userDoc.data();
 
         btn.querySelector('.google-text').textContent = '✓ Connected';
-        showStatus(`🎉 Signed in with Google as ${userData?.name || result.user.displayName}!`);
+        
+        // Show different message for new vs existing users
+        if (result.isNewUser) {
+          showStatus(`🎉 Welcome! Account created with Google as ${userData?.name || result.user.displayName}!`);
+        } else {
+          showStatus(`✅ Signed in with Google as ${userData?.name || result.user.displayName}!`);
+        }
+        
         setTimeout(() => { window.location.href = '/'; }, 1500);
       } else {
         btn.disabled = false;
@@ -543,6 +492,10 @@
           errorMessage = 'Sign-in cancelled. Please try again.';
         } else if (result.error.includes('popup-blocked')) {
           errorMessage = 'Pop-up blocked. Please allow pop-ups and try again.';
+        } else if (result.error.includes('auth/unauthorized-domain')) {
+          errorMessage = 'This domain is not authorized. Please contact support.';
+        } else if (result.error.includes('auth/operation-not-allowed')) {
+          errorMessage = 'Google sign-in is not enabled. Please contact support.';
         }
         showStatus(errorMessage, true);
       }
