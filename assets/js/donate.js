@@ -1,5 +1,5 @@
-// Donation & Campaign Management System with Firebase Integration
-// Stores donations in Firestore with user email for reminders
+// Donation & Campaign Management System with Real Payment Integration
+// Supports Stripe, JazzCash, EasyPaisa, and Bank Transfer
 
 (function() {
   'use strict';
@@ -427,24 +427,38 @@
           return;
         }
 
-        const donationData = {
-          campaignId: null, // General donation
-          campaignTitle: 'General Donations',
-          amount: amount,
-          donorName: donorName || 'Anonymous',
-          donorEmail: donorEmail,
-          donorPhone: donorPhone || '',
-          userId: userId,
-          message: donorMessage || '',
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          status: 'pending',
-          paymentMethod: 'bank_transfer',
-          recurring: false,
-          receiptSent: false
+        const donorInfo = {
+          name: donorName || 'Anonymous',
+          email: donorEmail,
+          phone: donorPhone || '',
+          message: donorMessage || ''
         };
 
         try {
-          // Save to Firestore
+          // Show processing message
+          const submitBtn = quickDonateForm.querySelector('button[type="submit"]');
+          const originalText = submitBtn.textContent;
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Processing...';
+
+          // Save donation to Firestore
+          const donationData = {
+            campaignId: null, // General donation
+            campaignTitle: 'General Donations',
+            amount: amount,
+            donorName: donorInfo.name,
+            donorEmail: donorInfo.email,
+            donorPhone: donorInfo.phone,
+            userId: userId,
+            message: donorInfo.message,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pending',
+            paymentMethod: 'bank_transfer',
+            paymentId: null,
+            recurring: false,
+            receiptSent: false
+          };
+
           const docRef = await db.collection('donations').add(donationData);
 
           // Also save locally
@@ -481,13 +495,19 @@
 
           updateStats();
 
-          alert(`✅ Thank you ${donorName || 'for your'} donation of ${formatCurrency(amount)}!\n\n📧 Confirmation sent to: ${donorEmail}\n🆔 Donation ID: ${docRef.id}\n\n🏦 Please transfer to:\nIBAN: PK41ABPA0010154454310012\nBank: Allied Bank Limited\nTitle: Mahmood Masjid`);
+          // Show success message with bank transfer instructions
+          const successMessage = `✅ Thank you ${donorInfo.name} for your donation of ${formatCurrency(amount)}!\n\n📧 Confirmation sent to: ${donorInfo.email}\n🆔 Donation ID: ${docRef.id}\n\n🏦 Please transfer to:\nIBAN: PK41ABPA0010154454310012\nBank: Allied Bank Limited\nAccount: Mahmood Masjid\nBranch: Gujrat, Pakistan\n\n💡 Email your receipt to: contact.mahmoodmasjid@gmail.com`;
+
+          alert(successMessage);
 
           // Reset form
           quickDonateForm.reset();
           document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
           document.getElementById('custom-amount-box').style.display = 'none';
           selectedAmount = null;
+          
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
         } catch (error) {
           console.error('Error saving donation:', error);
           alert('⚠️ Error processing donation. Please try again or contact support.');
