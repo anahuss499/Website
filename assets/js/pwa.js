@@ -102,13 +102,13 @@ async function getPrayerNotifications() {
     if (language === 'urdu') {
       notifications.push({
         title: `🕌 ${prayerNames[prayer]} کا وقت`,
-        body: `${prayerNames[prayer]} کی نماز کا وقت ہو گیا ہے`,
+        body: `${prayerNames[prayer]} کی نماز کا وقت ${time} ہے`,
         time: time
       });
     } else {
       notifications.push({
         title: `🕌 ${prayerNames[prayer]} Prayer Time`,
-        body: `It's time for ${prayerNames[prayer]} prayer`,
+        body: `${prayerNames[prayer]} prayer time is ${time}`,
         time: time
       });
     }

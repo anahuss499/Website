@@ -170,9 +170,9 @@ function scheduleNotificationAtTime(title, body, timeStr) {
   console.log(`[ServiceWorker] Scheduling notification for ${timeStr}: "${title}"`);
   
   function checkAndNotify() {
-    const now = new Date();
-    const currentHours = now.getHours();
-    const currentMinutes = now.getMinutes();
+    const pkNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' }));
+    const currentHours = pkNow.getHours();
+    const currentMinutes = pkNow.getMinutes();
     
     // Show notification if current time matches scheduled time
     if (currentHours === hours && currentMinutes === minutes) {

@@ -331,6 +331,47 @@ function updateLocalTime(){
   if(gEl) gEl.textContent = 'Gregorian: ' + greg;
 }
 
+function updateActivePrayerHighlight(){
+  const timings = window.prayerTimings;
+  const dateParts = window.prayerDateParts;
+  if(!timings || !dateParts) return;
+
+  const pkNowStr = new Date().toLocaleString('en-US', { timeZone: PK_TZ });
+  const pkNow = new Date(pkNowStr);
+  const prayerSlots = [
+    { name: 'Fajr', time: timings.Fajr?.split(' ')[0] },
+    { name: 'Dhuhr', time: timings.Dhuhr?.split(' ')[0] },
+    ...(dateParts.isFriday ? [{ name: 'Jummah', time: JUMMAH_TIME }] : []),
+    { name: 'Asr', time: timings.Asr?.split(' ')[0] },
+    { name: 'Maghrib', time: timings.Maghrib?.split(' ')[0] },
+    { name: 'Isha', time: timings.Isha?.split(' ')[0] }
+  ].filter(slot => slot.time);
+
+  if(!prayerSlots.length) return;
+
+  const baseDate = new Date(pkNow);
+  baseDate.setFullYear(dateParts.year, dateParts.month - 1, dateParts.day);
+
+  let activePrayer = prayerSlots[prayerSlots.length - 1].name;
+  let latestPrayerTime = null;
+
+  prayerSlots.forEach(slot => {
+    const [hours, minutes] = slot.time.split(':').map(Number);
+    const slotTime = new Date(baseDate);
+    slotTime.setHours(hours, minutes, 0, 0);
+    if(slotTime <= pkNow && (!latestPrayerTime || slotTime > latestPrayerTime)){
+      latestPrayerTime = slotTime;
+      activePrayer = slot.name;
+    }
+  });
+
+  document.querySelectorAll('.prayer-list li').forEach(li => {
+    const nameSpan = li.querySelector('.prayer-name');
+    const isActive = nameSpan && nameSpan.getAttribute('data-en') === activePrayer && li.style.display !== 'none';
+    li.classList.toggle('active', isActive);
+  });
+}
+
 async function fetchPrayerTimes(){
   try{
     console.log('Fetching prayer times...');
@@ -341,6 +382,7 @@ async function fetchPrayerTimes(){
     console.log('Prayer API response received');
     if(data.code !== 200){ throw new Error('Prayer API error'); }
     const timings = data.data.timings;
+    window.prayerTimings = timings;
     const weekdayEn = data.data.date.gregorian.weekday.en;
     const isFriday = weekdayEn === 'Friday';
     const isThursday = weekdayEn === 'Thursday';
@@ -361,6 +403,7 @@ async function fetchPrayerTimes(){
     const pkNowStr = new Date().toLocaleString('en-US',{timeZone:PK_TZ});
     const pkNow = new Date(pkNowStr);
     const [day, month, year] = data.data.date.gregorian.date.split('-').map(Number); // dd-mm-yyyy
+    window.prayerDateParts = { day, month, year, isFriday };
     const maghribToday = buildPkDate(pkNow, year, month, day, timings['Maghrib']);
     gMaghribToday = maghribToday;
     const showJummah = shouldShowJummah(pkNow, maghribToday, isThursday, isFriday);
@@ -468,12 +511,7 @@ function setNextPrayer(obj){
     timeEl.textContent = obj.time;
     console.log('Next prayer time set to:', obj.time);
   }
-  // highlight active prayer in list
-  document.querySelectorAll('.prayer-list li').forEach(li=>{
-    const nameSpan = li.querySelector('.prayer-name');
-    const isActive = nameSpan && nameSpan.getAttribute('data-en') === obj.name && li.style.display !== 'none';
-    li.classList.toggle('active', isActive);
-  });
+  updateActivePrayerHighlight();
   if(countdownInterval) clearInterval(countdownInterval);
   countdownInterval = setInterval(updateCountdown,1000);
   updateCountdown();
@@ -482,6 +520,7 @@ function setNextPrayer(obj){
 
 function updateCountdown(){
   if(!window.nextPrayer) return;
+  updateActivePrayerHighlight();
   const pkNowStr = new Date().toLocaleString('en-US',{timeZone:PK_TZ});
   const pkNow = new Date(pkNowStr);
   const diff = window.nextPrayer.dt - pkNow;
