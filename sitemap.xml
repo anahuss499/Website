@@ -77,11 +77,5 @@
   </url>
 
   <!-- Login / Sign Up Page -->
-  <url>
-    <loc>https://www.mahmoodmasjid.com/login.html</loc>
-    <lastmod>2026-01-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
 
 </urlset>
