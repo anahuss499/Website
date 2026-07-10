@@ -1,0 +1,1287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b5e3c">
+  <title>Mahmood Masjid | Sign Up / Log In</title>
+  <meta name="description" content="Sign up or log in to Mahmood Masjid, the mosque and madrassah management system for families, students, teachers, and administrators.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.mahmoodmasjid.com/auth.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.mahmoodmasjid.com/auth.html">
+  <meta property="og:title" content="Mahmood Masjid | Sign Up / Log In">
+  <meta property="og:description" content="A modern mosque and madrassah authentication page for Mahmood Masjid.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Aref+Ruqaa+Ink:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #0b5e3c;
+      --green-2: #0f7a4c;
+      --gold: #c9a45c;
+      --gold-soft: rgba(201, 164, 92, 0.16);
+      --cream: #f7f1e3;
+      --bg: #fcfaf5;
+      --surface: rgba(255, 255, 255, 0.88);
+      --surface-strong: #ffffff;
+      --text: #143126;
+      --muted: #66766e;
+      --border: rgba(11, 94, 60, 0.14);
+      --shadow: 0 24px 70px rgba(14, 39, 30, 0.16);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(11, 94, 60, 0.13), transparent 22%),
+        radial-gradient(circle at 88% 8%, rgba(201, 164, 92, 0.16), transparent 20%),
+        linear-gradient(180deg, #fffdf8 0%, #f8f3e9 45%, #ffffff 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(11, 94, 60, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11, 94, 60, 0.035) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 88%);
+      opacity: 0.55;
+    }
+
+    .page-shell {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px 16px 32px;
+    }
+
+    .ornament {
+      position: absolute;
+      inset: auto auto 0 50%;
+      transform: translateX(-50%);
+      width: min(1100px, 100%);
+      height: 240px;
+      pointer-events: none;
+      opacity: 0.16;
+      filter: drop-shadow(0 6px 24px rgba(11, 94, 60, 0.14));
+    }
+
+    .ornament svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .auth-layout {
+      position: relative;
+      z-index: 1;
+      width: min(1120px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-panel,
+    .auth-panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .hero-panel {
+      background: linear-gradient(155deg, rgba(11, 94, 60, 0.98), rgba(8, 71, 47, 0.96));
+      color: #fdfbf6;
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 660px;
+    }
+
+    .hero-panel::before,
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-panel::before {
+      width: 360px;
+      height: 360px;
+      top: -120px;
+      right: -140px;
+      background: radial-gradient(circle, rgba(201, 164, 92, 0.22), transparent 70%);
+    }
+
+    .hero-panel::after {
+      width: 420px;
+      height: 420px;
+      left: -180px;
+      bottom: -210px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 72%);
+    }
+
+    .brand-block {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .brand-mark {
+      width: 70px;
+      height: 70px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.18);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+      flex: 0 0 auto;
+    }
+
+    .brand-mark svg {
+      width: 42px;
+      height: 42px;
+      fill: none;
+      stroke: #f8efe2;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-copy .eyebrow {
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-family: "Aref Ruqaa Ink", "Cormorant Garamond", serif;
+      font-size: clamp(2.1rem, 4vw, 3.7rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-copy .subtitle {
+      margin: 10px 0 0;
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 34ch;
+      color: rgba(255,255,255,0.86);
+    }
+
+    .feature-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 14px;
+      margin: 28px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .feature-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .feature-list svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      margin-top: 2px;
+      stroke: #f5dfb2;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .feature-list strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 0.95rem;
+    }
+
+    .feature-list span {
+      display: block;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.55;
+      font-size: 0.92rem;
+    }
+
+    .hero-footer {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .hero-stat {
+      border-radius: var(--radius-md);
+      padding: 14px 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-align: center;
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.15rem;
+      color: #fff4dc;
+    }
+
+    .hero-stat span {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.82rem;
+    }
+
+    .auth-panel {
+      background: rgba(255,255,255,0.84);
+      padding: 18px;
+    }
+
+    .auth-card {
+      height: 100%;
+      border-radius: calc(var(--radius-xl) - 8px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,247,241,0.92));
+      border: 1px solid rgba(11,94,60,0.08);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .card-head h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      color: var(--green);
+    }
+
+    .card-head p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 34ch;
+      font-size: 0.95rem;
+    }
+
+    .tablist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 6px;
+      border-radius: 18px;
+      background: rgba(11,94,60,0.06);
+      border: 1px solid rgba(11,94,60,0.08);
+    }
+
+    .tab-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 160ms ease, background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .tab-btn[aria-selected="true"] {
+      background: linear-gradient(135deg, var(--green), var(--green-2));
+      color: #fff;
+      box-shadow: 0 12px 26px rgba(11, 94, 60, 0.22);
+    }
+
+    .status-banner {
+      min-height: 0;
+      padding: 0;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      display: none;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .status-banner.visible {
+      display: block;
+      padding: 14px 16px;
+    }
+
+    .status-banner.error {
+      background: rgba(188, 28, 28, 0.08);
+      border-color: rgba(188, 28, 28, 0.16);
+      color: #8f1f1f;
+    }
+
+    .status-banner.success {
+      background: rgba(11, 94, 60, 0.08);
+      border-color: rgba(11, 94, 60, 0.16);
+      color: var(--green);
+    }
+
+    .forms {
+      display: grid;
+    }
+
+    .auth-form {
+      display: none;
+      gap: 14px;
+    }
+
+    .auth-form.active {
+      display: grid;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #26483b;
+    }
+
+    .control,
+    .select-control {
+      width: 100%;
+      appearance: none;
+      border: 1px solid rgba(11, 94, 60, 0.18);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.96);
+      color: var(--text);
+      padding: 14px 15px;
+      font: inherit;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset;
+    }
+
+    .control::placeholder {
+      color: #8a9a92;
+    }
+
+    .control:focus,
+    .select-control:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(11, 94, 60, 0.12);
+    }
+
+    .field.invalid .control,
+    .field.invalid .select-control {
+      border-color: rgba(188, 28, 28, 0.4);
+      box-shadow: 0 0 0 4px rgba(188, 28, 28, 0.08);
+    }
+
+    .field.valid .control,
+    .field.valid .select-control {
+      border-color: rgba(11, 94, 60, 0.36);
+    }
+
+    .field-note {
+      min-height: 1.1em;
+      color: #a33b3b;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap .control {
+      padding-right: 52px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(11, 94, 60, 0.08);
+      color: var(--green);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background-color 160ms ease, transform 160ms ease;
+    }
+
+    .toggle-password:hover {
+      background: rgba(11, 94, 60, 0.14);
+    }
+
+    .toggle-password svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .inline-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .checkbox input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--green);
+    }
+
+    .link {
+      color: var(--green);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .role-dependent {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(11, 94, 60, 0.05), rgba(201, 164, 92, 0.05));
+      border: 1px dashed rgba(11, 94, 60, 0.16);
+    }
+
+    .role-dependent[hidden] {
+      display: none;
+    }
+
+    .form-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .submit-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font: inherit;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #fff;
+      background: linear-gradient(135deg, var(--green), var(--green-2));
+      box-shadow: 0 16px 30px rgba(11, 94, 60, 0.22);
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+      min-height: 54px;
+      position: relative;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 34px rgba(11, 94, 60, 0.26);
+    }
+
+    .submit-btn:disabled {
+      cursor: wait;
+      opacity: 0.86;
+      transform: none;
+    }
+
+    .submit-btn.loading {
+      color: rgba(255,255,255,0.92);
+    }
+
+    .submit-btn.loading .spinner {
+      display: inline-block;
+    }
+
+    .submit-btn .spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      margin-right: 10px;
+      border: 2px solid rgba(255,255,255,0.44);
+      border-top-color: #fff;
+      border-radius: 50%;
+      vertical-align: -3px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .form-footnote {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.65;
+      text-align: center;
+      padding-top: 2px;
+    }
+
+    .form-footnote strong {
+      color: var(--green);
+    }
+
+    .footer-line {
+      margin-top: 2px;
+      font-size: 0.84rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 980px) {
+      .auth-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-shell {
+        padding: 14px 12px 24px;
+      }
+
+      .hero-panel,
+      .auth-panel {
+        border-radius: 24px;
+      }
+
+      .hero-panel,
+      .auth-card {
+        padding: 20px;
+      }
+
+      .auth-card {
+        gap: 16px;
+      }
+
+      .grid-2,
+      .hero-footer {
+        grid-template-columns: 1fr;
+      }
+
+      .card-head {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .brand-block {
+        align-items: flex-start;
+      }
+
+      .brand-mark {
+        width: 60px;
+        height: 60px;
+        border-radius: 18px;
+      }
+
+      .brand-copy .eyebrow {
+        letter-spacing: 0.16em;
+        font-size: 0.68rem;
+      }
+
+      .tab-btn {
+        padding: 12px 10px;
+      }
+
+      .auth-card {
+        padding: 16px;
+      }
+
+      .control,
+      .select-control {
+        padding: 13px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <div class="auth-layout">
+      <section class="hero-panel" aria-labelledby="brand-title">
+        <div>
+          <div class="brand-block">
+            <div class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <path d="M12 34c2.2-7.5 8.2-13 12-13s9.8 5.5 12 13"></path>
+                <path d="M16 34h16"></path>
+                <path d="M24 8c0 5.5 3.8 6.6 3.8 11.2 0 3.2-1.6 5.3-3.8 7.4-2.2-2.1-3.8-4.2-3.8-7.4C20.2 14.6 24 13.5 24 8Z"></path>
+                <path d="M24 6v4"></path>
+                <path d="M14 26l-4 4"></path>
+                <path d="M34 26l4 4"></path>
+              </svg>
+            </div>
+            <div class="brand-copy">
+              <p class="eyebrow">Mosque and Madrassah Management</p>
+              <h1 id="brand-title">Mahmood Masjid</h1>
+              <p class="subtitle">A polished sign-up and login experience for students, parents, teachers, and administrators in a modern Islamic community platform.</p>
+            </div>
+          </div>
+
+          <ul class="feature-list" aria-label="Platform highlights">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7 10 17l-6-6"></path></svg>
+              <div>
+                <strong>Family-friendly access</strong>
+                <span>Separate roles and student-only fields keep the registration flow clear and easy to complete on mobile.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7 10 17l-6-6"></path></svg>
+              <div>
+                <strong>Ready for backend integration</strong>
+                <span>The form logic is structured so you can point it to a REST or auth API with minimal changes later.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7 10 17l-6-6"></path></svg>
+              <div>
+                <strong>Built for phone-first use</strong>
+                <span>Responsive spacing, large touch targets, and a single-card layout help parents and students sign in quickly.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero-footer" aria-label="Platform summary">
+          <div class="hero-stat"><strong>4 roles</strong><span>Student, Parent, Teacher, Admin</span></div>
+          <div class="hero-stat"><strong>Secure</strong><span>Password rules and inline validation</span></div>
+          <div class="hero-stat"><strong>Mobile-first</strong><span>Clean UI on smaller screens</span></div>
+        </div>
+      </section>
+
+      <section class="auth-panel" aria-label="Authentication form container">
+        <div class="auth-card">
+          <div class="card-head">
+            <div>
+              <h2>Access your account</h2>
+              <p>Switch between login and registration. Student accounts reveal guardian details automatically.</p>
+            </div>
+          </div>
+
+          <div class="tablist" role="tablist" aria-label="Authentication mode">
+            <button class="tab-btn" type="button" role="tab" id="login-tab" aria-selected="true" aria-controls="login-panel" data-auth-tab="login">Log In</button>
+            <button class="tab-btn" type="button" role="tab" id="signup-tab" aria-selected="false" aria-controls="signup-panel" data-auth-tab="signup">Sign Up</button>
+          </div>
+
+          <div id="auth-status" class="status-banner" role="status" aria-live="polite"></div>
+
+          <div class="forms">
+            <form id="login-form" class="auth-form active" data-auth-panel="login" data-endpoint="/api/auth/login" novalidate>
+              <div class="field">
+                <label for="login-identifier">Email or Phone</label>
+                <input class="control" type="text" id="login-identifier" name="identifier" autocomplete="username" placeholder="name@example.com or +92...">
+                <div class="field-note" data-error-for="identifier"></div>
+              </div>
+
+              <div class="field">
+                <label for="login-password">Password</label>
+                <div class="input-wrap">
+                  <input class="control" type="password" id="login-password" name="password" autocomplete="current-password" placeholder="Enter your password">
+                  <button class="toggle-password" type="button" data-password-toggle="login-password" aria-label="Show password">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </button>
+                </div>
+                <div class="field-note" data-error-for="password"></div>
+              </div>
+
+              <div class="inline-row">
+                <label class="checkbox" for="remember-me">
+                  <input type="checkbox" id="remember-me" name="rememberMe">
+                  Remember Me
+                </label>
+                <a class="link" href="mailto:contact.mahmoodmasjid@gmail.com?subject=Password%20Reset%20Request%20-%20Mahmood%20Masjid">Forgot Password?</a>
+              </div>
+
+              <div class="form-actions">
+                <button class="submit-btn" type="submit" data-submit-btn="login">
+                  <span class="spinner" aria-hidden="true"></span>
+                  Log In
+                </button>
+              </div>
+            </form>
+
+            <form id="signup-form" class="auth-form" data-auth-panel="signup" data-endpoint="/api/auth/signup" novalidate>
+              <div class="field">
+                <label for="signup-fullname">Full Name</label>
+                <input class="control" type="text" id="signup-fullname" name="fullName" autocomplete="name" placeholder="Enter full name">
+                <div class="field-note" data-error-for="fullName"></div>
+              </div>
+
+              <div class="field">
+                <label for="signup-role">Role</label>
+                <select class="select-control" id="signup-role" name="role">
+                  <option value="">Select role</option>
+                  <option value="student">Student</option>
+                  <option value="parent">Parent</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <div class="field-note" data-error-for="role"></div>
+              </div>
+
+              <div class="grid-2">
+                <div class="field">
+                  <label for="signup-email">Email</label>
+                  <input class="control" type="email" id="signup-email" name="email" autocomplete="email" placeholder="name@example.com">
+                  <div class="field-note" data-error-for="email"></div>
+                </div>
+                <div class="field">
+                  <label for="signup-phone">Phone Number</label>
+                  <input class="control" type="tel" id="signup-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+92 300 1234567">
+                  <div class="field-note" data-error-for="phone"></div>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="field">
+                  <label for="signup-password">Password</label>
+                  <div class="input-wrap">
+                    <input class="control" type="password" id="signup-password" name="password" autocomplete="new-password" placeholder="Minimum 8 characters">
+                    <button class="toggle-password" type="button" data-password-toggle="signup-password" aria-label="Show password">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                  </div>
+                  <div class="field-note" data-error-for="password"></div>
+                </div>
+                <div class="field">
+                  <label for="signup-confirm">Confirm Password</label>
+                  <div class="input-wrap">
+                    <input class="control" type="password" id="signup-confirm" name="confirmPassword" autocomplete="new-password" placeholder="Repeat password">
+                    <button class="toggle-password" type="button" data-password-toggle="signup-confirm" aria-label="Show password">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                  </div>
+                  <div class="field-note" data-error-for="confirmPassword"></div>
+                </div>
+              </div>
+
+              <div class="role-dependent" id="student-fields" hidden>
+                <div class="grid-2">
+                  <div class="field">
+                    <label for="signup-guardian">Guardian Name</label>
+                    <input class="control" type="text" id="signup-guardian" name="guardianName" autocomplete="off" placeholder="Parent or guardian name">
+                    <div class="field-note" data-error-for="guardianName"></div>
+                  </div>
+                  <div class="field">
+                    <label for="signup-batch">Class / Batch</label>
+                    <select class="select-control" id="signup-batch" name="batch">
+                      <option value="">Select class or batch</option>
+                      <option value="nursery">Nursery / Qaida</option>
+                      <option value="nazra">Nazra</option>
+                      <option value="hifz">Hifz</option>
+                      <option value="tajweed">Tajweed</option>
+                      <option value="evening">Evening Batch</option>
+                      <option value="weekend">Weekend Batch</option>
+                    </select>
+                    <div class="field-note" data-error-for="batch"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="submit-btn" type="submit" data-submit-btn="signup">
+                  <span class="spinner" aria-hidden="true"></span>
+                  Create Account
+                </button>
+              </div>
+
+              <div class="footer-line">By creating an account, you agree to the mosque and madrassah access policies.</div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="ornament" aria-hidden="true">
+      <svg viewBox="0 0 1200 240" preserveAspectRatio="none">
+        <path d="M0 208h112c20 0 34-14 34-34v-9c0-12 10-22 22-22s22 10 22 22v9c0 20 16 34 36 34h68c20 0 36-14 36-34v-10c0-17 14-30 31-30s31 13 31 30v10c0 20 16 34 36 34h72c20 0 36-14 36-34v-9c0-21 17-38 38-38s38 17 38 38v9c0 20 16 34 36 34h80c20 0 36-14 36-34v-7c0-23 18-41 41-41s41 18 41 41v7c0 20 16 34 36 34h78c20 0 36-14 36-34v-11c0-18 15-33 33-33s33 15 33 33v11c0 20 16 34 36 34h114v32H0z" fill="#0b5e3c"/>
+        <path d="M560 208c4-45 28-80 58-80 31 0 55 35 58 80" fill="none" stroke="#c9a45c" stroke-width="8" stroke-linecap="round"/>
+        <path d="M600 76v-26" stroke="#c9a45c" stroke-width="8" stroke-linecap="round"/>
+        <path d="M600 50c0 17 14 31 31 31-12 13-31 19-51 15" fill="none" stroke="#c9a45c" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const tabButtons = Array.from(document.querySelectorAll('[data-auth-tab]'));
+      const forms = Array.from(document.querySelectorAll('.auth-form'));
+      const status = document.getElementById('auth-status');
+      const studentFields = document.getElementById('student-fields');
+      const roleSelect = document.getElementById('signup-role');
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const rememberKey = 'mahmood-masjid-remembered-login';
+      const rememberedIdentifierKey = 'mahmood-masjid-remembered-identifier';
+
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      function setStatus(type, message) {
+        if (!status) return;
+        if (!message) {
+          status.className = 'status-banner';
+          status.textContent = '';
+          status.hidden = true;
+          return;
+        }
+
+        status.hidden = false;
+        status.className = `status-banner visible ${type || ''}`.trim();
+        status.textContent = message;
+      }
+
+      function setTab(tabName, updateHash = true) {
+        tabButtons.forEach((button) => {
+          const isSelected = button.dataset.authTab === tabName;
+          button.setAttribute('aria-selected', String(isSelected));
+        });
+
+        forms.forEach((form) => {
+          const isActive = form.dataset.authPanel === tabName;
+          form.classList.toggle('active', isActive);
+          form.toggleAttribute('hidden', !isActive);
+        });
+
+        if (updateHash) {
+          history.replaceState(null, '', `#${tabName}`);
+        }
+
+        setStatus('', '');
+      }
+
+      function getFieldElements(form) {
+        return Array.from(form.querySelectorAll('.field')).reduce((map, field) => {
+          const input = field.querySelector('input, select, textarea');
+          const message = field.querySelector('[data-error-for]');
+          if (input) {
+            map.set(input.name, { field, input, message });
+          }
+          return map;
+        }, new Map());
+      }
+
+      function clearFieldState(form) {
+        getFieldElements(form).forEach(({ field, input, message }) => {
+          field.classList.remove('invalid', 'valid');
+          input.removeAttribute('aria-invalid');
+          if (message) message.textContent = '';
+        });
+      }
+
+      function setFieldError(form, name, message) {
+        const field = getFieldElements(form).get(name);
+        if (!field) return;
+        field.field.classList.add('invalid');
+        field.field.classList.remove('valid');
+        field.input.setAttribute('aria-invalid', 'true');
+        if (field.message) field.message.textContent = message;
+      }
+
+      function setFieldSuccess(form, name) {
+        const field = getFieldElements(form).get(name);
+        if (!field) return;
+        field.field.classList.remove('invalid');
+        field.field.classList.add('valid');
+        field.input.removeAttribute('aria-invalid');
+        if (field.message) field.message.textContent = '';
+      }
+
+      function validateEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      }
+
+      function validatePhone(value) {
+        const normalized = value.replace(/[\s()-]/g, '');
+        return /^[+]?\d{7,15}$/.test(normalized);
+      }
+
+      function looksLikeEmail(value) {
+        return value.includes('@');
+      }
+
+      function getFormValues(form) {
+        return Object.fromEntries(new FormData(form).entries());
+      }
+
+      function setLoading(button, loading) {
+        if (!button) return;
+        if (!button.dataset.originalLabel) {
+          button.dataset.originalLabel = button.innerHTML;
+        }
+
+        button.disabled = loading;
+        button.classList.toggle('loading', loading);
+
+        if (loading) {
+          button.innerHTML = '<span class="spinner" aria-hidden="true"></span>Working...';
+        } else {
+          button.innerHTML = button.dataset.originalLabel;
+        }
+      }
+
+      function updateStudentFieldsVisibility() {
+        const showStudentFields = roleSelect && roleSelect.value === 'student';
+        studentFields.hidden = !showStudentFields;
+
+        const guardian = signupForm.elements.guardianName;
+        const batch = signupForm.elements.batch;
+
+        guardian.required = showStudentFields;
+        batch.required = showStudentFields;
+
+        if (!showStudentFields) {
+          guardian.value = '';
+          batch.value = '';
+          setFieldSuccess(signupForm, 'guardianName');
+          setFieldSuccess(signupForm, 'batch');
+        }
+      }
+
+      async function submitAuth(mode, payload, endpoint) {
+        const baseUrl = window.AUTH_API_BASE_URL || '';
+        const shouldFetch = Boolean(baseUrl);
+
+        if (shouldFetch) {
+          const response = await fetch(`${baseUrl}${endpoint}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          let data = {};
+          try {
+            data = await response.json();
+          } catch (error) {
+            data = {};
+          }
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Unable to complete authentication.');
+          }
+
+          return data;
+        }
+
+        await delay(1200);
+        return {
+          message: mode === 'login'
+            ? 'Welcome back. Your account is ready.'
+            : 'Account created successfully. A confirmation step can be wired to your backend next.'
+        };
+      }
+
+      function focusFirstInvalid(form) {
+        const firstInvalid = form.querySelector('[aria-invalid="true"]');
+        if (firstInvalid) firstInvalid.focus();
+      }
+
+      tabButtons.forEach((button) => {
+        button.addEventListener('click', () => setTab(button.dataset.authTab));
+      });
+
+      document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const targetId = button.dataset.passwordToggle;
+          const input = document.getElementById(targetId);
+          if (!input) return;
+
+          const isHidden = input.type === 'password';
+          input.type = isHidden ? 'text' : 'password';
+          button.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+        });
+      });
+
+      roleSelect.addEventListener('change', () => {
+        updateStudentFieldsVisibility();
+        setFieldSuccess(signupForm, 'role');
+      });
+
+      [loginForm, signupForm].forEach((form) => {
+        form.addEventListener('input', (event) => {
+          const target = event.target;
+          if (target && target.name) {
+            const field = form.querySelector(`[name="${target.name}"]`);
+            if (field) {
+              const wrapper = field.closest('.field');
+              if (wrapper) {
+                wrapper.classList.remove('invalid');
+              }
+            }
+          }
+        });
+      });
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearFieldState(loginForm);
+        setStatus('', '');
+
+        const values = getFormValues(loginForm);
+        const identifier = (values.identifier || '').trim();
+        const password = (values.password || '').trim();
+        const rememberMe = Boolean(values.rememberMe);
+        let hasError = false;
+
+        if (!identifier) {
+          setFieldError(loginForm, 'identifier', 'Email or phone number is required.');
+          hasError = true;
+        } else if (looksLikeEmail(identifier) && !validateEmail(identifier)) {
+          setFieldError(loginForm, 'identifier', 'Enter a valid email address.');
+          hasError = true;
+        } else if (!looksLikeEmail(identifier) && !validatePhone(identifier)) {
+          setFieldError(loginForm, 'identifier', 'Enter a valid phone number.');
+          hasError = true;
+        } else {
+          setFieldSuccess(loginForm, 'identifier');
+        }
+
+        if (!password) {
+          setFieldError(loginForm, 'password', 'Password is required.');
+          hasError = true;
+        } else if (password.length < 8) {
+          setFieldError(loginForm, 'password', 'Password must be at least 8 characters.');
+          hasError = true;
+        } else {
+          setFieldSuccess(loginForm, 'password');
+        }
+
+        if (hasError) {
+          setStatus('error', 'Please fix the highlighted fields and try again.');
+          focusFirstInvalid(loginForm);
+          return;
+        }
+
+        const submitBtn = loginForm.querySelector('[data-submit-btn="login"]');
+        setLoading(submitBtn, true);
+
+        try {
+          const result = await submitAuth('login', {
+            identifier,
+            password,
+            rememberMe
+          }, loginForm.dataset.endpoint);
+
+          if (rememberMe) {
+            localStorage.setItem(rememberKey, '1');
+            localStorage.setItem(rememberedIdentifierKey, identifier);
+          } else {
+            localStorage.removeItem(rememberKey);
+            localStorage.removeItem(rememberedIdentifierKey);
+          }
+
+          setStatus('success', result.message || 'Logged in successfully.');
+        } catch (error) {
+          setStatus('error', error.message || 'Unable to log in right now.');
+        } finally {
+          setLoading(submitBtn, false);
+        }
+      });
+
+      signupForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearFieldState(signupForm);
+        setStatus('', '');
+
+        const values = getFormValues(signupForm);
+        const fullName = (values.fullName || '').trim();
+        const role = (values.role || '').trim();
+        const email = (values.email || '').trim().toLowerCase();
+        const phone = (values.phone || '').trim();
+        const password = (values.password || '').trim();
+        const confirmPassword = (values.confirmPassword || '').trim();
+        const guardianName = (values.guardianName || '').trim();
+        const batch = (values.batch || '').trim();
+        let hasError = false;
+
+        if (!fullName) {
+          setFieldError(signupForm, 'fullName', 'Full name is required.');
+          hasError = true;
+        } else {
+          setFieldSuccess(signupForm, 'fullName');
+        }
+
+        if (!role) {
+          setFieldError(signupForm, 'role', 'Choose a role.');
+          hasError = true;
+        } else {
+          setFieldSuccess(signupForm, 'role');
+        }
+
+        if (!email) {
+          setFieldError(signupForm, 'email', 'Email is required.');
+          hasError = true;
+        } else if (!validateEmail(email)) {
+          setFieldError(signupForm, 'email', 'Enter a valid email address.');
+          hasError = true;
+        } else {
+          setFieldSuccess(signupForm, 'email');
+        }
+
+        if (!phone) {
+          setFieldError(signupForm, 'phone', 'Phone number is required.');
+          hasError = true;
+        } else if (!validatePhone(phone)) {
+          setFieldError(signupForm, 'phone', 'Enter a valid phone number.');
+          hasError = true;
+        } else {
+          setFieldSuccess(signupForm, 'phone');
+        }
+
+        if (!password) {
+          setFieldError(signupForm, 'password', 'Password is required.');
+          hasError = true;
+        } else if (password.length < 8) {
+          setFieldError(signupForm, 'password', 'Password must be at least 8 characters.');
+          hasError = true;
+        } else {
+          setFieldSuccess(signupForm, 'password');
+        }
+
+        if (!confirmPassword) {
+          setFieldError(signupForm, 'confirmPassword', 'Please confirm your password.');
+          hasError = true;
+        } else if (confirmPassword !== password) {
+          setFieldError(signupForm, 'confirmPassword', 'Passwords do not match.');
+          hasError = true;
+        } else {
+          setFieldSuccess(signupForm, 'confirmPassword');
+        }
+
+        if (role === 'student') {
+          if (!guardianName) {
+            setFieldError(signupForm, 'guardianName', 'Guardian name is required for students.');
+            hasError = true;
+          } else {
+            setFieldSuccess(signupForm, 'guardianName');
+          }
+
+          if (!batch) {
+            setFieldError(signupForm, 'batch', 'Select a class or batch.');
+            hasError = true;
+          } else {
+            setFieldSuccess(signupForm, 'batch');
+          }
+        }
+
+        if (hasError) {
+          setStatus('error', 'Please correct the highlighted fields and try again.');
+          focusFirstInvalid(signupForm);
+          return;
+        }
+
+        const submitBtn = signupForm.querySelector('[data-submit-btn="signup"]');
+        setLoading(submitBtn, true);
+
+        try {
+          const result = await submitAuth('signup', {
+            fullName,
+            role,
+            email,
+            phone,
+            password,
+            guardianName: role === 'student' ? guardianName : '',
+            batch: role === 'student' ? batch : ''
+          }, signupForm.dataset.endpoint);
+
+          setStatus('success', result.message || 'Account created successfully.');
+          signupForm.reset();
+          updateStudentFieldsVisibility();
+        } catch (error) {
+          setStatus('error', error.message || 'Unable to create the account right now.');
+        } finally {
+          setLoading(submitBtn, false);
+        }
+      });
+
+      const savedRemember = localStorage.getItem(rememberKey) === '1';
+      const savedIdentifier = localStorage.getItem(rememberedIdentifierKey) || '';
+
+      if (savedRemember && savedIdentifier) {
+        loginForm.elements.identifier.value = savedIdentifier;
+        loginForm.elements.rememberMe.checked = true;
+      }
+
+      const initialTab = location.hash === '#signup' ? 'signup' : 'login';
+      setTab(initialTab, false);
+      updateStudentFieldsVisibility();
+      setStatus('', '');
+    })();
+  </script>
+</body>
+</html>
