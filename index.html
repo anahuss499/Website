@@ -227,6 +227,8 @@
         
         <div class="nav-links">
           <a href="/"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10.5z"></path></svg> <span data-en="Home" data-urdu="گھر">Home</span></a>
+          <a href="/newsfeed.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <span data-en="Newsfeed" data-urdu="خبریں">Newsfeed</span></a>
+          
           <a href="/about.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <span data-en="About" data-urdu="ہمارے بارے میں">About</span></a>
           <a href="/newsfeed.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> <span data-en="Newsfeed" data-urdu="خبریں">Newsfeed</span></a>
           <a href="/quran.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13a2 2 0 0 1 2 2v14l-3-1-3 1-3-1-3 1V5a2 2 0 0 1 2-2z"/></svg> <span data-en="Quran" data-urdu="قرآن">Quran</span></a>
@@ -413,7 +415,6 @@
     <!-- Mahmood Masjid — Daily Verse & Hadith section -->
 
 <style>
-
   :root{
     --bg: #ffffff;
     --lime: #3ED65B;
@@ -434,7 +435,16 @@
     font-family:'Inter', sans-serif;
     padding: 28px 12px 60px;
   }
-  .daily-wrap{ max-width: 560px; margin: 0 auto; }
+  .daily-wrap{ max-width: 1180px; margin: 0 auto; }
+  .cards-row{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (min-width: 860px){
+    .cards-row{ grid-template-columns: 1fr 1fr; }
+  }
 
   .section-header{
     text-align:center;
@@ -765,26 +775,31 @@
   .poster-oneline .ol-website{ color: var(--lime-deep); }
   .poster-oneline .ol-sep{ color: var(--glass-border); }
   .poster-oneline .ol-icon{
-    width: 20px; height:20px; border-radius:50%;
+    width: 22px; height:22px; border-radius:50%;
     display:inline-flex; align-items:center; justify-content:center;
-    background: var(--lime-strong);
+    background: linear-gradient(150deg, var(--lime), var(--lime-strong));
     color:#fff;
     flex-shrink:0;
+    box-shadow: 0 1px 3px rgba(15,122,43,0.35);
   }
-  .poster-oneline .ol-icon svg{ width:11px; height:11px; }
+  .poster-oneline .ol-icon svg{ width:12px; height:12px; }
   .poster-oneline .ol-bank{ color: var(--ink); }
-
+  .poster-oneline .ol-handle{ color: var(--lime-deep); font-weight:700; }
 </style>
+</head>
+<body>
+
 
 <div class="daily-wrap">
   <div class="section-header">
-
     <h1>Daily Verse &amp; Hadith</h1>
     <div class="ur">روزانہ آیت اور حدیث</div>
   </div>
 
-  <div id="verse-card"></div>
-  <div id="hadith-card"></div>
+  <div class="cards-row">
+    <div id="verse-card"></div>
+    <div id="hadith-card"></div>
+  </div>
 
   <div class="refresh-row">
     <button class="refresh-btn" onclick="showNext()">Show Another</button>
@@ -794,7 +809,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-
 const verses = [
   {
     arabic: 'إِنَّ مَعَ الْعُسْرِ يُسْرًا',
@@ -837,6 +851,42 @@ const verses = [
     en: 'And Allah loves those who do good.',
     ur: 'اور اللہ احسان کرنے والوں سے محبت کرتا ہے۔',
     ref: 'Surah Al-Imran 3:134'
+  },
+  {
+    arabic: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',
+    en: 'For indeed, with hardship comes ease.',
+    ur: 'بے شک مشکل کے ساتھ آسانی ہے۔',
+    ref: 'Surah Ash-Sharh 94:5'
+  },
+  {
+    arabic: 'لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا',
+    en: 'Allah does not burden a soul beyond that it can bear.',
+    ur: 'اللہ کسی جان پر اس کی طاقت سے زیادہ بوجھ نہیں ڈالتا۔',
+    ref: 'Surah Al-Baqarah 2:286'
+  },
+  {
+    arabic: 'وَلَا تَيْأَسُوا مِن رَّوْحِ اللَّهِ',
+    en: 'And do not despair of relief from Allah.',
+    ur: 'اور اللہ کی رحمت سے مایوس نہ ہو۔',
+    ref: 'Surah Yusuf 12:87'
+  },
+  {
+    arabic: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',
+    en: 'Verily, in the remembrance of Allah do hearts find rest.',
+    ur: 'خبردار! اللہ کے ذکر سے دلوں کو اطمینان نصیب ہوتا ہے۔',
+    ref: 'Surah Ar-Ra\'d 13:28'
+  },
+  {
+    arabic: 'إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا وَّالَّذِينَ هُم مُّحْسِنُونَ',
+    en: 'Indeed, Allah is with those who fear Him and those who are doers of good.',
+    ur: 'بے شک اللہ ان کے ساتھ ہے جو تقویٰ اختیار کرتے ہیں اور نیکی کرنے والے ہیں۔',
+    ref: 'Surah An-Nahl 16:128'
+  },
+  {
+    arabic: 'وَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ',
+    en: 'But perhaps you hate a thing and it is good for you.',
+    ur: 'اور ہو سکتا ہے کہ تم کسی چیز کو ناپسند کرو اور وہ تمہارے لیے بہتر ہو۔',
+    ref: 'Surah Al-Baqarah 2:216'
   }
 ];
 
@@ -889,6 +939,48 @@ const hadiths = [
     ur: 'جو خاموش رہا، نجات پا گیا۔',
     ref: 'Jami at-Tirmidhi 2501',
     complete: true
+  },
+  {
+    arabic: 'لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ',
+    en: 'None of you truly believes until he loves for his brother what he loves for himself.',
+    ur: 'تم میں سے کوئی مومن نہیں ہو سکتا جب تک وہ اپنے بھائی کے لیے وہی پسند نہ کرے جو اپنے لیے پسند کرتا ہے۔',
+    ref: 'Sahih al-Bukhari 13',
+    complete: true
+  },
+  {
+    arabic: 'لَيْسَ الشَّدِيدُ بِالصُّرَعَةِ إِنَّمَا الشَّدِيدُ الَّذِي يَمْلِكُ نَفْسَهُ عِنْدَ الْغَضَبِ',
+    en: 'The strong is not the one who overcomes people by his strength, but the one who controls himself while in anger.',
+    ur: 'طاقتور وہ نہیں جو لوگوں کو پچھاڑ دے، بلکہ طاقتور وہ ہے جو غصے کے وقت اپنے آپ پر قابو رکھے۔',
+    ref: 'Sahih al-Bukhari 6114',
+    complete: true
+  },
+  {
+    arabic: 'طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ',
+    en: 'Seeking knowledge is an obligation upon every Muslim.',
+    ur: 'علم حاصل کرنا ہر مسلمان پر فرض ہے۔',
+    ref: 'Sunan Ibn Majah 224',
+    complete: true
+  },
+  {
+    arabic: 'مَنْ نَفَّسَ عَنْ مُؤْمِنٍ كُرْبَةً مِنْ كُرَبِ الدُّنْيَا نَفَّسَ اللَّهُ عَنْهُ كُرْبَةً مِنْ كُرَبِ يَوْمِ الْقِيَامَةِ',
+    en: 'Whoever relieves a believer\'s hardship in this world, Allah will relieve his hardship on the Day of Judgment.',
+    ur: 'جس نے کسی مومن کی دنیاوی مشکل دور کی، اللہ اس کی قیامت کے دن کی ایک مشکل دور فرمائے گا۔',
+    ref: 'Sahih Muslim 2699',
+    complete: false
+  },
+  {
+    arabic: 'احْفَظِ اللَّهَ يَحْفَظْكَ',
+    en: 'Be mindful of Allah, and He will protect you.',
+    ur: 'اللہ کے احکام کی حفاظت کرو، وہ تمہاری حفاظت کرے گا۔',
+    ref: 'Jami at-Tirmidhi 2516',
+    complete: false
+  },
+  {
+    arabic: 'مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ',
+    en: 'Whoever believes in Allah and the Last Day should speak good or remain silent.',
+    ur: 'جو اللہ اور یومِ آخرت پر ایمان رکھتا ہے، اسے چاہیے کہ اچھی بات کہے یا خاموش رہے۔',
+    ref: 'Sahih al-Bukhari 6018',
+    complete: false
   }
 ];
 
@@ -1028,6 +1120,7 @@ function generateShareImage(item, label, kind){
         <span class="ol-icon">${socials[0].svg}</span>
         <span class="ol-icon">${socials[1].svg}</span>
         <span class="ol-icon">${socials[2].svg}</span>
+        <span class="ol-handle">@mahmoodmasjid</span>
       </div>
     </div>
   `;
@@ -1089,9 +1182,7 @@ if(document.readyState === 'loading'){
 } else {
   init();
 }
-
 </script>
-
     <section class="cta card">
       <h3 data-en="Visiting or new here?" data-urdu="آ رہے ہیں یا نئے ہیں؟">Visiting or new here?</h3>
       <p data-en="Find our location on the Map page and contact us if you have questions." data-urdu="ہمارا مقام نقشہ صفحہ پر تلاش کریں اور اگر آپ کے کوئی سوالات ہیں تو ہم سے رابطہ کریں۔">Find our location on the Map page and contact us if you have questions.</p>
