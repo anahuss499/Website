@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>مسجد محمود — مسجد اسکرین</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Share+Tech+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --deep-green: #0b2e1f;
+            --mid-green: #123f2a;
+            --emerald: #1f6b45;
+            --gold: #d4af6a;
+            --gold-soft: #e8cf9a;
+            --gold-deep: #a97c34;
+            --cream: #f4ecd8;
+            --muted: rgba(244, 236, 216, 0.62);
+            --glass: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(212, 175, 106, 0.32);
+            --glow: rgba(212, 175, 106, 0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 20%, var(--mid-green) 0%, var(--deep-green) 65%, #071c14 100%);
+            color: var(--cream);
+            font-family: 'Inter', sans-serif;
+            position: relative;
+        }
+
+        /* ---- shared decorative frame ---- */
+        .lattice {
+            position: fixed;
+            inset: 0;
+            opacity: 0.07;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(30deg, var(--gold) 1px, transparent 1px),
+                linear-gradient(150deg, var(--gold) 1px, transparent 1px),
+                linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+            background-size: 84px 146px, 84px 146px, 84px 146px;
+        }
+
+        .frame {
+            position: fixed;
+            inset: 3vh 3vh;
+            border: 1px solid rgba(212, 175, 106, 0.35);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .frame::before,
+        .frame::after {
+            content: "";
+            position: absolute;
+            width: clamp(30px, 3vw, 54px);
+            height: clamp(30px, 3vw, 54px);
+            border: 2px solid var(--gold);
+        }
+
+        .frame::before {
+            top: -2px;
+            left: -2px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .frame::after {
+            bottom: -2px;
+            right: -2px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .frame .corner-tr,
+        .frame .corner-bl {
+            position: absolute;
+            width: clamp(30px, 3vw, 54px);
+            height: clamp(30px, 3vw, 54px);
+            border: 2px solid var(--gold);
+        }
+
+        .frame .corner-tr {
+            top: -2px;
+            right: -2px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .frame .corner-bl {
+            bottom: -2px;
+            left: -2px;
+            border-right: none;
+            border-top: none;
+        }
+
+        /* =========================================================
+           APP SHELL — persistent sidebar + rotating main panel
+           + persistent donor ticker + footer bar
+           ========================================================= */
+        .app-shell {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: clamp(300px, 22vw, 480px) 1fr;
+            grid-template-rows: minmax(0, 1fr) auto auto;
+            gap: clamp(10px, 1vh, 18px);
+            padding: clamp(16px, 3.5vh, 40px) clamp(16px, 3.5vw, 40px);
+        }
+
+        /* ---- Sidebar: logo/name, clock, prayer times ---- */
+        .sidebar {
+            grid-column: 1;
+            grid-row: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header {
+            flex-shrink: 0;
+        }
+
+        .sidebar-header .logo {
+            width: clamp(38px, 3.4vw, 60px);
+            height: clamp(38px, 3.4vw, 60px);
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header h1 {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(18px, 1.7vw, 27px);
+            margin: 0;
+            color: var(--cream);
+        }
+
+        .sidebar-dates {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(11px, 1vw, 14px);
+            color: var(--muted);
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        .sidebar-dates .hijri {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .clock-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 2px 16px var(--glow);
+            padding: clamp(10px, 1.4vh, 16px) clamp(12px, 1.4vw, 20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(12px, 1.4vw, 20px);
+            flex-shrink: 0;
+        }
+
+        .analog-clock {
+            width: clamp(72px, 6.6vw, 100px);
+            height: clamp(72px, 6.6vw, 100px);
+            flex-shrink: 0;
+        }
+
+        .analog-clock text {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 700;
+            fill: var(--cream);
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        .clock-digital {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .clock-label {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(12px, 1.05vw, 16px);
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .clock-time {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 700;
+            font-size: clamp(24px, 2.5vw, 38px);
+            color: var(--cream);
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(212, 175, 106, .25);
+        }
+
+        .prayer-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 2px 16px var(--glow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .prayer-card-title {
+            padding: clamp(9px, 1.2vh, 14px) clamp(16px, 1.7vw, 24px);
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(16px, 1.5vw, 21px);
+            color: var(--cream);
+            border-bottom: 1px dashed var(--glass-border);
+            flex-shrink: 0;
+        }
+
+        .prayer-rows {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .prayer-rows::-webkit-scrollbar {
+            display: none;
+        }
+
+        .jummah-slot {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: clamp(7px, 1.1vh, 12px) clamp(16px, 1.7vw, 24px);
+            background: rgba(212, 175, 106, 0.14);
+            border-top: 1px dashed var(--glass-border);
+        }
+
+        .jummah-slot-label {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .jummah-slot-name {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(16px, 1.5vw, 21px);
+            color: var(--cream);
+        }
+
+        .jummah-slot-note {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(11px, 1vw, 14px);
+            color: var(--muted);
+        }
+
+        .jummah-slot-time {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 700;
+            font-size: clamp(16px, 1.5vw, 21px);
+            color: var(--gold);
+        }
+
+        .prayer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: clamp(7px, 1.1vh, 12px) clamp(16px, 1.7vw, 24px);
+            flex: 1 1 0;
+            min-height: clamp(38px, 4.6vh, 54px);
+        }
+
+        .prayer-row+.prayer-row {
+            border-top: 1px dashed var(--glass-border);
+        }
+
+        .prayer-row.is-next {
+            background: rgba(212, 175, 106, 0.16);
+        }
+
+        .prayer-name-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .prayer-name {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(17px, 1.7vw, 23px);
+            color: var(--cream);
+        }
+
+        .prayer-time {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 700;
+            font-size: clamp(15px, 1.5vw, 21px);
+            color: var(--gold);
+        }
+
+        .prayer-row.is-next .prayer-time {
+            color: var(--cream);
+        }
+
+        .next-badge {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(10px, 0.9vw, 13px);
+            font-weight: 700;
+            color: var(--deep-green);
+            background: linear-gradient(150deg, var(--gold-soft), var(--gold));
+            padding: 3px clamp(7px, 0.8vw, 11px);
+            border-radius: 999px;
+            margin-left: 10px;
+        }
+
+        /* ---- Main panel: rotating reminder slides ---- */
+        .main-panel {
+            grid-column: 2;
+            grid-row: 1;
+            position: relative;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .9s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .slide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ---- Phone-off reminder ---- */
+        .slide-phone {
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .po-content {
+            text-align: center;
+            padding: 3vh 3vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.4vh;
+        }
+
+        .po-icon-wrap {
+            position: relative;
+            width: clamp(90px, 9vw, 150px);
+            height: clamp(90px, 9vw, 150px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .po-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1.5px solid rgba(212, 175, 106, 0.5);
+            animation: po-pulse 2.6s ease-out infinite;
+        }
+
+        .po-ring.delay {
+            animation-delay: 1.3s;
+        }
+
+        @keyframes po-pulse {
+            0% {
+                transform: scale(0.72);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: scale(1.35);
+                opacity: 0;
+            }
+        }
+
+        .po-phone-icon {
+            width: 46%;
+            height: 46%;
+            z-index: 1;
+        }
+
+        .po-eyebrow {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            letter-spacing: 0.05em;
+            font-size: clamp(0.85rem, 1.05vw, 1.05rem);
+            color: var(--gold-soft);
+            font-weight: 600;
+        }
+
+        .slide-phone h1 {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(1.9rem, 4vw, 3.2rem);
+            line-height: 1.5;
+            color: var(--cream);
+            max-width: 16ch;
+            margin: 0;
+        }
+
+        .slide-phone h1 em {
+            font-style: normal;
+            color: var(--gold);
+        }
+
+        .po-divider {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .po-subtext {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(1rem, 1.15vw, 1.2rem);
+            color: rgba(244, 236, 216, 0.78);
+            font-weight: 500;
+            max-width: 42ch;
+            line-height: 1.8;
+        }
+
+        /* ---- Dua reminder ---- */
+        .slide-dua {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5vh 3vw;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 980px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.6vh;
+        }
+
+        .header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1vh;
+        }
+
+        .eyebrow {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            letter-spacing: 0.05em;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            color: var(--gold-soft);
+            font-weight: 600;
+        }
+
+        h1 {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+            line-height: 1.6;
+            color: var(--cream);
+        }
+
+        .divider {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin-top: 0.5vh;
+        }
+
+        .cards {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.2vw;
+        }
+
+        .card {
+            background: linear-gradient(160deg, rgba(212, 175, 106, 0.07), rgba(212, 175, 106, 0.02));
+            border: 1px solid rgba(212, 175, 106, 0.28);
+            border-radius: 4px;
+            padding: 2.4vh 1.8vw;
+            display: flex;
+            flex-direction: column;
+            gap: 1.6vh;
+            position: relative;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(212, 175, 106, 0.16);
+            pointer-events: none;
+        }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 0.7em;
+        }
+
+        .foot-icon {
+            width: clamp(20px, 1.8vw, 30px);
+            height: clamp(20px, 1.8vw, 30px);
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .arabic {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+            font-size: clamp(1.3rem, 1.9vw, 1.9rem);
+            line-height: 1.7;
+            color: var(--cream);
+            text-align: center;
+            padding: 0.5vh 0;
+        }
+
+        .translit {
+            font-style: italic;
+            font-size: clamp(0.8rem, 0.95vw, 0.95rem);
+            color: rgba(244, 236, 216, 0.7);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .urdu-translation {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(0.95rem, 1.2vw, 1.2rem);
+            color: var(--gold-soft);
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .footnote {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            text-align: center;
+            font-size: clamp(0.85rem, 0.95vw, 1rem);
+            color: rgba(244, 236, 216, 0.6);
+            max-width: 65ch;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ---- Adhkar after Fard prayer ---- */
+        .slide-adh {
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            padding: 2vh 3vw;
+        }
+
+        .adh-page {
+            width: 100%;
+            max-width: 1040px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.3vh;
+            margin: auto 0;
+        }
+
+        .adh-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5vh;
+        }
+
+        .adh-eyebrow {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            letter-spacing: 0.05em;
+            font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+            color: var(--gold-soft);
+            font-weight: 600;
+        }
+
+        .slide-adh h1 {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(1.4rem, 2.2vw, 2rem);
+            line-height: 1.5;
+            color: var(--cream);
+            margin: 0;
+        }
+
+        .adh-divider {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin-top: 0.3vh;
+        }
+
+        .adh-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9vh 1.1vw;
+        }
+
+        .adh-card {
+            background: linear-gradient(160deg, rgba(212, 175, 106, 0.07), rgba(212, 175, 106, 0.02));
+            border: 1px solid rgba(212, 175, 106, 0.28);
+            border-radius: 4px;
+            padding: 1vh 1.3vw;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4vh;
+            position: relative;
+        }
+
+        .adh-card::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid rgba(212, 175, 106, 0.16);
+            pointer-events: none;
+        }
+
+        .adh-card-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1em;
+        }
+
+        .adh-card-title {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .adh-count {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.64rem, 0.75vw, 0.75rem);
+            letter-spacing: 0.04em;
+            color: var(--deep-green);
+            font-weight: 700;
+            background: linear-gradient(150deg, var(--gold-soft), var(--gold));
+            padding: 3px 10px;
+            border-radius: 999px;
+            flex-shrink: 0;
+        }
+
+        .adh-arabic {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+            font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+            line-height: 1.5;
+            color: var(--cream);
+            text-align: center;
+            padding: 0.1vh 0;
+        }
+
+        .adh-translit {
+            font-style: italic;
+            font-size: clamp(0.7rem, 0.8vw, 0.8rem);
+            color: rgba(244, 236, 216, 0.68);
+            text-align: center;
+            line-height: 1.25;
+        }
+
+        .adh-translation {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+            color: var(--cream);
+            text-align: center;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .adh-footnote {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            text-align: center;
+            font-size: clamp(0.85rem, 0.9vw, 0.95rem);
+            color: rgba(244, 236, 216, 0.58);
+            max-width: 70ch;
+            margin: 0.4vh auto 0;
+            line-height: 1.6;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .po-ring {
+                animation: none;
+                opacity: 0.4;
+            }
+        }
+
+        /* ---- Donation slide ---- */
+        .slide-donation {
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-donation {
+            width: min(600px, 92%);
+            max-height: 92%;
+            text-align: center;
+            padding: 1.5vh 2vw;
+            overflow: hidden;
+        }
+
+        .arch {
+            width: clamp(46px, 5vw, 66px);
+            height: clamp(60px, 7vh, 84px);
+            margin: 0 auto 1.4vh;
+            border: 2px solid var(--gold);
+            border-bottom: none;
+            border-radius: 46px 46px 0 0 / 60px 60px 0 0;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .arch::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -6px;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        .card-donation .eyebrow {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(12px, 1.1vw, 14px);
+            letter-spacing: 0.05em;
+            color: var(--gold-deep);
+            margin-bottom: 0.5vh;
+        }
+
+        .card-donation h1 {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(22px, 3vw, 32px);
+            margin: 0 0 0.7vh;
+            color: var(--cream);
+            line-height: 1.6;
+        }
+
+        .card-donation h1 em {
+            font-style: normal;
+            color: var(--gold-soft);
+        }
+
+        .card-donation .lede {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(12px, 1.1vw, 14px);
+            color: var(--muted);
+            max-width: 420px;
+            margin: 0 auto 1.5vh;
+            line-height: 1.7;
+        }
+
+        .card-donation .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 1.4vh;
+        }
+
+        .card-donation .divider::before,
+        .card-donation .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        }
+
+        .card-donation .divider span {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(13px, 1.2vw, 16px);
+            color: var(--gold-soft);
+            white-space: nowrap;
+        }
+
+        .panel {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            padding: 1.6vh 1.8vw;
+            text-align: left;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 16px;
+            padding: 0.8vh 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .row:first-child {
+            padding-top: 0;
+        }
+
+        .row .label {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(11px, 1vw, 13px);
+            color: var(--gold-deep);
+            white-space: nowrap;
+        }
+
+        .row .value {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(13px, 1.3vw, 16px);
+            font-weight: 600;
+            color: var(--cream);
+            text-align: right;
+        }
+
+        .row .value.placeholder {
+            color: var(--gold-soft);
+            font-weight: 500;
+            font-style: italic;
+            opacity: 0.85;
+        }
+
+        .card-donation footer {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            margin-top: 1.4vh;
+            font-size: clamp(11px, 1.05vw, 13px);
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .card-donation footer .site {
+            color: var(--gold-soft);
+        }
+
+        .verse {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-size: clamp(13px, 1.3vw, 16px);
+            color: var(--gold-soft);
+            max-width: 420px;
+            margin: 1.4vh auto 0.3vh;
+            line-height: 1.7;
+        }
+
+        .verse-ref {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            text-align: center;
+            font-size: clamp(10px, 0.9vw, 13px);
+            letter-spacing: .05em;
+            color: var(--gold-deep);
+            margin: 0;
+        }
+
+        /* ---- Donor scrolling ticker (full width, always visible) ---- */
+        .donor-ticker {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 999px;
+            box-shadow: 0 2px 16px var(--glow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px;
+        }
+
+        .donor-ticker-label {
+            flex-shrink: 0;
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            font-weight: 700;
+            font-size: clamp(12px, 1.1vw, 16px);
+            color: var(--deep-green);
+            background: linear-gradient(150deg, var(--gold-soft), var(--gold));
+            padding: clamp(7px, 0.9vh, 11px) clamp(14px, 1.5vw, 22px);
+            border-radius: 999px;
+            box-shadow: 0 1px 4px rgba(169, 124, 52, 0.45);
+        }
+
+        .donor-ticker-viewport {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: clamp(30px, 2.6vw, 42px);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+            mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+        }
+
+        .donor-ticker-track {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            white-space: nowrap;
+            width: max-content;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: donor-scroll 120s linear infinite;
+        }
+
+        @keyframes donor-scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .donor-item {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(16px, 1.7vw, 24px);
+            line-height: 1.4;
+            font-weight: 800;
+            color: var(--cream);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+            margin: 0 40px;
+        }
+
+        .donor-item .amt {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .donor-sep {
+            color: var(--glass-border);
+        }
+
+        /* ---- Footer bar (website / social / bank) ---- */
+        .footer-bar {
+            grid-column: 1 / -1;
+            grid-row: 3;
+            background: rgba(212, 175, 106, 0.10);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: clamp(6px, 0.9vh, 10px) clamp(16px, 1.7vw, 24px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(10px, 0.95vw, 13px);
+            font-weight: 700;
+            color: var(--cream);
+        }
+
+        .footer-bar .fb-website {
+            color: var(--gold);
+            font-size: clamp(13px, 1.3vw, 18px);
+        }
+
+        .fb-website strong {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .footer-bar .fb-sep {
+            color: var(--glass-border);
+        }
+
+        .footer-bar .fb-icon {
+            width: clamp(18px, 1.9vw, 26px);
+            height: clamp(18px, 1.9vw, 26px);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(150deg, var(--gold-soft), var(--gold));
+            color: var(--deep-green);
+            box-shadow: 0 1px 4px rgba(169, 124, 52, 0.45);
+        }
+
+        .footer-bar .fb-icon svg {
+            width: 54%;
+            height: 54%;
+        }
+
+        .footer-bar .fb-handle {
+            color: var(--gold);
+            font-size: clamp(14px, 1.5vw, 20px);
+        }
+
+        .bank-details {
+            width: 100%;
+            margin-top: 6px;
+            padding: 5px 20px 0;
+            text-align: center;
+            font-size: clamp(11px, 1.05vw, 14px);
+            color: var(--gold);
+            letter-spacing: 0.5px;
+            border-top: 1px solid rgba(214, 184, 108, .25);
+        }
+
+        .bank-details strong {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .bank-details .sep {
+            margin: 0 18px;
+            color: rgba(214, 184, 108, .6);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="lattice"></div>
+    <div class="frame">
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+    </div>
+
+    <div class="app-shell">
+
+        <!-- ===== SIDEBAR: always visible ===== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+                <img class="logo" src="assets/img/logo.png" alt="مسجد محمود لوگو">
+                <div class="sidebar-titles">
+                    <h1>مسجد محمود</h1>
+                    <div class="sidebar-dates">
+                        <div id="greg-date">—</div>
+                        <div class="hijri" id="hijri-date">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clock-card">
+                <svg class="analog-clock" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="92" fill="rgba(255,255,255,0.03)" stroke="#d4af6a" stroke-width="4" />
+                    <!-- major ticks: 12, 3, 6, 9 -->
+                    <g stroke="#d4af6a" stroke-width="3.5" stroke-linecap="round">
+                        <line x1="100" y1="8" x2="100" y2="22" />
+                        <line x1="192" y1="100" x2="178" y2="100" />
+                        <line x1="100" y1="192" x2="100" y2="178" />
+                        <line x1="8" y1="100" x2="22" y2="100" />
+                    </g>
+                    <!-- minor ticks: remaining hours -->
+                    <g stroke="#e8cf9a" stroke-width="2" stroke-linecap="round" opacity="0.55">
+                        <line x1="146" y1="20.3" x2="142" y2="27.3" />
+                        <line x1="179.7" y1="54" x2="172.7" y2="58" />
+                        <line x1="179.7" y1="146" x2="172.7" y2="142" />
+                        <line x1="146" y1="179.7" x2="142" y2="172.7" />
+                        <line x1="54" y1="179.7" x2="58" y2="172.7" />
+                        <line x1="20.3" y1="146" x2="27.3" y2="142" />
+                        <line x1="20.3" y1="54" x2="27.3" y2="58" />
+                        <line x1="54" y1="20.3" x2="58" y2="27.3" />
+                    </g>
+                    <!-- hour numerals -->
+                    <g font-size="22">
+                        <text x="100" y="34">12</text>
+                        <text x="133" y="42.8">1</text>
+                        <text x="157.2" y="67">2</text>
+                        <text x="166" y="100">3</text>
+                        <text x="157.2" y="133">4</text>
+                        <text x="133" y="157.2">5</text>
+                        <text x="100" y="166">6</text>
+                        <text x="67" y="157.2">7</text>
+                        <text x="42.8" y="133">8</text>
+                        <text x="34" y="100">9</text>
+                        <text x="42.8" y="67">10</text>
+                        <text x="67" y="42.8">11</text>
+                    </g>
+                    <line id="clock-hour-hand" x1="100" y1="100" x2="100" y2="58" stroke="#f4ecd8" stroke-width="6"
+                        stroke-linecap="round" />
+                    <line id="clock-minute-hand" x1="100" y1="100" x2="100" y2="36" stroke="#f4ecd8" stroke-width="4"
+                        stroke-linecap="round" />
+                    <line id="clock-second-hand" x1="100" y1="114" x2="100" y2="26" stroke="#d4af6a" stroke-width="2"
+                        stroke-linecap="round" />
+                    <circle cx="100" cy="100" r="6" fill="#d4af6a" />
+                </svg>
+                <div class="clock-digital">
+                    <div class="clock-label">موجودہ وقت</div>
+                    <div class="clock-time" id="live-clock">--:--:--</div>
+                </div>
+            </div>
+
+            <div class="prayer-card">
+                <div class="prayer-card-title">نماز کے اوقات</div>
+                <div class="prayer-rows" id="prayer-rows"></div>
+                <div class="jummah-slot">
+                    <div class="jummah-slot-label">
+                        <span class="jummah-slot-name">جمعہ</span>
+                        <span class="jummah-slot-note">(ہر جمعہ)</span>
+                    </div>
+                    <div class="jummah-slot-time" id="jummah-time">2:00 PM</div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- ===== MAIN PANEL: rotating reminder slides ===== -->
+        <main class="main-panel">
+
+            <!-- Phone-off reminder -->
+            <div class="slide slide-phone active" id="slide-phone">
+                <div class="po-content">
+                    <div class="po-icon-wrap">
+                        <div class="po-ring"></div>
+                        <div class="po-ring delay"></div>
+                        <svg class="po-phone-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="30" y="12" width="40" height="76" rx="7" stroke="#d4af6a" stroke-width="4" />
+                            <line x1="30" y1="24" x2="70" y2="24" stroke="#d4af6a" stroke-width="3" />
+                            <line x1="30" y1="76" x2="70" y2="76" stroke="#d4af6a" stroke-width="3" />
+                            <circle cx="50" cy="81" r="2.6" fill="#d4af6a" />
+                            <line x1="16" y1="16" x2="84" y2="84" stroke="#e8cf9a" stroke-width="5"
+                                stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="po-eyebrow">مسجد میں داخل ہونے سے پہلے</div>
+                    <h1>براہِ کرم اپنا موبائل فون <em>بند</em> کر دیں</h1>
+                    <div class="po-divider"></div>
+                    <p class="po-subtext">
+                        اللہ ﷻ کے گھر اور نمازیوں کے احترام میں اپنا فون خاموش اور بند رکھیں۔
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dua reminder -->
+            <div class="slide slide-dua" id="slide-dua">
+                <div class="page">
+                    <div class="header">
+                        <div class="eyebrow">مسجد کی سنتیں</div>
+                        <h1>مسجد میں داخل ہونے اور نکلنے کی دعا</h1>
+                        <div class="divider"></div>
+                    </div>
+
+                    <div class="cards">
+                        <div class="card">
+                            <div class="card-label">
+                                <svg class="foot-icon" viewBox="0 0 100 100" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M50 8 L86 50 L50 92 L14 50 Z" stroke="#d4af6a" stroke-width="4"
+                                        stroke-linejoin="round" />
+                                    <path d="M50 30 L68 50 L50 70 L32 50 Z" stroke="#e8cf9a" stroke-width="3"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <div class="card-title">مسجد میں داخل ہوتے وقت</div>
+                            </div>
+                            <div class="arabic">اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ</div>
+                            <div class="translit">Allāhumma-ftaḥ lī abwāba raḥmatik</div>
+                            <div class="urdu-translation">اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے</div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-label">
+                                <svg class="foot-icon" viewBox="0 0 100 100" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M50 92 L14 50 L50 8 L86 50 Z" stroke="#d4af6a" stroke-width="4"
+                                        stroke-linejoin="round" />
+                                    <path d="M50 70 L32 50 L50 30 L68 50 Z" stroke="#e8cf9a" stroke-width="3"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <div class="card-title">مسجد سے نکلتے وقت</div>
+                            </div>
+                            <div class="arabic">اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ</div>
+                            <div class="translit">Allāhumma innī as'aluka min faḍlik</div>
+                            <div class="urdu-translation">اے اللہ! میں تجھ سے تیرے فضل کا سوال کرتا ہوں</div>
+                        </div>
+                    </div>
+
+                    <p class="footnote">
+                        دائیں پاؤں سے مسجد میں داخل ہوں اور بائیں پاؤں سے باہر نکلیں، اور اس سے پہلے نبی ﷺ پر درود
+                        بھیجیں۔ (سنن ابی داؤد، صحیح مسلم)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Daily verse & hadith -->
+            <div class="slide slide-dua" id="slide-daily">
+                <div class="page">
+                    <div class="header">
+                        <div class="eyebrow">روزانہ کی یاد دہانی</div>
+                        <h1>آج کی آیت اور حدیث</h1>
+                        <div class="divider"></div>
+                    </div>
+
+                    <div class="cards">
+                        <div class="card">
+                            <div class="card-label">
+                                <svg class="foot-icon" viewBox="0 0 100 100" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M50 22 C40 16 25 14 14 18 V78 C25 74 40 76 50 82 C60 76 75 74 86 78 V18 C75 14 60 16 50 22 Z"
+                                        stroke="#d4af6a" stroke-width="4" stroke-linejoin="round"
+                                        stroke-linecap="round" />
+                                    <path d="M50 22 V82" stroke="#e8cf9a" stroke-width="3" stroke-linecap="round" />
+                                </svg>
+                                <div class="card-title">آیت</div>
+                            </div>
+                            <div class="arabic" id="daily-verse-arabic">—</div>
+                            <div class="urdu-translation" id="daily-verse-urdu">—</div>
+                            <p class="verse-ref" id="daily-verse-ref">—</p>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-label">
+                                <svg class="foot-icon" viewBox="0 0 100 100" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M22 20 H78 V72 C78 78 72 82 66 82 H22 C16 82 12 78 12 72 V30 C12 24 16 20 22 20 Z"
+                                        stroke="#d4af6a" stroke-width="4" stroke-linejoin="round" />
+                                    <path d="M28 38 H66 M28 52 H66 M28 66 H52" stroke="#e8cf9a" stroke-width="3"
+                                        stroke-linecap="round" />
+                                </svg>
+                                <div class="card-title">حدیث</div>
+                            </div>
+                            <div class="arabic" id="daily-hadith-arabic">—</div>
+                            <div class="urdu-translation" id="daily-hadith-urdu">—</div>
+                            <p class="verse-ref" id="daily-hadith-ref">—</p>
+                        </div>
+                    </div>
+
+                    <p class="footnote">
+                        ہر دن ایک نئی آیت اور حدیث — قرآن و سنت سے رہنمائی حاصل کرنے کی ایک چھوٹی سی کوشش۔
+                    </p>
+                </div>
+            </div>
+
+            <!-- Adhkar after Fard prayer -->
+            <div class="slide slide-adh" id="slide-adh">
+                <div class="adh-page">
+                    <div class="adh-header">
+                        <div class="adh-eyebrow">ہر فرض نماز کے بعد</div>
+                        <h1>فرض نماز کے بعد کے اذکار</h1>
+                        <div class="adh-divider"></div>
+                    </div>
+
+                    <div class="adh-grid">
+                        <div class="adh-card">
+                            <div class="adh-card-head">
+                                <div class="adh-card-title">استغفار</div>
+                                <div class="adh-count">×3</div>
+                            </div>
+                            <div class="adh-arabic">أَسْتَغْفِرُ اللَّهَ</div>
+                            <div class="adh-translit">Astaghfirullāh</div>
+                            <div class="adh-translation">میں اللہ سے بخشش مانگتا ہوں۔</div>
+                        </div>
+
+                        <div class="adh-card">
+                            <div class="adh-card-head">
+                                <div class="adh-card-title">دعائے سلامتی</div>
+                                <div class="adh-count">×1</div>
+                            </div>
+                            <div class="adh-arabic">اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا
+                                ذَا الْجَلَالِ وَالْإِكْرَامِ</div>
+                            <div class="adh-translit">Allāhumma anta-s-salāmu wa minka-s-salām, tabārakta yā
+                                dhal-jalāli wal-ikrām</div>
+                            <div class="adh-translation">اے اللہ! تو ہی سلامتی ہے اور سلامتی تجھی سے ہے۔ اے جلال و
+                                اکرام والے! تو بابرکت ہے۔</div>
+                        </div>
+
+                        <div class="adh-card">
+                            <div class="adh-card-head">
+                                <div class="adh-card-title">تسبیح</div>
+                                <div class="adh-count">33 · 33 · 34</div>
+                            </div>
+                            <div class="adh-arabic">سُبْحَانَ اللَّهِ ، الْحَمْدُ لِلَّهِ ، اللَّهُ أَكْبَرُ</div>
+                            <div class="adh-translit">SubḥānAllāh (×33) · Alḥamdulillāh (×33) · Allāhu Akbar (×34)</div>
+                            <div class="adh-translation">اللہ پاک ہے · تمام تعریفیں اللہ کے لیے ہیں · اللہ سب سے بڑا
+                                ہے</div>
+                        </div>
+
+                        <div class="adh-card">
+                            <div class="adh-card-head">
+                                <div class="adh-card-title">کلمہ توحید و حمد</div>
+                                <div class="adh-count">×1</div>
+                            </div>
+                            <div class="adh-arabic">لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ
+                                وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ</div>
+                            <div class="adh-translit">Lā ilāha illallāhu waḥdahu lā sharīka lah, lahul-mulku wa
+                                lahul-ḥamdu wa huwa ʿalā kulli shay'in qadīr</div>
+                            <div class="adh-translation">اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک
+                                نہیں، بادشاہی اسی کی ہے اور تعریف اسی کے لیے ہے، اور وہ ہر چیز پر قادر ہے۔</div>
+                        </div>
+                    </div>
+
+                    <p class="adh-footnote">
+                        ہر فرض نماز کے بعد آیت الکرسی (2:255) بھی پڑھیں، اور فجر و مغرب کے بعد تینوں قُل (سورۃ
+                        الاخلاص، الفلق، الناس) تین تین بار پڑھیں۔ (صحیح بخاری، صحیح مسلم، سنن ابی داؤد)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Donation info -->
+            <div class="slide slide-donation" id="slide-donation">
+                <div class="card-donation">
+                    <div class="arch"></div>
+                    <div class="eyebrow"> مسجد محمود </div>
+                    <h1>کھلے ہاتھ سے دو،<br><em>ایک پائیدار گھر بناؤ</em></h1>
+                    <p class="lede">آپ کا عطیہ ہمارے دروازے کھلے، روشنیاں جلی اور جماعت کو بڑھتا رکھتا ہے۔</p>
+
+                    <div class="divider"><span>عطیہ کیسے دیں</span></div>
+
+                    <div class="panel">
+                        <div class="row">
+                            <span class="label">اکاؤنٹ کا نام</span>
+                            <span class="value placeholder"> حافظ عابد حسین </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">بینک</span>
+                            <span class="value placeholder" dir="ltr" style="direction:ltr; text-align:right;"> Allied
+                                Bank Limited </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">مقام</span>
+                            <span class="value placeholder"> گوجرات، پاکستان </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">IBAN</span>
+                            <span class="value placeholder" dir="ltr"
+                                style="direction:ltr; text-align:right;">PK41ABPA0010154454310012</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">رابطہ</span>
+                            <span class="value placeholder" dir="ltr" style="direction:ltr; text-align:right;">
+                                contact.mahmoodmasjid.com </span>
+                        </div>
+                    </div>
+
+                    <p class="verse">"جو لوگ اپنا مال اللہ کی راہ میں خرچ کرتے ہیں، ان کی مثال اس دانے کی سی ہے جس
+                        سے سات بالیاں اگیں، ہر بالی میں سو دانے ہوں۔"</p>
+                    <p class="verse-ref">سورۃ البقرہ، 2:255</p>
+
+                    <footer>
+                        [ محمود آباد / فتح پور، گوجرات، پنجاب، پاکستان ]<br>
+                        <span class="site" dir="ltr" style="direction:ltr;">[ www.mahmoodmasjid.com ]</span>
+                        &nbsp;·&nbsp;
+                        <span dir="ltr" style="direction:ltr;">[ contact.mahmoodmasjid.com ]</span>
+                    </footer>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ===== DONOR TICKER: always visible, full width ===== -->
+        <div class="donor-ticker">
+            <span class="donor-ticker-label">عطیہ دہندگان</span>
+            <div class="donor-ticker-viewport">
+                <div class="donor-ticker-track" id="donor-ticker-track"></div>
+            </div>
+        </div>
+
+        <!-- ===== FOOTER BAR: always visible, full width ===== -->
+        <div class="footer-bar">
+            <span class="fb-website" dir="rtl"><strong>ویب سائٹ:</strong> <bdi
+                    dir="ltr">www.mahmoodmasjid.com</bdi></span>
+            <span class="fb-sep">•</span>
+            <span class="fb-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z" />
+                </svg>
+            </span>
+            <span class="fb-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M16.5 3c.3 1.9 1.6 3.5 3.5 4v2.7c-1.3 0-2.5-.4-3.5-1.1v6.1c0 3.3-2.7 5.8-5.9 5.6-2.9-.2-5.2-2.6-5.3-5.5-.1-3.2 2.5-5.9 5.7-5.9.3 0 .6 0 .9.1v2.8a2.9 2.9 0 0 0-3.3 3.6 2.9 2.9 0 0 0 5.7-.7V3h2.2z" />
+                </svg>
+            </span>
+            <span class="fb-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M22 12s0-3.2-.4-4.7a2.8 2.8 0 0 0-2-2C17.9 5 12 5 12 5s-5.9 0-7.6.3a2.8 2.8 0 0 0-2 2C2 8.8 2 12 2 12s0 3.2.4 4.7a2.8 2.8 0 0 0 2 2C6.1 19 12 19 12 19s5.9 0 7.6-.3a2.8 2.8 0 0 0 2-2C22 15.2 22 12 22 12zM10 15.3V8.7l6 3.3-6 3.3z" />
+                </svg>
+            </span>
+            <span class="fb-handle">@mahmoodmasjid</span>
+
+            <div class="bank-details">
+                <span dir="rtl"><strong>اکاؤنٹ:</strong> حافظ عابد حسین</span>
+                <span class="sep">•</span>
+                <span dir="rtl"><strong>بینک:</strong> <bdi dir="ltr">Allied Bank Limited</bdi></span>
+                <span class="sep">•</span>
+                <span dir="rtl"><strong>IBAN:</strong> <bdi dir="ltr">PK41ABPA0010154454310012</bdi></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ===== Location: Gujrat, Punjab, Pakistan =====
+        const GUJRAT_LAT = 32.5740;
+        const GUJRAT_LON = 74.0789;
+
+        // Jummah (Friday congregational prayer) time — shown as a fixed, always-visible
+        // slot in the sidebar, independent of the daily API-calculated prayer times.
+        const JUMMAH_TIME = '14:00'; // 24-hour, Pakistan local
+
+        const PRAYER_UR = {
+            Fajr: 'فجر', Sunrise: 'طلوعِ آفتاب', Dhuhr: 'ظہر', Jummah: 'جمعہ',
+            Asr: 'عصر', Maghrib: 'مغرب', Isha: 'عشاء'
+        };
+
+        let prayerTimes = [];   // [{en, ur, hhmm}] — hhmm is 24-hour "HH:MM" Pakistan local
+
+        // ---- Pakistan Standard Time helper (UTC+5, no daylight saving) ----
+        function getPakistanNow() {
+            return new Date(Date.now() + 5 * 3600000);
+        }
+
+        function pkDateFromHHMM(hhmm) {
+            const [h, m] = hhmm.split(':').map(Number);
+            const pkNow = getPakistanNow();
+            return new Date(Date.UTC(pkNow.getUTCFullYear(), pkNow.getUTCMonth(), pkNow.getUTCDate(), h, m, 0));
+        }
+
+        function formatHHMMto12h(hhmm) {
+            const [h, m] = hhmm.split(':').map(Number);
+            const period = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 === 0 ? 12 : h % 12;
+            return `${h12}:${String(m).padStart(2, '0')} ${period}`;
+        }
+
+        const WEEKDAYS = ['اتوار', 'پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتہ'];
+        const MONTHS = ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'];
+
+        // ===== Fetch prayer times from AlAdhan (method=1 Univ. of Islamic Sciences,
+        // Karachi · school=1 Hanafi) for Gujrat's coordinates =====
+        async function fetchPrayerTimes() {
+            try {
+                const url = `https://api.aladhan.com/v1/timings?latitude=${GUJRAT_LAT}&longitude=${GUJRAT_LON}&method=1&school=1`;
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.code !== 200) { throw new Error('Prayer API error'); }
+
+                const timings = data.data.timings;
+
+                const order = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+                prayerTimes = order.map(name => {
+                    const hhmm = timings[name].split(' ')[0];
+                    return { en: name, ur: PRAYER_UR[name], hhmm };
+                });
+
+                renderPrayerRows();
+            } catch (err) {
+                console.error('Failed to fetch prayer times:', err);
+                const rows = document.getElementById('prayer-rows');
+                if (rows && !prayerTimes.length) {
+                    rows.innerHTML = '<div class="prayer-row"><div class="prayer-name-block"><span class="prayer-name">نماز کے اوقات لوڈ نہیں ہو سکے</span></div></div>';
+                }
+            }
+        }
+
+        // ===== Jummah (Friday congregational prayer) is shown as a permanent,
+        // always-visible slot rather than swapped in only on Fridays. =====
+        function renderJummahSlot() {
+            const el = document.getElementById('jummah-time');
+            if (el) el.textContent = formatHHMMto12h(JUMMAH_TIME);
+        }
+
+        // ===== Daily verse & hadith — a short, fixed rotation that advances
+        // once per calendar day (Pakistan time), so the same pair shows all day. =====
+        const DAILY_CONTENT = [
+            {
+                verseAr: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',
+                verseUr: 'بے شک تنگی کے ساتھ آسانی ہے۔',
+                verseRef: 'سورۃ الشرح، 94:5',
+                hadithAr: 'الدِّينُ النَّصِيحَةُ',
+                hadithUr: 'دین خیرخواہی کا نام ہے۔',
+                hadithRef: 'صحیح مسلم'
+            },
+            {
+                verseAr: 'لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا',
+                verseUr: 'اللہ کسی جان پر اس کی طاقت سے زیادہ بوجھ نہیں ڈالتا۔',
+                verseRef: 'سورۃ البقرہ، 2:286',
+                hadithAr: 'مَن لَا يَرْحَمْ لَا يُرْحَمْ',
+                hadithUr: 'جو رحم نہیں کرتا، اس پر رحم نہیں کیا جاتا۔',
+                hadithRef: 'صحیح بخاری'
+            },
+            {
+                verseAr: 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',
+                verseUr: 'جو اللہ سے ڈرتا ہے، اللہ اس کے لیے نکلنے کا راستہ بنا دیتا ہے۔',
+                verseRef: 'سورۃ الطلاق، 65:2',
+                hadithAr: 'الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِن لِّسَانِهِ وَيَدِهِ',
+                hadithUr: 'مسلمان وہ ہے جس کی زبان اور ہاتھ سے دوسرے مسلمان محفوظ رہیں۔',
+                hadithRef: 'صحیح بخاری'
+            },
+            {
+                verseAr: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',
+                verseUr: 'خبردار! اللہ کے ذکر سے ہی دلوں کو اطمینان ملتا ہے۔',
+                verseRef: 'سورۃ الرعد، 13:28',
+                hadithAr: 'خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ',
+                hadithUr: 'تم میں سب سے بہتر وہ ہے جو قرآن سیکھے اور دوسروں کو سکھائے۔',
+                hadithRef: 'صحیح بخاری'
+            },
+            {
+                verseAr: 'فَاذْكُرُونِي أَذْكُرْكُمْ',
+                verseUr: 'پس مجھے یاد کرو، میں تمہیں یاد رکھوں گا۔',
+                verseRef: 'سورۃ البقرہ، 2:152',
+                hadithAr: 'الطُّهُورُ شَطْرُ الْإِيمَانِ',
+                hadithUr: 'پاکیزگی ایمان کا حصہ ہے۔',
+                hadithRef: 'صحیح مسلم'
+            },
+            {
+                verseAr: 'إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا',
+                verseUr: 'بے شک اللہ پرہیزگاروں کے ساتھ ہے۔',
+                verseRef: 'سورۃ النحل، 16:128',
+                hadithAr: 'تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ صَدَقَةٌ',
+                hadithUr: 'اپنے بھائی کے سامنے مسکرانا بھی صدقہ ہے۔',
+                hadithRef: 'سنن الترمذی'
+            },
+            {
+                verseAr: 'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ',
+                verseUr: 'جو اللہ پر بھروسہ کرے، وہ اس کے لیے کافی ہے۔',
+                verseRef: 'سورۃ الطلاق، 65:3',
+                hadithAr: 'مَن كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ',
+                hadithUr: 'جو اللہ اور آخرت کے دن پر ایمان رکھتا ہو، اسے اچھی بات کہنی چاہیے یا خاموش رہنا چاہیے۔',
+                hadithRef: 'صحیح بخاری'
+            }
+        ];
+
+        function renderDailyContent() {
+            const pkNow = getPakistanNow();
+            const startOfYear = Date.UTC(pkNow.getUTCFullYear(), 0, 1);
+            const startOfToday = Date.UTC(pkNow.getUTCFullYear(), pkNow.getUTCMonth(), pkNow.getUTCDate());
+            const dayOfYear = Math.floor((startOfToday - startOfYear) / 86400000);
+            const item = DAILY_CONTENT[dayOfYear % DAILY_CONTENT.length];
+
+            const setText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            };
+            setText('daily-verse-arabic', item.verseAr);
+            setText('daily-verse-urdu', item.verseUr);
+            setText('daily-verse-ref', item.verseRef);
+            setText('daily-hadith-arabic', item.hadithAr);
+            setText('daily-hadith-urdu', item.hadithUr);
+            setText('daily-hadith-ref', item.hadithRef);
+        }
+
+        function getNextPrayer() {
+            if (!prayerTimes.length) return null;
+            const pkNow = getPakistanNow();
+            for (const p of prayerTimes) {
+                if (pkDateFromHHMM(p.hhmm) > pkNow) return p;
+            }
+            return prayerTimes[0]; // wrap to tomorrow's Fajr
+        }
+
+        function renderPrayerRows() {
+            if (!prayerTimes.length) return;
+            const next = getNextPrayer();
+            const rows = document.getElementById('prayer-rows');
+            rows.innerHTML = prayerTimes.map(p => {
+                const isNext = next && p.en === next.en;
+                return `
+    <div class="prayer-row ${isNext ? 'is-next' : ''}">
+      <div class="prayer-name-block">
+        <span class="prayer-name">${p.ur}</span>
+        ${isNext ? '<span class="next-badge">اگلی</span>' : ''}
+      </div>
+      <div class="prayer-time">${formatHHMMto12h(p.hhmm)}</div>
+    </div>
+  `;
+            }).join('');
+        }
+
+        function updateClock() {
+            const pkNow = getPakistanNow();
+            const hoursNum = pkNow.getUTCHours();
+            const minsNum = pkNow.getUTCMinutes();
+            const secsNum = pkNow.getUTCSeconds();
+
+            const hh = String(hoursNum).padStart(2, '0');
+            const mm = String(minsNum).padStart(2, '0');
+            const ss = String(secsNum).padStart(2, '0');
+            document.getElementById('live-clock').textContent = `${hh}:${mm}:${ss}`;
+
+            // Analog clock hands
+            const hourDeg = ((hoursNum % 12) + minsNum / 60 + secsNum / 3600) * 30;
+            const minDeg = (minsNum + secsNum / 60) * 6;
+            const secDeg = secsNum * 6;
+            const hourHand = document.getElementById('clock-hour-hand');
+            const minHand = document.getElementById('clock-minute-hand');
+            const secHand = document.getElementById('clock-second-hand');
+            if (hourHand) hourHand.setAttribute('transform', `rotate(${hourDeg} 100 100)`);
+            if (minHand) minHand.setAttribute('transform', `rotate(${minDeg} 100 100)`);
+            if (secHand) secHand.setAttribute('transform', `rotate(${secDeg} 100 100)`);
+
+            const weekday = WEEKDAYS[pkNow.getUTCDay()];
+            const day = String(pkNow.getUTCDate()).padStart(2, '0');
+            const month = MONTHS[pkNow.getUTCMonth()];
+            const year = pkNow.getUTCFullYear();
+            document.getElementById('greg-date').textContent = `${weekday}, ${day} ${month} ${year}`;
+
+            try {
+                document.getElementById('hijri-date').textContent = new Intl.DateTimeFormat('ur-PK-u-ca-islamic', {
+                    day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
+                }).format(pkNow);
+            } catch (e) { /* ignore if unsupported */ }
+
+            // Re-render prayer rows periodically so the "NEXT" highlight
+            // advances to the following prayer once the current one passes.
+            if (prayerTimes.length) renderPrayerRows();
+        }
+
+        fetchPrayerTimes();
+        renderJummahSlot();
+        renderDailyContent();
+        updateClock();
+        setInterval(updateClock, 1000);
+        setInterval(renderDailyContent, 10 * 60 * 1000); // re-check every 10 minutes in case the day has rolled over
+        setInterval(fetchPrayerTimes, 30 * 60 * 1000); // refresh from API every 30 minutes
+
+        // ===== Donor ticker =====
+        // [name, amount] pairs, pulled from the donor ledger spreadsheet
+        const donorList = [['حمزہ صابر', 110000], ['ذولفقار بانیاں', 10000], ['مسجد کے پرانے دروازے بھچے تھے', 147000], ['محمد سفیان', 100000], ['شبیر احمد  سوتھ افریکہ', 10000], ['چوہدری عرفان', 600000], ['محمد سفیان', 30000], ['محمد صدیق', 50000], ['چھوٹی عید چوبیس', 50000], ['محمد عادل', 20000], ['چھوٹی عید پچیس', 32000], ['حافظ عاصم', 15000], ['محمد عادل', 5000], ['خدیجہ بی بی', 12000], ['حافظ عابد حسین', 300000], ['حافظ عابد حسین', 203000], ['محمد خالد', 400000], ['ناصر پٹھان', 1000], ['کالے خاں', 5000], ['علی', 45000], ['مبشر علی', 10000], ['اورنگزیب', 5000], ['مہندی خاں کالس', 1050], ['اقبال عارف', 100000], ['خالد مئر', 166000], ['حافظ عابد حسین', 52000], ['شہزاد', 100000], ['فضل والد ناصر', 166000], ['حافظ عابد حسین', 367300], ['چوہدری عرفان', 166000], ['نعیم افظال', 100000], ['محمد عادل', 25000], ['احسان', 10000], ['ارسلان', 25000], ['نبیل', 60000], ['عبدللہ', 1000], ['مبشر علی', 50000], ['اسماعیل', 10000], ['محبوب', 40000], ['اسماعیل', 30000], ['علی والد عظیم', 50000], ['عبدللہ صابر', 521], ['کاشف بھائئ', 166000], ['ماسٹ ظفر', 37000], ['بہن ماسٹر ظفر', 29600], ['طارق کشمیری بازار', 185000], ['حافظ عابد حسین', 70000], ['میجر امجد مرحوم', 100000], ['احمد بھائئ', 60000], ['الیاس عرف نومی', 7400], ['بہن اشفاق', 5000], ['اسد علی جمیل', 2000], ['محمد سفیان', 20000], ['حافظ مزکر', 5000], ['خلیل مرحوم', 5000], ['مسرت', 10000], ['یاسر', 166000], ['عاصم', 166000], ['محمد صدیق', 5000], ['حسین', 74000], ['عبدل باری', 37000], ['والی وال', 149850], ['عبدللہ دوست', 10000], ['محمد راشد', 200], ['عبدلروف', 23000], ['ہاشم والد قاسم', 10000], ['حافظ عابد حسین', 500000], ['نواب ابراہیم', 40000], ['علامہ ساجدالرحمن', 15000], ['محبوب غنی', 5000], ['محمد سفیان', 15000], ['حامد علی', 5000], ['حافظ عاصم', 5000], ['ڈاکڑ صابر', 10000], ['مہر عامر', 125000], ['ڈاکڑ اللہ دتہ', 100000], ['قمر عباس', 50000], ['زمان', 20000], ['اسلم مرحوم', 100000], ['افضال چیچی', 100000], ['ثاقب چوہدری', 200000], ['چوھدری لیاقت گجر', 50000], ['راہی مسافر', 3000], ['افتخارچیجی', 100729], ['راہی مسافر', 1500], ['فیضان علی', 10000], ['فیضان علی', 20000], ['محمد صدیق', 2000], ['نواز مرحوم', 50000], ['حافظ عابد حسین', 100000], ['منہدی خاں مرحوم', 3000], ['اشفاق', 500], ['مہر علی پرویز', 50500], ['حماد علی', 500], ['محمد سفیان', 50000], ['حافظ عابد حسین', 600000], ['اسماعیل صدیق', 20000], ['طارق فوجی', 1000], ['زمان', 5000], ['منہدی خاں مرحوم', 5000], ['عمران زمان', 50000], ['احسان الہی', 10000], ['محبوب غنی', 5000], ['عدنان علی', 10000], ['عبدللہ صابر', 2010], ['قاسم  علی', 130000], ['حافظ طاہر', 166000], ['چوہدری عرفان', 50000], ['ڈاکٹر صابر', 5000], ['حافظ عاصم', 5000], ['محمد سفیان', 3000], ['قاری ساجدرحمن', 5000], ['عادل', 1000], ['قاسم  علی', 1500000], ['اصغر', 100000], ['اکرم', 500], ['حاجی مختار', 37000], ['چوہدری سجاد', 18500], ['زاھد', 20000], ['حاجی ندیم', 20000], ['قاری اختر', 100000], ['حافظ شفیق', 55500], ['شہزاد امین', 22200], ['مرزا زبیر', 30000], ['جاوید اختر', 25092], ['محمد مقصود', 7000], ['محمد اشفاق', 1000], ['عبدالمجید', 2000], ['عباس', 2000], ['راہی مسافر', 500], ['امجد ابرار', 40000], ['ڈاکٹر صابر', 5000], ['سفیان', 10000], ['احسن والد بشیر', 10000], ['شہباز', 5000], ['قاسم  علی', 5500], ['امیر حیسن', 2000], ['ڈاکڑ صابر', 5000], ['اسماعیل صدیق', 1000], ['محمد شفیق', 7000], ['محمد ناظم', 5000], ['نور محمد', 500], ['عارل الیاس مرحوم', 2000], ['محبوب غنی', 2000], ['محمد عافان', 10000], ['قاری ساجدرحمن', 5000], ['مایوں', 18500], ['عمران', 18500], ['حاجی سداگر', 379540], ['حافظ عابد حسین', 100000], ['پرویز', 30000], ['راہی مسافر', 500], ['انور', 10000]];
+
+        function buildDonorTicker() {
+            const track = document.getElementById('donor-ticker-track');
+            if (!donorList.length) {
+                track.innerHTML = '<span class="donor-item">کوئی عطیہ دہندہ ریکارڈ نہیں ملا</span>';
+                return;
+            }
+            const itemsHtml = donorList.map(([name, amt]) =>
+                `<span class="donor-item">${name} <span class="amt">Rs ${amt.toLocaleString('en-US')}</span></span><span class="donor-sep">•</span>`
+            ).join('');
+
+            // duplicate content so the loop is seamless
+            track.innerHTML = itemsHtml + itemsHtml;
+
+            requestAnimationFrame(() => {
+                const singleWidth = track.scrollWidth / 2;
+                const pxPerSecond = 55; // scroll speed — lower = slower
+                const duration = Math.max(singleWidth / pxPerSecond, 20);
+                track.style.animationDuration = duration + 's';
+            });
+        }
+
+        buildDonorTicker();
+
+        // ===== Main-panel slideshow: cycles the reminder slides only.
+        // Prayer times and clock are always visible now (outside this rotation).
+        // Order: phone-off reminder → dua reminder → post-prayer adhkar → donation info → loop.
+        const PHONE_DURATION = 20000;    // 20s — phone-off reminder
+        const DUA_DURATION = 30000;      // 30s — entering/exiting dua reminder
+        const DAILY_DURATION = 30000;    // 30s — daily verse & hadith
+        const ADH_DURATION = 40000;      // 40s — post-prayer adhkar
+        const DONATION_DURATION = 25000; // 25s — donation info
+
+        const slideSequence = [
+            { id: 'slide-phone', duration: PHONE_DURATION },
+            { id: 'slide-dua', duration: DUA_DURATION },
+            { id: 'slide-daily', duration: DAILY_DURATION },
+            { id: 'slide-adh', duration: ADH_DURATION },
+            { id: 'slide-donation', duration: DONATION_DURATION }
+        ];
+        let slideIndex = 0;
+
+        function showSlide(id) {
+            document.querySelectorAll('.main-panel .slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function advanceSlideshow() {
+            const current = slideSequence[slideIndex];
+            showSlide(current.id);
+            setTimeout(() => {
+                slideIndex = (slideIndex + 1) % slideSequence.length;
+                advanceSlideshow();
+            }, current.duration);
+        }
+
+        advanceSlideshow();
+    </script>
+</body>
+
+</html>
