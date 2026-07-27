@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mahmood Masjid — Admin Panel</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-dark: #0F291F;
+      --green: #16382C;
+      --green-mid: #1F5C46;
+      --gold: #B08D3F;
+      --gold-light: #F4D98A;
+      --cream: #F7F3EA;
+      --card: #FFFFFF;
+      --ink: #26291F;
+      --muted: #6E7263;
+      --muted-light: #8A8D7C;
+      --faint: #B4B79F;
+      --border: #E4DCC7;
+      --border-soft: #F0EBDD;
+      --danger: #A6483F;
+      --danger-bg: #FBF1EF;
+      --danger-border: #E7C9C4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+    }
+
+    body.rtl {
+      font-family: 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, sans-serif;
+      direction: rtl;
+    }
+
+    body.rtl .serif {
+      font-family: 'Noto Nastaliq Urdu', Georgia, serif;
+    }
+
+    body.rtl input,
+    body.rtl select,
+    body.rtl textarea {
+      font-family: 'Noto Nastaliq Urdu', system-ui, sans-serif;
+    }
+
+    .serif {
+      font-family: Georgia, 'Iowan Old Style', serif;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-family: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #DDD5BE;
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-size: 14px;
+      background: #FCFAF5;
+      color: var(--ink);
+      outline: none;
+      width: 100%;
+    }
+
+    input[type="file"] {
+      padding: 7px 8px;
+      font-size: 12.5px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    label.field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 13px;
+      color: #4B4E40;
+    }
+
+    label.field span {
+      font-weight: 600;
+    }
+
+    .field-full {
+      grid-column: 1 / -1;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--green-mid);
+      color: #FBF6E9;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--green-mid);
+      border: 1px solid var(--green-mid);
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-danger-outline {
+      border: 1px solid var(--danger-border);
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-size: 13.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: 1px solid #DDD5BE;
+      color: #4B4E40;
+      border-radius: 7px;
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-btn.danger {
+      border-color: var(--danger-border);
+      color: var(--danger);
+    }
+
+    .pill {
+      border: 1px solid #DDD5BE;
+      background: #fff;
+      color: #4B4E40;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .pill.active {
+      border-color: var(--green-mid);
+      background: var(--green-mid);
+      color: #fff;
+    }
+
+    .lang-pill {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: transparent;
+      color: #C9D6CC;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .lang-pill.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #1A2E22;
+    }
+
+    /* ---------- lock screen ---------- */
+    #lock-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 0%, #1E4636, #0F2A22 70%);
+      padding: 20px;
+    }
+
+    .lock-card {
+      background: #FBF8F1;
+      border-radius: 16px 16px 20px 20px;
+      padding: 34px 30px;
+      width: 340px;
+      max-width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .arch-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      background: linear-gradient(180deg, #2A6E54, #14342A);
+    }
+
+    .lock-title {
+      font-size: 21px;
+      font-weight: 700;
+      color: #1A2E22;
+    }
+
+    .lock-sub {
+      color: var(--muted-light);
+      font-size: 13px;
+      margin: 2px 0 22px;
+    }
+
+    .lock-error {
+      color: var(--danger);
+      font-size: 12.5px;
+      margin: 8px 0;
+    }
+
+    .lock-note {
+      font-size: 11px;
+      color: var(--faint);
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    /* ---------- shell ---------- */
+    #shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    #sidebar {
+      width: 230px;
+      flex-shrink: 0;
+      background: linear-gradient(180deg, #16382C, #0F291F);
+      color: #EAE6D6;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 14px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 6px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .brand-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 17px 17px 6px 6px;
+      font-size: 16px;
+      overflow: hidden;
+    }
+
+    .brand-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 10.5px;
+      color: #9FB3A6;
+    }
+
+    nav.navlist {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .navlink {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #D9D5C2;
+      font-size: 13.5px;
+      font-weight: 500;
+      text-align: left;
+      width: 100%;
+    }
+
+    body.rtl .navlink {
+      text-align: right;
+    }
+
+    .navlink.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .navlink svg {
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 11px;
+      color: #7C9184;
+      padding-top: 14px;
+    }
+
+    #topbar {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    #hamburger {
+      border: none;
+      background: transparent;
+    }
+
+    #main {
+      flex: 1;
+      min-width: 0;
+      padding: 28px 32px;
+      max-width: 1100px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 24px;
+      color: #1A2E22;
+    }
+
+    .section-sub {
+      color: var(--muted-light);
+      font-size: 13.5px;
+      margin-top: 3px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px 4px 12px 12px;
+      padding: 18px 20px;
+      flex: 1 1 200px;
+      min-width: 200px;
+    }
+
+    .stat-card.gold {
+      border-top: 3px solid var(--gold);
+    }
+
+    .stat-card.danger {
+      border-top: 3px solid var(--danger);
+    }
+
+    .stat-card.default {
+      border-top: 3px solid var(--green-mid);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 6px;
+    }
+
+    .stat-sub {
+      font-size: 12.5px;
+      color: var(--muted-light);
+      margin-top: 4px;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .clock-card {
+      background: linear-gradient(180deg, #1F5C46, #14342A);
+      color: #F4EFDD;
+      border-radius: 4px 4px 12px 12px;
+      padding: 16px 20px;
+      flex: 1 1 200px;
+      min-width: 200px;
+    }
+
+    .clock-label {
+      font-size: 11.5px;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: #BFE0CE;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .clock-time {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .clock-date {
+      font-size: 12px;
+      color: #C9D6CC;
+      margin-top: 2px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .form-card {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .form-hint {
+      font-size: 12.5px;
+      color: var(--muted-light);
+      margin-top: -12px;
+      margin-bottom: 20px;
+    }
+
+    .or-divider {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--faint);
+      font-weight: 700;
+      align-self: center;
+      text-align: center;
+    }
+
+    .table-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .table-head,
+    .table-row {
+      display: grid;
+      padding: 11px 18px;
+      font-size: 14px;
+      align-items: center;
+    }
+
+    .table-head {
+      padding: 10px 18px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--muted-light);
+      font-weight: 700;
+      background: #FAF6EC;
+    }
+
+    .table-row {
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .row-list .table-row:first-child {
+      border-top: none;
+    }
+
+    .empty-state {
+      border: 1.5px dashed #DDD5BE;
+      border-radius: 12px;
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--muted-light);
+    }
+
+    .empty-state .icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: var(--gold);
+    }
+
+    .empty-state .title {
+      font-weight: 700;
+      color: #4B4E40;
+      margin-bottom: 4px;
+    }
+
+    .grid-photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .photo-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background-color: #F0EBDD;
+      background-size: cover;
+      background-position: center;
+      cursor: zoom-in;
+      position: relative;
+    }
+
+    .photo-cat {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .photo-caption {
+      font-size: 13.5px;
+      color: var(--ink);
+      margin-top: 2px;
+    }
+
+    .grid-videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .video-frame {
+      aspect-ratio: 16/9;
+      background: #000;
+      position: relative;
+    }
+
+    .video-frame iframe,
+    .video-frame video {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .expand-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(15, 41, 31, 0.72);
+      color: #F4EFDD;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 7px;
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-in;
+      z-index: 2;
+    }
+
+    body.rtl .expand-btn {
+      right: auto;
+      left: 8px;
+    }
+
+    .infra-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      gap: 14px;
+    }
+
+    .infra-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 19px 19px 6px 6px;
+      flex-shrink: 0;
+    }
+
+    .infra-loc {
+      font-size: 13.5px;
+      color: #4B4E40;
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .infra-notes {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .infra-date {
+      font-size: 11.5px;
+      color: var(--faint);
+      margin-top: 8px;
+    }
+
+    .infra-media {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .infra-media img {
+      width: 110px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: zoom-in;
+    }
+
+    .infra-media .infra-video-wrap {
+      position: relative;
+      width: 150px;
+      height: 80px;
+    }
+
+    .infra-media video {
+      width: 150px;
+      height: 80px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #000;
+    }
+
+    .infra-media .infra-video-wrap .expand-btn {
+      top: 4px;
+      right: 4px;
+      padding: 4px;
+    }
+
+    .prayer-month-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .prayer-months-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 14px;
+    }
+
+    .cal-nav-btn {
+      border: 1px solid #DDD5BE;
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px;
+      display: inline-flex;
+    }
+
+    .cal-table-row {
+      display: grid;
+      grid-template-columns: .7fr .7fr repeat(6, 1fr);
+      padding: 9px 16px;
+      font-size: 13px;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .cal-table-head {
+      display: grid;
+      grid-template-columns: .7fr .7fr repeat(6, 1fr);
+      padding: 10px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--muted-light);
+      font-weight: 700;
+      background: #FAF6EC;
+    }
+
+    .cal-scroll {
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    .settings-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 420px;
+      margin-bottom: 20px;
+    }
+
+    .settings-card h3 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-preview {
+      max-width: 120px;
+      max-height: 120px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ---------- lightbox ---------- */
+    #lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 15, 0.88);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+      animation: lightbox-fade .15s ease-out;
+    }
+
+    @keyframes lightbox-fade {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    #lightbox-overlay .lightbox-inner {
+      cursor: default;
+      max-width: 95vw;
+      max-height: 95vh;
+      position: relative;
+    }
+
+    #lightbox-overlay .lightbox-close {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      background: #FBF6E9;
+      color: #1A2E22;
+      border: none;
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    @media print {
+
+      #sidebar,
+      #topbar,
+      .form-card,
+      .section-header button,
+      #main>form {
+        display: none !important;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      #main {
+        padding: 0;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 860px) {
+      #sidebar {
+        display: none;
+        position: fixed;
+        z-index: 50;
+        box-shadow: 8px 0 30px rgba(0, 0, 0, 0.3);
+      }
+
+      #sidebar.open {
+        display: flex;
+      }
+
+      #topbar {
+        display: flex;
+      }
+
+      #main {
+        padding: 20px;
+      }
+
+      .stat-card,
+      .clock-card {
+        min-width: 160px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .form-card {
+        grid-template-columns: 1fr !important;
+      }
+
+      .or-divider {
+        padding: 2px 0;
+      }
+
+      .table-head {
+        display: none;
+      }
+
+      .table-row {
+        grid-template-columns: 1fr !important;
+        gap: 3px;
+        padding: 12px 14px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      .cal-table-head,
+      .cal-table-row {
+        min-width: 640px;
+      }
+
+      .section-title {
+        font-size: 20px;
+      }
+
+      #main {
+        padding: 16px;
+      }
+
+      .lock-card {
+        width: 100%;
+        padding: 28px 20px;
+      }
+
+      .infra-item {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 420px) {
+
+      .stat-card,
+      .clock-card {
+        min-width: 100%;
+        flex-basis: 100%;
+      }
+
+      .grid-photos,
+      .grid-videos {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app"></div>
+
+  <script>
+    /* =========================================================
+       Mahmood Masjid — Admin Panel (static HTML/CSS/JS)
+       Data is stored in this browser's localStorage only.
+       ========================================================= */
+
+    /* ---------- i18n ---------- */
+    const I18N = {
+      en: {
+        brand_sub: "Admin Panel",
+        lock_sub: "Admin Panel · mahmoodmasjid.com",
+        lock_first_time: "First time here — set a passcode to protect this panel.",
+        ph_create_passcode: "Create passcode",
+        ph_confirm_passcode: "Confirm passcode",
+        ph_enter_passcode: "Enter passcode",
+        btn_unlock: "Unlock",
+        btn_save_continue: "Save & Continue",
+        lock_note: "This passcode is a basic deterrent only — it isn't a substitute for keeping this link private.",
+        err_min_chars: "Choose at least 4 characters.",
+        err_mismatch: "Passcodes don't match.",
+        err_incorrect: "Incorrect passcode.",
+        err_locked: "Too many attempts. Try again in {s}s.",
+
+        nav_dashboard: "Dashboard", nav_donations: "Donations", nav_expenses: "Expenses",
+        nav_photos: "Photos", nav_videos: "Videos", nav_infra: "Infrastructure",
+        nav_layout: "Mosque Layout",
+        nav_prayer: "Prayer Times", nav_settings: "Settings",
+
+        dash_title: "Dashboard",
+        dash_sub: "Overview of Mahmood Masjid's construction funds",
+        stat_total_donated: "Total Donated",
+        stat_total_spent: "Total Spent",
+        stat_remaining: "Remaining Balance",
+        stat_photos: "Photos",
+        stat_videos: "Videos",
+        stat_infra: "Infrastructure Notes",
+        sub_donations_count: "{n} donation(s)",
+        sub_expenses_count: "{n} expense(s)",
+        sub_funds_available: "Funds available",
+        sub_over_budget: "Over budget",
+        sub_in_gallery: "in gallery",
+        sub_hidden_logged: "hidden items logged",
+        recent_donations: "Recent Donations",
+        empty_donations_title: "No donations yet",
+        empty_donations_text: "Add your first donation from the Donations tab.",
+        clock_pk: "Pakistan · Gujrat",
+        clock_uk: "United Kingdom",
+
+        donations_sub: "{n} donors · Total raised {amt}",
+        field_donor_name: "Donor name", ph_donor_name: "e.g. Abdul Rahman",
+        field_city: "City", ph_city: "e.g. Karachi",
+        field_amount: "Amount (Rs.)", field_date: "Date", btn_add: "Add",
+        ph_search_donor: "Search by name or city",
+        empty_donations_found_title: "No donations found",
+        empty_donations_found_text: "Add a donation above, or clear your search.",
+        col_name: "Name", col_city: "City", col_date: "Date", col_amount: "Amount",
+        confirm_delete_donation: "Delete this donation record? This can't be undone.",
+
+        expenses_sub: "{n} entries · Total spent {amt}",
+        field_description: "Description", ph_description: "e.g. Marble flooring, main hall",
+        field_category: "Category",
+        empty_expenses_title: "No expenses logged yet",
+        empty_expenses_text: "Add construction spending above to track it against donations.",
+        col_description: "Description", col_category: "Category",
+        cat_construction: "Construction", cat_marble: "Marble & Tiles", cat_electrical: "Electrical",
+        cat_plumbing: "Plumbing", cat_carpet: "Carpet & Furnishing", cat_labour: "Labour", cat_other: "Other",
+        confirm_delete_expense: "Delete this expense record? This can't be undone.",
+
+        photos_sub: "{n} photos · shown on the public gallery",
+        field_image_url: "Image URL",
+        field_upload_photo: "Or upload from device",
+        field_caption: "Caption", ph_caption: "e.g. Main hall carpet, July 2026",
+        hint_photo: "Paste a link to an image already hosted online, or upload a photo directly from your phone or computer. Click any photo to view it full size.",
+        empty_photos_title: "No photos yet",
+        empty_photos_text: "Add a photo link or upload one above to start building the gallery.",
+        untitled: "Untitled",
+        pcat_exterior: "Exterior", pcat_mainhall: "Main Hall", pcat_wudu: "Wudu Area",
+        pcat_toilets: "Toilets", pcat_progress: "Progress", pcat_other: "Other",
+        confirm_delete_photo: "Delete this photo? This can't be undone.",
+
+        videos_sub: "{n} videos · shown on the public gallery",
+        field_youtube_link: "YouTube link",
+        field_upload_video: "Or upload video from device",
+        field_title: "Title", ph_video_title: "e.g. Friday khutbah, June 2026",
+        empty_videos_title: "No videos yet",
+        empty_videos_text: "Paste a YouTube link or upload a video above to add it to the gallery.",
+        confirm_delete_video: "Delete this video? This can't be undone.",
+
+        infra_title: "Hidden Infrastructure",
+        infra_sub: "Gutters, pipes and wiring that will be covered once construction finishes",
+        field_type: "Type", field_floor: "Floor / area", field_location: "Location",
+        ph_location: "e.g. Behind west wall, 2m from the mihrab corner",
+        field_notes: "Notes", ph_notes: "Depth, direction, anything a future contractor should know",
+        field_ref_photo: "Reference photo", field_ref_video: "Reference video",
+        field_date_logged: "Date logged", btn_log_item: "Log item",
+        empty_infra_title: "Nothing logged",
+        empty_infra_text: "Record hidden gutters, pipes or wiring before walls and floors go up — add a photo or video if you can.",
+        logged_on: "Logged {date}",
+        itype_gutter: "Gutter", itype_pipe: "Water Pipe", itype_wiring: "Electrical Wiring",
+        itype_drainage: "Drainage", itype_other: "Other",
+        floor_basement: "Basement", floor_ground: "Ground Floor", floor_first: "First Floor", floor_roof: "Roof",
+        confirm_delete_infra: "Delete this infrastructure record? This can't be undone.",
+
+        layout_title: "Mosque Layout",
+        layout_sub: "Floor plans and site layout diagrams",
+        field_layout_title: "Title", ph_layout_title: "e.g. Ground floor plan",
+        hint_layout: "Upload a floor plan or site layout image, or paste a link to one hosted online. Click any layout image to view it full size.",
+        empty_layout_title: "No layout added yet",
+        empty_layout_text: "Add a floor plan or site diagram above.",
+        confirm_delete_layout: "Delete this layout image? This can't be undone.",
+
+        prayer_title: "Prayer Times Calendar",
+        prayer_sub: "Full-year schedule shown to visitors · Hanafi method",
+        mode_calendar: "View Calendar", mode_edit: "Edit Monthly Times",
+        edit_intro: "Set the standard prayer times for each month (Jumu'ah too). These apply to every day in that month.",
+        lbl_fajr: "Fajr", lbl_sunrise: "Sunrise", lbl_dhuhr: "Zuhr", lbl_asr: "Asr",
+        lbl_maghrib: "Maghrib", lbl_isha: "Isha", lbl_jumma: "Jumu'ah",
+        col_day: "Day", btn_download_pdf: "Download PDF",
+
+        settings_title: "Settings", settings_sub: "Panel security and data",
+        card_logo_title: "Masjid logo",
+        logo_hint: "Shown in the sidebar of this panel. Upload an image or paste a link.",
+        btn_save_logo: "Save logo", btn_remove_logo: "Remove logo",
+        card_passcode_title: "Change passcode",
+        field_current_passcode: "Current passcode", field_new_passcode: "New passcode",
+        btn_update_passcode: "Update passcode",
+        card_reset_title: "Reset all data",
+        reset_warning: "Clears donations, expenses, photos, videos, infrastructure notes and prayer times from this browser. This can't be undone.",
+        btn_reset_everything: "Reset everything",
+        confirm_reset: "This will permanently clear all data in this panel. Continue?",
+        storage_note: "Data here is stored only in this browser (localStorage). Clearing your browser data, or opening this page on a different device, will not show the same records. Large photos and videos use up storage quickly — for a lot of media, linking to files hosted online works better than uploading. Your passcode is stored as a one-way hash on this device, and is never sent anywhere.",
+        msg_current_incorrect: "Current passcode is incorrect.",
+        msg_new_min: "New passcode must be at least 4 characters.",
+        msg_updated: "Passcode updated.",
+        storage_full_warning: "Couldn't save — this browser's storage is full. Try removing some large photos/videos, or link to files hosted online instead.",
+        btn_delete: "Delete", btn_remove: "Remove",
+        confirm_yes: "Yes, delete", confirm_no: "Cancel",
+      },
+      ur: {
+        brand_sub: "ایڈمن پینل",
+        lock_sub: "ایڈمن پینل · mahmoodmasjid.com",
+        lock_first_time: "پہلی بار یہاں آئے ہیں؟ اس پینل کی حفاظت کے لیے پاس کوڈ بنائیں۔",
+        ph_create_passcode: "پاس کوڈ بنائیں",
+        ph_confirm_passcode: "پاس کوڈ کی تصدیق کریں",
+        ph_enter_passcode: "پاس کوڈ درج کریں",
+        btn_unlock: "کھولیں",
+        btn_save_continue: "محفوظ کریں اور جاری رکھیں",
+        lock_note: "یہ پاس کوڈ صرف ایک بنیادی رکاوٹ ہے — یہ لنک کو خفیہ رکھنے کا متبادل نہیں۔",
+        err_min_chars: "کم از کم 4 حروف منتخب کریں۔",
+        err_mismatch: "پاس کوڈ مماثل نہیں ہیں۔",
+        err_incorrect: "غلط پاس کوڈ۔",
+        err_locked: "بہت زیادہ کوششیں۔ {s} سیکنڈ میں دوبارہ کوشش کریں۔",
+
+        nav_dashboard: "ڈیش بورڈ", nav_donations: "عطیات", nav_expenses: "اخراجات",
+        nav_photos: "تصاویر", nav_videos: "ویڈیوز", nav_infra: "بنیادی ڈھانچہ",
+        nav_layout: "مسجد کا نقشہ",
+        nav_prayer: "اوقاتِ نماز", nav_settings: "ترتیبات",
+
+        dash_title: "ڈیش بورڈ",
+        dash_sub: "مسجد محمود کے تعمیراتی فنڈز کا جائزہ",
+        stat_total_donated: "کل عطیات",
+        stat_total_spent: "کل اخراجات",
+        stat_remaining: "باقی رقم",
+        stat_photos: "تصاویر",
+        stat_videos: "ویڈیوز",
+        stat_infra: "پوشیدہ تنصیبات کے نوٹس",
+        sub_donations_count: "{n} عطیات",
+        sub_expenses_count: "{n} اخراجات",
+        sub_funds_available: "فنڈز دستیاب ہیں",
+        sub_over_budget: "بجٹ سے زائد",
+        sub_in_gallery: "گیلری میں",
+        sub_hidden_logged: "پوشیدہ اشیاء درج",
+        recent_donations: "حالیہ عطیات",
+        empty_donations_title: "ابھی تک کوئی عطیہ نہیں",
+        empty_donations_text: "عطیات ٹیب سے اپنا پہلا عطیہ شامل کریں۔",
+        clock_pk: "پاکستان · گجرات",
+        clock_uk: "برطانیہ",
+
+        donations_sub: "{n} عطیہ دہندگان · کل جمع شدہ رقم {amt}",
+        field_donor_name: "عطیہ دہندہ کا نام", ph_donor_name: "مثلاً عبدالرحمٰن",
+        field_city: "شہر", ph_city: "مثلاً کراچی",
+        field_amount: "رقم (روپے)", field_date: "تاریخ", btn_add: "شامل کریں",
+        ph_search_donor: "نام یا شہر سے تلاش کریں",
+        empty_donations_found_title: "کوئی عطیہ نہیں ملا",
+        empty_donations_found_text: "اوپر عطیہ شامل کریں یا اپنی تلاش صاف کریں۔",
+        col_name: "نام", col_city: "شہر", col_date: "تاریخ", col_amount: "رقم",
+        confirm_delete_donation: "کیا آپ یہ عطیہ ریکارڈ حذف کرنا چاہتے ہیں؟ اسے واپس نہیں لیا جا سکتا۔",
+
+        expenses_sub: "{n} اندراجات · کل خرچ {amt}",
+        field_description: "تفصیل", ph_description: "مثلاً مرکزی ہال کی سنگ مرمر فرش",
+        field_category: "قسم",
+        empty_expenses_title: "ابھی تک کوئی خرچ درج نہیں",
+        empty_expenses_text: "عطیات کے مقابلے میں نگرانی کے لیے اوپر تعمیراتی اخراجات شامل کریں۔",
+        col_description: "تفصیل", col_category: "قسم",
+        cat_construction: "تعمیرات", cat_marble: "سنگ مرمر اور ٹائلز", cat_electrical: "بجلی",
+        cat_plumbing: "پلمبنگ", cat_carpet: "قالین اور فرنشنگ", cat_labour: "مزدوری", cat_other: "دیگر",
+        confirm_delete_expense: "کیا آپ یہ خرچ ریکارڈ حذف کرنا چاہتے ہیں؟ اسے واپس نہیں لیا جا سکتا۔",
+
+        photos_sub: "{n} تصاویر · عوامی گیلری میں دکھائی جاتی ہیں",
+        field_image_url: "تصویر کا لنک",
+        field_upload_photo: "یا ڈیوائس سے اپ لوڈ کریں",
+        field_caption: "کیپشن", ph_caption: "مثلاً مرکزی ہال کا قالین، جولائی 2026",
+        hint_photo: "آن لائن پہلے سے موجود تصویر کا لنک لگائیں، یا اپنے فون یا کمپیوٹر سے براہ راست تصویر اپ لوڈ کریں۔ مکمل سائز میں دیکھنے کے لیے کسی بھی تصویر پر کلک کریں۔",
+        empty_photos_title: "ابھی تک کوئی تصویر نہیں",
+        empty_photos_text: "گیلری بنانے کے لیے اوپر تصویر کا لنک شامل کریں یا اپ لوڈ کریں۔",
+        untitled: "بلا عنوان",
+        pcat_exterior: "بیرونی حصہ", pcat_mainhall: "مرکزی ہال", pcat_wudu: "وضو خانہ",
+        pcat_toilets: "بیت الخلاء", pcat_progress: "تعمیراتی پیش رفت", pcat_other: "دیگر",
+        confirm_delete_photo: "کیا آپ یہ تصویر حذف کرنا چاہتے ہیں؟ اسے واپس نہیں لیا جا سکتا۔",
+
+        videos_sub: "{n} ویڈیوز · عوامی گیلری میں دکھائی جاتی ہیں",
+        field_youtube_link: "یوٹیوب لنک",
+        field_upload_video: "یا ڈیوائس سے ویڈیو اپ لوڈ کریں",
+        field_title: "عنوان", ph_video_title: "مثلاً جمعہ کا خطبہ، جون 2026",
+        empty_videos_title: "ابھی تک کوئی ویڈیو نہیں",
+        empty_videos_text: "گیلری میں شامل کرنے کے لیے اوپر یوٹیوب لنک لگائیں یا ویڈیو اپ لوڈ کریں۔",
+        confirm_delete_video: "کیا آپ یہ ویڈیو حذف کرنا چاہتے ہیں؟ اسے واپس نہیں لیا جا سکتا۔",
+
+        infra_title: "پوشیدہ بنیادی ڈھانچہ",
+        infra_sub: "گٹر، پائپ اور تاریں جو تعمیر مکمل ہونے پر ڈھک جائیں گی",
+        field_type: "قسم", field_floor: "منزل / علاقہ", field_location: "مقام",
+        ph_location: "مثلاً مغربی دیوار کے پیچھے، محراب کونے سے 2 میٹر",
+        field_notes: "نوٹس", ph_notes: "گہرائی، سمت، یا کوئی بھی بات جو مستقبل کے ٹھیکیدار کو معلوم ہونی چاہیے",
+        field_ref_photo: "حوالہ تصویر", field_ref_video: "حوالہ ویڈیو",
+        field_date_logged: "درج کرنے کی تاریخ", btn_log_item: "اندراج کریں",
+        empty_infra_title: "کچھ درج نہیں",
+        empty_infra_text: "دیواریں اور فرش بننے سے پہلے پوشیدہ گٹر، پائپ یا تاریں ریکارڈ کریں — ممکن ہو تو تصویر یا ویڈیو بھی شامل کریں۔",
+        logged_on: "{date} کو درج کیا گیا",
+        itype_gutter: "گٹر", itype_pipe: "پانی کا پائپ", itype_wiring: "بجلی کی تاریں",
+        itype_drainage: "نکاسی آب", itype_other: "دیگر",
+        floor_basement: "بیسمنٹ", floor_ground: "گراؤنڈ فلور", floor_first: "پہلی منزل", floor_roof: "چھت",
+        confirm_delete_infra: "کیا آپ یہ ریکارڈ حذف کرنا چاہتے ہیں؟ اسے واپس نہیں لیا جا سکتا۔",
+
+        layout_title: "مسجد کا نقشہ",
+        layout_sub: "فلور پلان اور سائٹ لے آؤٹ ڈایاگرام",
+        field_layout_title: "عنوان", ph_layout_title: "مثلاً گراؤنڈ فلور پلان",
+        hint_layout: "فلور پلان یا سائٹ لے آؤٹ کی تصویر اپ لوڈ کریں، یا آن لائن موجود تصویر کا لنک لگائیں۔ مکمل سائز میں دیکھنے کے لیے تصویر پر کلک کریں۔",
+        empty_layout_title: "ابھی تک کوئی نقشہ شامل نہیں",
+        empty_layout_text: "اوپر فلور پلان یا سائٹ ڈایاگرام شامل کریں۔",
+        confirm_delete_layout: "کیا آپ یہ نقشہ حذف کرنا چاہتے ہیں؟ اسے واپس نہیں لیا جا سکتا۔",
+
+        prayer_title: "اوقاتِ نماز کیلنڈر",
+        prayer_sub: "زائرین کو دکھایا جانے والا سالانہ شیڈول · حنفی طریقہ",
+        mode_calendar: "کیلنڈر دیکھیں", mode_edit: "ماہانہ اوقات میں ترمیم کریں",
+        edit_intro: "ہر مہینے کے لیے معیاری اوقاتِ نماز مقرر کریں (جمعہ سمیت)۔ یہ اس مہینے کے ہر دن پر لاگو ہوں گے۔",
+        lbl_fajr: "فجر", lbl_sunrise: "طلوعِ آفتاب", lbl_dhuhr: "ظہر", lbl_asr: "عصر",
+        lbl_maghrib: "مغرب", lbl_isha: "عشاء", lbl_jumma: "جمعہ",
+        col_day: "دن", btn_download_pdf: "پی ڈی ایف ڈاؤن لوڈ کریں",
+
+        settings_title: "ترتیبات", settings_sub: "پینل کی حفاظت اور ڈیٹا",
+        card_logo_title: "مسجد کا لوگو",
+        logo_hint: "اس پینل کی سائیڈبار میں دکھایا جاتا ہے۔ تصویر اپ لوڈ کریں یا لنک لگائیں۔",
+        btn_save_logo: "لوگو محفوظ کریں", btn_remove_logo: "لوگو ہٹائیں",
+        card_passcode_title: "پاس کوڈ تبدیل کریں",
+        field_current_passcode: "موجودہ پاس کوڈ", field_new_passcode: "نیا پاس کوڈ",
+        btn_update_passcode: "پاس کوڈ اپ ڈیٹ کریں",
+        card_reset_title: "تمام ڈیٹا دوبارہ ترتیب دیں",
+        reset_warning: "اس براؤزر سے عطیات، اخراجات، تصاویر، ویڈیوز، بنیادی ڈھانچے کے نوٹس اور اوقاتِ نماز حذف کر دیتا ہے۔ اسے واپس نہیں لیا جا سکتا۔",
+        btn_reset_everything: "سب کچھ ری سیٹ کریں",
+        confirm_reset: "یہ اس پینل کا تمام ڈیٹا مستقل طور پر حذف کر دے گا۔ جاری رکھیں؟",
+        storage_note: "یہ ڈیٹا صرف اسی براؤزر (لوکل سٹوریج) میں محفوظ ہوتا ہے۔ براؤزر کا ڈیٹا صاف کرنے یا کسی دوسری ڈیوائس پر یہ صفحہ کھولنے سے وہی ریکارڈ نظر نہیں آئیں گے۔ بڑی تصاویر اور ویڈیوز جلدی سٹوریج ختم کر دیتی ہیں — زیادہ میڈیا کے لیے آن لائن ہوسٹ شدہ لنک استعمال کرنا اپ لوڈ کرنے سے بہتر ہے۔ آپ کا پاس کوڈ اس ڈیوائس پر ون وے ہیش کی شکل میں محفوظ ہوتا ہے اور کہیں بھی نہیں بھیجا جاتا۔",
+        msg_current_incorrect: "موجودہ پاس کوڈ غلط ہے۔",
+        msg_new_min: "نیا پاس کوڈ کم از کم 4 حروف کا ہونا چاہیے۔",
+        msg_updated: "پاس کوڈ اپ ڈیٹ ہو گیا۔",
+        storage_full_warning: "محفوظ نہیں ہو سکا — اس براؤزر کا سٹوریج بھر گیا ہے۔ کچھ بڑی تصاویر/ویڈیوز ہٹائیں، یا اس کے بجائے آن لائن لنک استعمال کریں۔",
+        btn_delete: "حذف کریں", btn_remove: "ہٹائیں",
+        confirm_yes: "ہاں، حذف کریں", confirm_no: "منسوخ کریں",
+      }
+    };
+    function t(key, vars) {
+      let str = (I18N[state.lang] && I18N[state.lang][key]) || I18N.en[key] || key;
+      if (vars) Object.keys(vars).forEach(k => { str = str.split("{" + k + "}").join(vars[k]); });
+      return str;
+    }
+
+    /* ---------- constants ---------- */
+    const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const MONTHS_UR = ["جنوری", "فروری", "مارچ", "اپریل", "مئی", "جون", "جولائی", "اگست", "ستمبر", "اکتوبر", "نومبر", "دسمبر"];
+    const DAY_NAMES_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const DAY_NAMES_UR = ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"];
+    function monthName(i) { return (state.lang === 'ur' ? MONTHS_UR : MONTHS_EN)[i]; }
+    function dayName(i) { return (state.lang === 'ur' ? DAY_NAMES_UR : DAY_NAMES_EN)[i]; }
+
+    const TIME_FIELDS = [
+      { key: "fajr", labelKey: "lbl_fajr" },
+      { key: "sunrise", labelKey: "lbl_sunrise" },
+      { key: "dhuhr", labelKey: "lbl_dhuhr" },
+      { key: "asr", labelKey: "lbl_asr" },
+      { key: "maghrib", labelKey: "lbl_maghrib" },
+      { key: "isha", labelKey: "lbl_isha" },
+    ];
+    const EXPENSE_CATEGORIES = ["Construction", "Marble & Tiles", "Electrical", "Plumbing", "Carpet & Furnishing", "Labour", "Other"];
+    const CAT_KEY_MAP = { "Construction": "cat_construction", "Marble & Tiles": "cat_marble", "Electrical": "cat_electrical", "Plumbing": "cat_plumbing", "Carpet & Furnishing": "cat_carpet", "Labour": "cat_labour", "Other": "cat_other" };
+    const PHOTO_CATEGORIES = ["Exterior", "Main Hall", "Wudu Area", "Toilets", "Progress", "Other"];
+    const PCAT_KEY_MAP = { "Exterior": "pcat_exterior", "Main Hall": "pcat_mainhall", "Wudu Area": "pcat_wudu", "Toilets": "pcat_toilets", "Progress": "pcat_progress", "Other": "pcat_other" };
+    const INFRA_TYPES = ["Gutter", "Water Pipe", "Electrical Wiring", "Drainage", "Other"];
+    const ITYPE_KEY_MAP = { "Gutter": "itype_gutter", "Water Pipe": "itype_pipe", "Electrical Wiring": "itype_wiring", "Drainage": "itype_drainage", "Other": "itype_other" };
+    const FLOORS = ["Basement", "Ground Floor", "First Floor", "Roof"];
+    const FLOOR_KEY_MAP = { "Basement": "floor_basement", "Ground Floor": "floor_ground", "First Floor": "floor_first", "Roof": "floor_roof" };
+
+    const ICONS = {
+      dashboard: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>',
+      donations: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>',
+      expenses: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v16"/></svg>',
+      photos: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+      videos: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>',
+      infra: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+      layout: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>',
+      prayer: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M12 14v3M10.5 15.5h3"/></svg>',
+      settings: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+      plus: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/></svg>',
+      trash: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z"/></svg>',
+      search: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+      pin: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+      chevLeft: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>',
+      chevRight: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>',
+      menu: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h16"/></svg>',
+      lock: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      key: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></svg>',
+      shield: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M12 8v4M12 16h.01"/></svg>',
+      reset: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>',
+      image: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+      download: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+      clock: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+      expand: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>',
+      close: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+    };
+
+    function getNav() {
+      return [
+        { key: "dashboard", label: t("nav_dashboard"), icon: ICONS.dashboard },
+        { key: "donations", label: t("nav_donations"), icon: ICONS.donations },
+        { key: "expenses", label: t("nav_expenses"), icon: ICONS.expenses },
+        { key: "photos", label: t("nav_photos"), icon: ICONS.photos },
+        { key: "videos", label: t("nav_videos"), icon: ICONS.videos },
+        { key: "infra", label: t("nav_infra"), icon: ICONS.infra },
+        { key: "layout", label: t("nav_layout"), icon: ICONS.layout },
+        { key: "prayer", label: t("nav_prayer"), icon: ICONS.prayer },
+        { key: "settings", label: t("nav_settings"), icon: ICONS.settings },
+      ];
+    }
+
+    /* ---------- helpers ---------- */
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+    function todayISO() { return new Date().toISOString().slice(0, 10); }
+    function currency(n) {
+      const v = Number(n) || 0;
+      const num = v.toLocaleString("en-PK", { maximumFractionDigits: 0 });
+      return state.lang === "ur" ? (num + " روپے") : ("Rs. " + num);
+    }
+    function escapeHtml(str) {
+      return String(str == null ? "" : str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+    function safeUrl(url) {
+      const u = String(url || "").trim();
+      if (/^https?:\/\//i.test(u) || /^data:(image|video)\//i.test(u)) return u;
+      return "";
+    }
+    function emptyMonthlyTimes() { return { fajr: "", sunrise: "", dhuhr: "", asr: "", maghrib: "", isha: "", jumma: "" }; }
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("read failed"));
+        reader.readAsDataURL(file);
+      });
+    }
+    function optionsFor(list, map, selected) {
+      return list.map(v => `<option value="${escapeHtml(v)}" ${selected === v ? "selected" : ""}>${escapeHtml(t(map[v]))}</option>`).join("");
+    }
+    function confirmDelete(messageKey, onConfirm) {
+      if (window.confirm(t(messageKey))) onConfirm();
+    }
+
+    /* ---------- lightbox (click to enlarge photos/videos) ---------- */
+    function closeLightbox() {
+      const el = document.getElementById("lightbox-overlay");
+      if (el) el.remove();
+    }
+    function openLightbox(innerHtml) {
+      closeLightbox();
+      const overlay = document.createElement("div");
+      overlay.id = "lightbox-overlay";
+      overlay.innerHTML = `<div class="lightbox-inner">${innerHtml}<button class="lightbox-close" aria-label="Close">${ICONS.close}</button></div>`;
+      overlay.addEventListener("click", (e) => { if (e.target === overlay) closeLightbox(); });
+      overlay.querySelector(".lightbox-close").addEventListener("click", closeLightbox);
+      document.addEventListener("keydown", escCloseOnce);
+      document.body.appendChild(overlay);
+    }
+    function escCloseOnce(e) {
+      if (e.key === "Escape") { closeLightbox(); document.removeEventListener("keydown", escCloseOnce); }
+    }
+    function openImageLightbox(url) {
+      const u = safeUrl(url);
+      if (!u) return;
+      openLightbox(`<img src="${u}" style="max-width:95vw;max-height:95vh;object-fit:contain;border-radius:8px;display:block;" />`);
+    }
+    function openEmbedVideoLightbox(embedUrl, title) {
+      const u = safeUrl(embedUrl) || embedUrl;
+      openLightbox(`<div style="width:90vw;max-width:960px;aspect-ratio:16/9;"><iframe src="${u}" title="${escapeHtml(title || 'video')}" style="width:100%;height:100%;border:none;border-radius:8px;" allowfullscreen></iframe></div>`);
+    }
+    function openUploadedVideoLightbox(url) {
+      const u = safeUrl(url);
+      if (!u) return;
+      openLightbox(`<video src="${u}" controls autoplay style="max-width:95vw;max-height:95vh;border-radius:8px;"></video>`);
+    }
+    /* Delegated so it keeps working across re-renders without rebinding */
+    function handleGlobalLightboxClick(e) {
+      const imgEl = e.target.closest("[data-lightbox-img]");
+      if (imgEl) { openImageLightbox(imgEl.getAttribute("data-lightbox-img")); return; }
+      const vidEl = e.target.closest("[data-lightbox-video]");
+      if (vidEl) {
+        const url = vidEl.getAttribute("data-lightbox-video");
+        if (vidEl.getAttribute("data-video-type") === "embed") openEmbedVideoLightbox(url, vidEl.getAttribute("data-video-title"));
+        else openUploadedVideoLightbox(url);
+      }
+    }
+
+    /* ---------- storage (localStorage) ---------- */
+    const store = {
+      get(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (raw == null) return fallback;
+          return JSON.parse(raw);
+        } catch (e) { return fallback; }
+      },
+      set(key, value) {
+        try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+        catch (e) { console.error("Storage save failed", key, e); return false; }
+      }
+    };
+
+    /* ---------- passcode hashing (SHA-256, one-way, local only) ---------- */
+    async function hashPasscode(pass) {
+      const enc = new TextEncoder().encode(String(pass));
+      const buf = await crypto.subtle.digest("SHA-256", enc);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+    const LOCK_MAX_ATTEMPTS = 5;
+    const LOCK_DURATION_MS = 30000;
+    function getLockInfo() { return store.get("mm_lock_info", { attempts: 0, lockUntil: 0 }); }
+    function setLockInfo(info) { store.set("mm_lock_info", info); }
+
+    /* ---------- seed data imported from Mahmood Masjid donations sheet ---------- */
+    const SEED_DONATIONS = [{ "id": "seed-d1", "name": "حمزہ صابر", "city": "محمود آباد", "amount": 110000.0, "date": "" }, { "id": "seed-d2", "name": "ذولفقار بانیاں", "city": "فتح پور", "amount": 10000.0, "date": "" }, { "id": "seed-d3", "name": "مسجد کے پرانے دروازے بھچے تھے", "city": "محمود آباد", "amount": 147000.0, "date": "" }, { "id": "seed-d4", "name": "محمد سفیان", "city": "محمود آباد", "amount": 100000.0, "date": "" }, { "id": "seed-d5", "name": "شبیر احمد  سوتھ افریکہ", "city": "", "amount": 10000.0, "date": "" }, { "id": "seed-d6", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 600000.0, "date": "" }, { "id": "seed-d7", "name": "محمد سفیان", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d8", "name": "محمد صدیق", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d9", "name": "چھوٹی عید چوبیس", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d10", "name": "محمد عادل", "city": "محمود آباد", "amount": 20000.0, "date": "" }, { "id": "seed-d11", "name": "چھوٹی عید پچیس", "city": "محمود آباد", "amount": 32000.0, "date": "" }, { "id": "seed-d12", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 15000.0, "date": "" }, { "id": "seed-d13", "name": "محمد عادل", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d14", "name": "خدیجہ بی بی", "city": "", "amount": 12000.0, "date": "" }, { "id": "seed-d15", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 300000.0, "date": "" }, { "id": "seed-d16", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 203000.0, "date": "" }, { "id": "seed-d17", "name": "محمد خالد", "city": "محمود آباد", "amount": 400000.0, "date": "" }, { "id": "seed-d18", "name": "ناصر پٹھان", "city": "فتح پور", "amount": 1000.0, "date": "" }, { "id": "seed-d19", "name": "کالے خاں", "city": "فتح پور", "amount": 5000.0, "date": "" }, { "id": "seed-d20", "name": "علی", "city": "باجو", "amount": 45000.0, "date": "" }, { "id": "seed-d21", "name": "مبشر علی", "city": "چوہدوال", "amount": 10000.0, "date": "" }, { "id": "seed-d22", "name": "اورنگزیب", "city": "عالمگڑہھ", "amount": 5000.0, "date": "" }, { "id": "seed-d23", "name": "مہندی خاں کالس", "city": "خرادیاں", "amount": 1050.0, "date": "" }, { "id": "seed-d24", "name": "اقبال عارف", "city": "بارواں", "amount": 100000.0, "date": "" }, { "id": "seed-d25", "name": "خالد مئر", "city": "فتح پور", "amount": 166000.0, "date": "" }, { "id": "seed-d26", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 52000.0, "date": "" }, { "id": "seed-d27", "name": "شہزاد", "city": "یوکے", "amount": 100000.0, "date": "" }, { "id": "seed-d28", "name": "فضل والد ناصر", "city": "محمود آباد", "amount": 166000.0, "date": "" }, { "id": "seed-d29", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 367300.0, "date": "" }, { "id": "seed-d30", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 166000.0, "date": "" }, { "id": "seed-d31", "name": "نعیم افظال", "city": "رانیوال", "amount": 100000.0, "date": "" }, { "id": "seed-d32", "name": "محمد عادل", "city": "محمود آباد", "amount": 25000.0, "date": "" }, { "id": "seed-d33", "name": "احسان", "city": "چوہدوال", "amount": 10000.0, "date": "" }, { "id": "seed-d34", "name": "ارسلان", "city": "لاہور", "amount": 25000.0, "date": "" }, { "id": "seed-d35", "name": "نبیل", "city": "یوکے", "amount": 60000.0, "date": "" }, { "id": "seed-d36", "name": "عبدللہ", "city": "محمود آباد", "amount": 1000.0, "date": "" }, { "id": "seed-d37", "name": "مبشر علی", "city": "باجو", "amount": 50000.0, "date": "" }, { "id": "seed-d38", "name": "اسماعیل", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d39", "name": "محبوب", "city": "محمود آباد", "amount": 40000.0, "date": "" }, { "id": "seed-d40", "name": "اسماعیل", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d41", "name": "علی والد عظیم", "city": "محمود آباد", "amount": 50000.0, "date": "" }, { "id": "seed-d42", "name": "عبدللہ صابر", "city": "محمود آباد", "amount": 521.0, "date": "" }, { "id": "seed-d43", "name": "کاشف بھائئ", "city": "یوکے", "amount": 166000.0, "date": "" }, { "id": "seed-d44", "name": "ماسٹ ظفر", "city": "یوکے", "amount": 37000.0, "date": "" }, { "id": "seed-d45", "name": "بہن ماسٹر ظفر", "city": "یوکے", "amount": 29600.0, "date": "" }, { "id": "seed-d46", "name": "طارق کشمیری بازار", "city": "یوکے", "amount": 185000.0, "date": "" }, { "id": "seed-d47", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 70000.0, "date": "" }, { "id": "seed-d48", "name": "میجر امجد مرحوم", "city": "یوکے", "amount": 100000.0, "date": "" }, { "id": "seed-d49", "name": "احمد بھائئ", "city": "یوکے", "amount": 60000.0, "date": "" }, { "id": "seed-d50", "name": "الیاس عرف نومی", "city": "یوکے", "amount": 7400.0, "date": "" }, { "id": "seed-d51", "name": "بہن اشفاق", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d52", "name": "اسد علی جمیل", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d53", "name": "محمد سفیان", "city": "محمود آباد", "amount": 20000.0, "date": "" }, { "id": "seed-d54", "name": "حافظ مزکر", "city": "میراں چک", "amount": 5000.0, "date": "" }, { "id": "seed-d55", "name": "خلیل مرحوم", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d56", "name": "مسرت", "city": "میانی چیچیاں", "amount": 10000.0, "date": "" }, { "id": "seed-d57", "name": "یاسر", "city": "خانوال", "amount": 166000.0, "date": "" }, { "id": "seed-d58", "name": "عاصم", "city": "خانوال", "amount": 166000.0, "date": "" }, { "id": "seed-d59", "name": "محمد صدیق", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d60", "name": "حسین", "city": "بنگلہ دیش", "amount": 74000.0, "date": "" }, { "id": "seed-d61", "name": "عبدل باری", "city": "یوکے", "amount": 37000.0, "date": "" }, { "id": "seed-d62", "name": "والی وال", "city": "یوکے", "amount": 149850.0, "date": "" }, { "id": "seed-d63", "name": "عبدللہ دوست", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d64", "name": "محمد راشد", "city": "میانہ چک", "amount": 200.0, "date": "" }, { "id": "seed-d65", "name": "عبدلروف", "city": "باجو", "amount": 23000.0, "date": "" }, { "id": "seed-d66", "name": "ہاشم والد قاسم", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d67", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 500000.0, "date": "" }, { "id": "seed-d68", "name": "نواب ابراہیم", "city": "ابو ظبی", "amount": 40000.0, "date": "" }, { "id": "seed-d69", "name": "علامہ ساجدالرحمن", "city": "گجرات", "amount": 15000.0, "date": "2026-03-05" }, { "id": "seed-d70", "name": "محبوب غنی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-05" }, { "id": "seed-d71", "name": "محمد سفیان", "city": "محمود آباد", "amount": 15000.0, "date": "2026-03-05" }, { "id": "seed-d72", "name": "حامد علی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-12" }, { "id": "seed-d73", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-03-12" }, { "id": "seed-d74", "name": "ڈاکڑ صابر", "city": "محمود آباد", "amount": 10000.0, "date": "2026-03-13" }, { "id": "seed-d75", "name": "مہر عامر", "city": "محمود آباد", "amount": 125000.0, "date": "2026-03-14" }, { "id": "seed-d76", "name": "ڈاکڑ اللہ دتہ", "city": "جلاپور جٹاں", "amount": 100000.0, "date": "2026-03-14" }, { "id": "seed-d77", "name": "قمر عباس", "city": "کائنتہ", "amount": 50000.0, "date": "2026-03-15" }, { "id": "seed-d78", "name": "زمان", "city": "میر حسین", "amount": 20000.0, "date": "2026-03-15" }, { "id": "seed-d79", "name": "اسلم مرحوم", "city": "ڈنگہ", "amount": 100000.0, "date": "2026-03-16" }, { "id": "seed-d80", "name": "افضال چیچی", "city": "فتح پور", "amount": 100000.0, "date": "2026-03-17" }, { "id": "seed-d81", "name": "ثاقب چوہدری", "city": "فتح پور", "amount": 200000.0, "date": "2026-03-19" }, { "id": "seed-d82", "name": "چوھدری لیاقت گجر", "city": "جالپوال", "amount": 50000.0, "date": "" }, { "id": "seed-d83", "name": "راہی مسافر", "city": "محمود آباد", "amount": 3000.0, "date": "2026-03-19" }, { "id": "seed-d84", "name": "افتخارچیجی", "city": "فتح پور", "amount": 100729.0, "date": "2026-03-19" }, { "id": "seed-d85", "name": "راہی مسافر", "city": "محمود آباد", "amount": 1500.0, "date": "2026-03-19" }, { "id": "seed-d86", "name": "فیضان علی", "city": "محمود آباد", "amount": 10000.0, "date": "2026-03-21" }, { "id": "seed-d87", "name": "فیضان علی", "city": "محمود آباد", "amount": 20000.0, "date": "2026-03-23" }, { "id": "seed-d88", "name": "محمد صدیق", "city": "محمود آباد", "amount": 2000.0, "date": "2026-03-25" }, { "id": "seed-d89", "name": "نواز مرحوم", "city": "بانٹھ", "amount": 50000.0, "date": "2026-03-26" }, { "id": "seed-d90", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 100000.0, "date": "2026-03-26" }, { "id": "seed-d91", "name": "منہدی خاں مرحوم", "city": "محمود آباد", "amount": 3000.0, "date": "2026-03-28" }, { "id": "seed-d92", "name": "اشفاق", "city": "محمود آباد", "amount": 500.0, "date": "2026-03-28" }, { "id": "seed-d93", "name": "مہر علی پرویز", "city": "محمود آباد", "amount": 50500.0, "date": "2026-03-29" }, { "id": "seed-d94", "name": "حماد علی", "city": "محمود آباد", "amount": 500.0, "date": "2026-03-31" }, { "id": "seed-d95", "name": "محمد سفیان", "city": "محمود آباد", "amount": 50000.0, "date": "2026-04-02" }, { "id": "seed-d96", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 600000.0, "date": "2026-04-04" }, { "id": "seed-d97", "name": "اسماعیل صدیق", "city": "محمود آباد", "amount": 20000.0, "date": "2026-04-05" }, { "id": "seed-d98", "name": "طارق فوجی", "city": "خرادیاں", "amount": 1000.0, "date": "2026-04-05" }, { "id": "seed-d99", "name": "زمان", "city": "میر حسین", "amount": 5000.0, "date": "2026-04-06" }, { "id": "seed-d100", "name": "منہدی خاں مرحوم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-09" }, { "id": "seed-d101", "name": "عمران زمان", "city": "فتح پور", "amount": 50000.0, "date": "2026-04-14" }, { "id": "seed-d102", "name": "احسان الہی", "city": "بامتہ", "amount": 10000.0, "date": "2026-04-14" }, { "id": "seed-d103", "name": "محبوب غنی", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-16" }, { "id": "seed-d104", "name": "عدنان علی", "city": "", "amount": 10000.0, "date": "2026-04-18" }, { "id": "seed-d105", "name": "عبدللہ صابر", "city": "محمود آباد", "amount": 2010.0, "date": "2026-04-20" }, { "id": "seed-d106", "name": "قاسم  علی", "city": "محمود آباد", "amount": 130000.0, "date": "2026-04-20" }, { "id": "seed-d107", "name": "حافظ طاہر", "city": "لاہور", "amount": 166000.0, "date": "2026-04-20" }, { "id": "seed-d108", "name": "چوہدری عرفان", "city": "محمود آباد", "amount": 50000.0, "date": "2026-04-21" }, { "id": "seed-d109", "name": "ڈاکٹر صابر", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-21" }, { "id": "seed-d110", "name": "حافظ عاصم", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-21" }, { "id": "seed-d111", "name": "محمد سفیان", "city": "محمود آباد", "amount": 3000.0, "date": "2026-04-22" }, { "id": "seed-d112", "name": "قاری ساجدرحمن", "city": "محمود آباد", "amount": 5000.0, "date": "2026-04-23" }, { "id": "seed-d113", "name": "عادل", "city": "محمود آباد", "amount": 1000.0, "date": "2026-04-23" }, { "id": "seed-d114", "name": "قاسم  علی", "city": "محمود آباد", "amount": 1500000.0, "date": "2026-04-27" }, { "id": "seed-d115", "name": "اصغر", "city": "ڈنگہ", "amount": 100000.0, "date": "2026-04-28" }, { "id": "seed-d116", "name": "اکرم", "city": "خرادیاں", "amount": 500.0, "date": "2026-04-30" }, { "id": "seed-d117", "name": "حاجی مختار", "city": "بولٹن", "amount": 37000.0, "date": "2026-05-05" }, { "id": "seed-d118", "name": "چوہدری سجاد", "city": "بولٹن", "amount": 18500.0, "date": "2026-05-07" }, { "id": "seed-d119", "name": "زاھد", "city": "بولٹن", "amount": 20000.0, "date": "2026-05-07" }, { "id": "seed-d120", "name": "حاجی ندیم", "city": "بولٹن", "amount": 20000.0, "date": "2026-05-11" }, { "id": "seed-d121", "name": "قاری اختر", "city": "بولٹن", "amount": 100000.0, "date": "2026-05-14" }, { "id": "seed-d122", "name": "حافظ شفیق", "city": "بولٹن", "amount": 55500.0, "date": "2026-05-16" }, { "id": "seed-d123", "name": "شہزاد امین", "city": "بولٹن", "amount": 22200.0, "date": "2026-05-20" }, { "id": "seed-d124", "name": "مرزا زبیر", "city": "بولٹن", "amount": 30000.0, "date": "2026-05-21" }, { "id": "seed-d125", "name": "جاوید اختر", "city": "ابو ظبی", "amount": 25092.0, "date": "2026-05-21" }, { "id": "seed-d126", "name": "محمد مقصود", "city": "فتح پور", "amount": 7000.0, "date": "2026-05-21" }, { "id": "seed-d127", "name": "محمد اشفاق", "city": "محمود آباد", "amount": 1000.0, "date": "2026-05-24" }, { "id": "seed-d128", "name": "عبدالمجید", "city": "جلاپور جٹاں", "amount": 2000.0, "date": "2026-05-26" }, { "id": "seed-d129", "name": "عباس", "city": "خرادیاں", "amount": 2000.0, "date": "2026-05-26" }, { "id": "seed-d130", "name": "راہی مسافر", "city": "", "amount": 500.0, "date": "2026-05-26" }, { "id": "seed-d131", "name": "امجد ابرار", "city": "محمود آباد", "amount": 40000.0, "date": "2026-06-04" }, { "id": "seed-d132", "name": "ڈاکٹر صابر", "city": "محمود آباد", "amount": 5000.0, "date": "2026-06-04" }, { "id": "seed-d133", "name": "سفیان", "city": "محمود آباد", "amount": 10000.0, "date": "2026-06-05" }, { "id": "seed-d134", "name": "احسن والد بشیر", "city": "محمود آباد", "amount": 10000.0, "date": "2026-06-06" }, { "id": "seed-d135", "name": "شہباز", "city": "جھنڈے وال", "amount": 5000.0, "date": "2026-06-11" }, { "id": "seed-d136", "name": "قاسم  علی", "city": "محمود آباد", "amount": 5500.0, "date": "" }, { "id": "seed-d137", "name": "امیر حیسن", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d138", "name": "ڈاکڑ صابر", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d139", "name": "اسماعیل صدیق", "city": "محمود آباد", "amount": 1000.0, "date": "" }, { "id": "seed-d140", "name": "محمد شفیق", "city": "محمود آباد", "amount": 7000.0, "date": "" }, { "id": "seed-d141", "name": "محمد ناظم", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d142", "name": "نور محمد", "city": "بھٹہ", "amount": 500.0, "date": "" }, { "id": "seed-d143", "name": "عارل الیاس مرحوم", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d144", "name": "محبوب غنی", "city": "محمود آباد", "amount": 2000.0, "date": "" }, { "id": "seed-d145", "name": "محمد عافان", "city": "محمود آباد", "amount": 10000.0, "date": "" }, { "id": "seed-d146", "name": "قاری ساجدرحمن", "city": "محمود آباد", "amount": 5000.0, "date": "" }, { "id": "seed-d147", "name": "مایوں", "city": "یوکے", "amount": 18500.0, "date": "" }, { "id": "seed-d148", "name": "عمران", "city": "یوکے", "amount": 18500.0, "date": "" }, { "id": "seed-d149", "name": "حاجی سداگر", "city": "یوکے", "amount": 379540.0, "date": "" }, { "id": "seed-d150", "name": "حافظ عابد حسین", "city": "محمود آباد", "amount": 100000.0, "date": "" }, { "id": "seed-d151", "name": "پرویز", "city": "محمود آباد", "amount": 30000.0, "date": "" }, { "id": "seed-d152", "name": "راہی مسافر", "city": "محمود آباد", "amount": 500.0, "date": "" }, { "id": "seed-d153", "name": "انور", "city": "بانیاں دا ڈیرہ", "amount": 10000.0, "date": "" }];
+    const SEED_EXPENSES = [{ "id": "seed-e1", "description": "مسجد شہد", "category": "Other", "amount": 150000.0, "date": "" }, { "id": "seed-e2", "description": "کچرا مزدوری", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e3", "description": "سیڑی کی مزدوری", "category": "Other", "amount": 1000.0, "date": "" }, { "id": "seed-e4", "description": "لاءیٹ", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e5", "description": "مٹی مزدری", "category": "Other", "amount": 4000.0, "date": "" }, { "id": "seed-e6", "description": "ٹریکڑ", "category": "Other", "amount": 23000.0, "date": "" }, { "id": "seed-e7", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e8", "description": "ٹھکیدار", "category": "Other", "amount": 25000.0, "date": "" }, { "id": "seed-e9", "description": "بنیاد", "category": "Other", "amount": 35000.0, "date": "" }, { "id": "seed-e10", "description": "پاءیپ", "category": "Other", "amount": 7800.0, "date": "" }, { "id": "seed-e11", "description": "جرنیٹر", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e12", "description": "مزدور کا کھانا", "category": "Other", "amount": 6000.0, "date": "" }, { "id": "seed-e13", "description": "تار", "category": "Other", "amount": 9200.0, "date": "" }, { "id": "seed-e14", "description": "دانش مزدوری", "category": "Other", "amount": 600.0, "date": "" }, { "id": "seed-e15", "description": "ٹھیکدار", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e16", "description": "سریا", "category": "Other", "amount": 325029.0, "date": "" }, { "id": "seed-e17", "description": "ٹھیکدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e18", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e19", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e20", "description": "سریا مزدوری", "category": "Other", "amount": 415451.0, "date": "" }, { "id": "seed-e21", "description": "شٹرینگ", "category": "Other", "amount": 8000.0, "date": "" }, { "id": "seed-e22", "description": "ٹھیکدار", "category": "Other", "amount": 110000.0, "date": "" }, { "id": "seed-e23", "description": "لیبر کا کھانا", "category": "Other", "amount": 7000.0, "date": "" }, { "id": "seed-e24", "description": "اینٹ", "category": "Other", "amount": 503000.0, "date": "" }, { "id": "seed-e25", "description": "ارسلان مزدوری", "category": "Other", "amount": 10000.0, "date": "" }, { "id": "seed-e26", "description": "ٹھکیدار", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e27", "description": "سریا مزدوری", "category": "Other", "amount": 7000.0, "date": "" }, { "id": "seed-e28", "description": "انجیر", "category": "Other", "amount": 5000.0, "date": "" }, { "id": "seed-e29", "description": "بھرتی", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e30", "description": "ٹھکیدار", "category": "Other", "amount": 45000.0, "date": "" }, { "id": "seed-e31", "description": "ٹھکیدار", "category": "Other", "amount": 30000.0, "date": "" }, { "id": "seed-e32", "description": "جرنیٹر", "category": "Other", "amount": 4000.0, "date": "" }, { "id": "seed-e33", "description": "تار", "category": "Other", "amount": 14000.0, "date": "" }, { "id": "seed-e34", "description": "لیبر کا کھانا", "category": "Other", "amount": 4650.0, "date": "" }, { "id": "seed-e35", "description": "ڈیزل", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e36", "description": "اینٹ", "category": "Other", "amount": 50000.0, "date": "" }, { "id": "seed-e37", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e38", "description": "ماربل", "category": "Other", "amount": 56550.0, "date": "" }, { "id": "seed-e39", "description": "مار بل کا کرایہ", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e40", "description": "انجیر", "category": "Other", "amount": 2000.0, "date": "" }, { "id": "seed-e41", "description": "ٹھکیدار", "category": "Other", "amount": 27000.0, "date": "" }, { "id": "seed-e42", "description": "چوگھاٹ", "category": "Other", "amount": 139600.0, "date": "" }, { "id": "seed-e43", "description": "ٹھکیدار", "category": "Other", "amount": 47500.0, "date": "" }, { "id": "seed-e44", "description": "ماربل", "category": "Other", "amount": 5450.0, "date": "" }, { "id": "seed-e45", "description": "کرایہ ماربل", "category": "Other", "amount": 1000.0, "date": "" }, { "id": "seed-e46", "description": "برش", "category": "Other", "amount": 300.0, "date": "" }, { "id": "seed-e47", "description": "اینٹ", "category": "Other", "amount": 101750.0, "date": "" }, { "id": "seed-e48", "description": "پاءیپ", "category": "Other", "amount": 18000.0, "date": "" }, { "id": "seed-e49", "description": "ٹھکیدار", "category": "Other", "amount": 72000.0, "date": "" }, { "id": "seed-e50", "description": "ٹھکیدار", "category": "Other", "amount": 8000.0, "date": "" }, { "id": "seed-e51", "description": "سریا", "category": "Other", "amount": 314498.0, "date": "" }, { "id": "seed-e52", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e53", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e54", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e55", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e56", "description": "انجیر", "category": "Other", "amount": 3000.0, "date": "" }, { "id": "seed-e57", "description": "ویلڈنگ", "category": "Other", "amount": 10000.0, "date": "" }, { "id": "seed-e58", "description": "ٹھکیدار", "category": "Other", "amount": 58000.0, "date": "" }, { "id": "seed-e59", "description": "ٹھکیدار", "category": "Other", "amount": 65000.0, "date": "" }, { "id": "seed-e60", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e61", "description": "اینٹ", "category": "Other", "amount": 83250.0, "date": "" }, { "id": "seed-e62", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "" }, { "id": "seed-e63", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "" }, { "id": "seed-e64", "description": "ٹھکیدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e65", "description": "فرماں", "category": "Other", "amount": 2100.0, "date": "" }, { "id": "seed-e66", "description": "ٹھکیدار", "category": "Other", "amount": 70000.0, "date": "" }, { "id": "seed-e67", "description": "چوگھاٹ", "category": "Other", "amount": 6000.0, "date": "" }, { "id": "seed-e68", "description": "ٹھکیدار", "category": "Other", "amount": 60000.0, "date": "" }, { "id": "seed-e69", "description": "ٹھکیدار", "category": "Other", "amount": 40000.0, "date": "" }, { "id": "seed-e70", "description": "ٹھکیدار", "category": "Other", "amount": 10000.0, "date": "2026-03-05" }, { "id": "seed-e71", "description": "انجیر", "category": "Other", "amount": 10000.0, "date": "2026-03-05" }, { "id": "seed-e72", "description": "سٹینٹ", "category": "Other", "amount": 3500.0, "date": "2026-03-05" }, { "id": "seed-e73", "description": "پاءیپ", "category": "Other", "amount": 3200.0, "date": "2026-03-12" }, { "id": "seed-e74", "description": "سریا", "category": "Other", "amount": 58264.0, "date": "2026-03-12" }, { "id": "seed-e75", "description": "اینٹ", "category": "Other", "amount": 92500.0, "date": "2026-03-13" }, { "id": "seed-e76", "description": "ٹھیکدار", "category": "Other", "amount": 30000.0, "date": "2026-03-14" }, { "id": "seed-e77", "description": "ٹھیکدار", "category": "Other", "amount": 52000.0, "date": "2026-03-14" }, { "id": "seed-e78", "description": "مٹی مزدوری", "category": "Other", "amount": 8850.0, "date": "2026-03-15" }, { "id": "seed-e79", "description": "واپٹا", "category": "Other", "amount": 1500.0, "date": "2026-03-15" }, { "id": "seed-e80", "description": "ٹھیکدار", "category": "Other", "amount": 100000.0, "date": "2026-03-16" }, { "id": "seed-e81", "description": "بجلی کا سامان", "category": "Other", "amount": 54360.0, "date": "2026-03-17" }, { "id": "seed-e82", "description": "کرایہ", "category": "Other", "amount": 1000.0, "date": "2026-03-19" }, { "id": "seed-e83", "description": "سریا", "category": "Other", "amount": 2152941.0, "date": "" }, { "id": "seed-e84", "description": "ٹھیکدار", "category": "Other", "amount": 73000.0, "date": "2026-03-19" }, { "id": "seed-e85", "description": "پا ءیپ", "category": "Other", "amount": 1300.0, "date": "2026-03-19" }, { "id": "seed-e86", "description": "ٹھیکدار", "category": "Other", "amount": 150000.0, "date": "2026-03-19" }, { "id": "seed-e87", "description": "بجلی مزدوری", "category": "Other", "amount": 10000.0, "date": "2026-03-21" }, { "id": "seed-e88", "description": "باکٹ", "category": "Other", "amount": 10000.0, "date": "2026-03-23" }, { "id": "seed-e89", "description": "جرنٹر", "category": "Other", "amount": 2000.0, "date": "2026-03-25" }, { "id": "seed-e90", "description": "پا ءیپ", "category": "Other", "amount": 500.0, "date": "2026-03-26" }, { "id": "seed-e91", "description": "مٹی مزدوری", "category": "Other", "amount": 2000.0, "date": "2026-03-26" }, { "id": "seed-e92", "description": "اینٹ", "category": "Other", "amount": 83250.0, "date": "2026-03-28" }, { "id": "seed-e93", "description": "اینٹ", "category": "Other", "amount": 74000.0, "date": "2026-03-28" }, { "id": "seed-e94", "description": "چوگھاٹ مزدوری", "category": "Other", "amount": 58000.0, "date": "2026-03-29" }, { "id": "seed-e95", "description": "ٹھیکدار", "category": "Other", "amount": 40000.0, "date": "2026-03-31" }, { "id": "seed-e96", "description": "ٹھیکدار", "category": "Other", "amount": 30000.0, "date": "2026-04-02" }, { "id": "seed-e97", "description": "انجیر", "category": "Other", "amount": 5000.0, "date": "2026-04-04" }, { "id": "seed-e98", "description": "اینٹ", "category": "Other", "amount": 74400.0, "date": "2026-04-05" }, { "id": "seed-e99", "description": "چوگھاٹ مزدوری", "category": "Other", "amount": 11500.0, "date": "2026-04-05" }, { "id": "seed-e100", "description": "ٹھیکدار", "category": "Other", "amount": 110000.0, "date": "2026-04-06" }, { "id": "seed-e101", "description": "اینٹ", "category": "Other", "amount": 105000.0, "date": "2026-04-09" }, { "id": "seed-e102", "description": "اینٹ", "category": "Other", "amount": 105000.0, "date": "2026-04-14" }, { "id": "seed-e103", "description": "اینٹ", "category": "Other", "amount": 48750.0, "date": "2026-04-14" }, { "id": "seed-e104", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-04-16" }, { "id": "seed-e105", "description": "ٹھیکدار", "category": "Other", "amount": 90000.0, "date": "2026-04-18" }, { "id": "seed-e106", "description": "اینٹ", "category": "Other", "amount": 68250.0, "date": "2026-04-20" }, { "id": "seed-e107", "description": "ریت", "category": "Other", "amount": 27000.0, "date": "2026-04-20" }, { "id": "seed-e108", "description": "ٹھیکدار", "category": "Other", "amount": 80000.0, "date": "2026-04-20" }, { "id": "seed-e109", "description": "بجلی", "category": "Other", "amount": 500.0, "date": "2026-04-21" }, { "id": "seed-e110", "description": "جرنٹر", "category": "Other", "amount": 3500.0, "date": "2026-04-21" }, { "id": "seed-e111", "description": "بجلی", "category": "Other", "amount": 500.0, "date": "2026-04-21" }, { "id": "seed-e112", "description": "ویلڈنگ", "category": "Other", "amount": 1000.0, "date": "2026-04-22" }, { "id": "seed-e113", "description": "کرایہ", "category": "Other", "amount": 1200.0, "date": "2026-04-23" }, { "id": "seed-e114", "description": "بجلی", "category": "Other", "amount": 9250.0, "date": "2026-04-23" }, { "id": "seed-e115", "description": "ٹھیکدار", "category": "Other", "amount": 55000.0, "date": "2026-04-27" }, { "id": "seed-e116", "description": "تار", "category": "Other", "amount": 90000.0, "date": "2026-04-28" }, { "id": "seed-e117", "description": "ٹھیکدار", "category": "Other", "amount": 63000.0, "date": "2026-04-30" }, { "id": "seed-e118", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-05-05" }, { "id": "seed-e119", "description": "ٹھیکدار", "category": "Other", "amount": 75000.0, "date": "2026-05-07" }, { "id": "seed-e120", "description": "پی ٹرپ", "category": "Other", "amount": 1300.0, "date": "2026-05-07" }, { "id": "seed-e121", "description": "ٹھیکدار", "category": "Other", "amount": 75000.0, "date": "2026-05-11" }, { "id": "seed-e122", "description": "اینٹ", "category": "Other", "amount": 12500.0, "date": "2026-05-14" }, { "id": "seed-e123", "description": "یو پی اس", "category": "Other", "amount": 1000.0, "date": "2026-05-16" }, { "id": "seed-e124", "description": "ٹھیکدار", "category": "Other", "amount": 140000.0, "date": "2026-05-20" }, { "id": "seed-e125", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-05-21" }, { "id": "seed-e126", "description": "بجلی", "category": "Other", "amount": 90000.0, "date": "2026-05-21" }, { "id": "seed-e127", "description": "شاپر", "category": "Other", "amount": 5500.0, "date": "2026-05-21" }, { "id": "seed-e128", "description": "بجلی", "category": "Other", "amount": 10000.0, "date": "2026-05-24" }, { "id": "seed-e129", "description": "ٹھیکدار", "category": "Other", "amount": 240000.0, "date": "2026-05-26" }, { "id": "seed-e130", "description": "اینٹ", "category": "Other", "amount": 99200.0, "date": "2026-05-26" }, { "id": "seed-e131", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-05-26" }, { "id": "seed-e132", "description": "اینٹ", "category": "Other", "amount": 50700.0, "date": "2026-06-04" }, { "id": "seed-e133", "description": "ٹھیکدار", "category": "Other", "amount": 40000.0, "date": "2026-06-04" }, { "id": "seed-e134", "description": "سریا", "category": "Other", "amount": 827029.0, "date": "2026-06-05" }, { "id": "seed-e135", "description": "اینٹ", "category": "Other", "amount": 58500.0, "date": "2026-06-06" }, { "id": "seed-e136", "description": "ٹھیکدار", "category": "Other", "amount": 50000.0, "date": "2026-06-11" }];
+
+    /* ---------- app state ---------- */
+    const state = {
+      passcodeHash: store.get("mm_passcode_hash", null),
+      unlocked: false,
+      lang: store.get("mm_lang", "en"),
+      logo: store.get("mm_logo", null),
+      tab: "dashboard",
+      donations: store.get("mm_donations", SEED_DONATIONS),
+      expenses: store.get("mm_expenses", SEED_EXPENSES),
+      photos: store.get("mm_photos", []),
+      videos: store.get("mm_videos", []),
+      infra: store.get("mm_infra", []),
+      layout: store.get("mm_layout", []),
+      prayer: store.get("mm_prayer", { monthly: Array.from({ length: 12 }, emptyMonthlyTimes), overrides: [] }),
+      prayerMode: "calendar",
+      prayerYear: new Date().getFullYear(),
+      prayerMonthIdx: new Date().getMonth(),
+      infraFilter: "All",
+      donationQuery: "",
+    };
+
+    /* migrate legacy plaintext passcode (older versions of this panel) to a hash */
+    (function migrateLegacyPasscode() {
+      const legacy = store.get("mm_passcode", null);
+      if (legacy && !state.passcodeHash) {
+        hashPasscode(legacy).then(h => {
+          state.passcodeHash = h;
+          store.set("mm_passcode_hash", h);
+          localStorage.removeItem("mm_passcode");
+        });
+      } else if (legacy) {
+        localStorage.removeItem("mm_passcode");
+      }
+    })();
+
+    function persist(key) {
+      const map = { donations: "mm_donations", expenses: "mm_expenses", photos: "mm_photos", videos: "mm_videos", infra: "mm_infra", layout: "mm_layout", prayer: "mm_prayer" };
+      return store.set(map[key], state[key]);
+    }
+    function applyLangToDocument() {
+      document.documentElement.lang = state.lang === "ur" ? "ur" : "en";
+      document.documentElement.dir = state.lang === "ur" ? "rtl" : "ltr";
+      document.body.classList.toggle("rtl", state.lang === "ur");
+    }
+    function setLang(lang) {
+      state.lang = lang;
+      store.set("mm_lang", lang);
+      applyLangToDocument();
+      render();
+    }
+
+    /* ---------- root render ---------- */
+    const app = document.getElementById("app");
+    app.addEventListener("click", handleGlobalLightboxClick);
+
+    function render() {
+      applyLangToDocument();
+      if (!state.unlocked) { renderLock(); }
+      else { renderShell(); }
+    }
+
+    /* ================= LOCK SCREEN ================= */
+    function renderLock() {
+      const hasPasscode = !!state.passcodeHash;
+      const lockInfo = getLockInfo();
+      const now = Date.now();
+      const isLocked = lockInfo.lockUntil && lockInfo.lockUntil > now;
+      app.innerHTML = `
+    <div id="lock-screen">
+      <div class="lock-card">
+        <div style="display:flex;justify-content:center;margin-bottom:14px;">
+          <div class="arch-badge" style="width:52px;height:52px;border-radius:26px 26px 6px 6px;overflow:hidden;">${state.logo ? `<img src="${state.logo}" style="width:100%;height:100%;object-fit:cover;" />` : ICONS.lock}</div>
+        </div>
+        <div class="lock-title serif">Mahmood Masjid</div>
+        <div class="lock-sub">${t("lock_sub")}</div>
+        <form id="lock-form">
+          ${!hasPasscode ? `
+            <div style="font-size:13px;color:#4B4E40;margin-bottom:14px;line-height:1.5;">
+              ${t("lock_first_time")}
+            </div>
+            <input type="password" id="lock-val" placeholder="${t('ph_create_passcode')}" style="margin-bottom:10px;text-align:center;" autofocus />
+            <input type="password" id="lock-confirm" placeholder="${t('ph_confirm_passcode')}" style="margin-bottom:10px;text-align:center;" />
+          ` : `
+            <input type="password" id="lock-val" placeholder="${t('ph_enter_passcode')}" style="margin-bottom:10px;text-align:center;" autofocus ${isLocked ? "disabled" : ""} />
+          `}
+          <div class="lock-error" id="lock-error"></div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:6px;" ${isLocked ? "disabled" : ""}>
+            ${hasPasscode ? t("btn_unlock") : t("btn_save_continue")}
+          </button>
+        </form>
+        <div style="display:flex;gap:6px;margin-top:16px;">
+          <button type="button" class="pill ${state.lang === 'en' ? 'active' : ''}" data-lang="en" style="flex:1;">EN</button>
+          <button type="button" class="pill ${state.lang === 'ur' ? 'active' : ''}" data-lang="ur" style="flex:1;">اردو</button>
+        </div>
+        <div class="lock-note">${t("lock_note")}</div>
+      </div>
+    </div>
+  `;
+      let lockCountdownInterval = null;
+      if (isLocked) {
+        const errorEl = document.getElementById("lock-error");
+        const tick = () => {
+          const remaining = Math.max(0, Math.ceil((lockInfo.lockUntil - Date.now()) / 1000));
+          errorEl.textContent = t("err_locked", { s: remaining });
+          if (remaining <= 0) { clearInterval(lockCountdownInterval); renderLock(); }
+        };
+        tick();
+        lockCountdownInterval = setInterval(tick, 1000);
+      }
+      document.getElementById("lock-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const currentLockInfo = getLockInfo();
+        if (currentLockInfo.lockUntil && currentLockInfo.lockUntil > Date.now()) return;
+        const val = document.getElementById("lock-val").value;
+        const errorEl = document.getElementById("lock-error");
+        if (!hasPasscode) {
+          const confirmVal = document.getElementById("lock-confirm").value;
+          if (val.length < 4) { errorEl.textContent = t("err_min_chars"); return; }
+          if (val !== confirmVal) { errorEl.textContent = t("err_mismatch"); return; }
+          const h = await hashPasscode(val);
+          state.passcodeHash = h;
+          store.set("mm_passcode_hash", h);
+          setLockInfo({ attempts: 0, lockUntil: 0 });
+          state.unlocked = true;
+          render();
+        } else {
+          const h = await hashPasscode(val);
+          if (h === state.passcodeHash) {
+            setLockInfo({ attempts: 0, lockUntil: 0 });
+            state.unlocked = true;
+            render();
+          } else {
+            const info = getLockInfo();
+            const attempts = (info.attempts || 0) + 1;
+            if (attempts >= LOCK_MAX_ATTEMPTS) {
+              setLockInfo({ attempts: 0, lockUntil: Date.now() + LOCK_DURATION_MS });
+              renderLock();
+            } else {
+              setLockInfo({ attempts, lockUntil: 0 });
+              errorEl.textContent = t("err_incorrect");
+            }
+          }
+        }
+      });
+      document.querySelectorAll("[data-lang]").forEach(btn => {
+        btn.addEventListener("click", () => setLang(btn.getAttribute("data-lang")));
+      });
+      if (!isLocked) document.getElementById("lock-val").focus();
+    }
+
+    /* ================= SHELL ================= */
+    function renderShell() {
+      const NAV = getNav();
+      app.innerHTML = `
+    <div id="shell">
+      <div id="sidebar">
+        <div class="brand">
+          <div class="arch-badge brand-badge">${state.logo ? `<img src="${state.logo}" />` : '&#127968;'}</div>
+          <div>
+            <div class="brand-name serif">Mahmood Masjid</div>
+            <div class="brand-sub">${t("brand_sub")}</div>
+          </div>
+        </div>
+        <nav class="navlist" id="navlist">
+          ${NAV.map(n => `
+            <button class="navlink ${state.tab === n.key ? 'active' : ''}" data-nav="${n.key}">${n.icon} ${n.label}</button>
+          `).join("")}
+        </nav>
+        <div style="display:flex;gap:6px;margin-top:16px;">
+          <button class="lang-pill ${state.lang === 'en' ? 'active' : ''}" data-lang="en">EN</button>
+          <button class="lang-pill ${state.lang === 'ur' ? 'active' : ''}" data-lang="ur">اردو</button>
+        </div>
+        <div class="sidebar-footer">mahmoodmasjid.com</div>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div id="topbar">
+          <button id="hamburger">${ICONS.menu}</button>
+          <span style="font-weight:700;font-size:14px;">${(NAV.find(n => n.key === state.tab) || {}).label || ""}</span>
+        </div>
+        <div id="main"></div>
+      </div>
+    </div>
+  `;
+      document.querySelectorAll("[data-nav]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.tab = btn.getAttribute("data-nav");
+          document.getElementById("sidebar").classList.remove("open");
+          renderShell();
+        });
+      });
+      document.querySelectorAll("[data-lang]").forEach(btn => {
+        btn.addEventListener("click", () => setLang(btn.getAttribute("data-lang")));
+      });
+      document.getElementById("hamburger").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("open");
+      });
+      renderMain();
+    }
+
+    function sectionHeader(title, sub, rightHtml) {
+      return `
+    <div class="section-header">
+      <div>
+        <h2 class="section-title serif">${escapeHtml(title)}</h2>
+        ${sub ? `<div class="section-sub">${sub}</div>` : ""}
+      </div>
+      ${rightHtml ? `<div>${rightHtml}</div>` : ""}
+    </div>
+  `;
+    }
+    function emptyState(icon, title, text) {
+      return `
+    <div class="empty-state">
+      <div class="icon">${icon}</div>
+      <div class="title">${escapeHtml(title)}</div>
+      <div style="font-size:13.5px;">${escapeHtml(text)}</div>
+    </div>
+  `;
+    }
+    function statCard(label, value, sub, tone) {
+      return `
+    <div class="stat-card ${tone || 'default'}">
+      <div class="stat-label">${escapeHtml(label)}</div>
+      <div class="stat-value serif">${value}</div>
+      ${sub ? `<div class="stat-sub">${escapeHtml(sub)}</div>` : ""}
+    </div>
+  `;
+    }
+
+    let clockInterval = null;
+    function renderMain() {
+      if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+      const main = document.getElementById("main");
+      switch (state.tab) {
+        case "dashboard": main.innerHTML = viewDashboard(); startClocks(); break;
+        case "donations": main.innerHTML = viewDonations(); bindDonations(); break;
+        case "expenses": main.innerHTML = viewExpenses(); bindExpenses(); break;
+        case "photos": main.innerHTML = viewPhotos(); bindPhotos(); break;
+        case "videos": main.innerHTML = viewVideos(); bindVideos(); break;
+        case "infra": main.innerHTML = viewInfra(); bindInfra(); break;
+        case "layout": main.innerHTML = viewLayout(); bindLayout(); break;
+        case "prayer": main.innerHTML = viewPrayer(); bindPrayer(); break;
+        case "settings": main.innerHTML = viewSettings(); bindSettings(); break;
+      }
+    }
+
+    /* ================= LIVE CLOCKS (Pakistan & UK) ================= */
+    function formatClock(timeZone) {
+      const now = new Date();
+      const time = new Intl.DateTimeFormat(state.lang === "ur" ? "ur" : "en-GB", {
+        timeZone, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+      }).format(now);
+      const date = new Intl.DateTimeFormat(state.lang === "ur" ? "ur" : "en-GB", {
+        timeZone, weekday: "short", day: "numeric", month: "short", year: "numeric"
+      }).format(now);
+      return { time, date };
+    }
+    function startClocks() {
+      const tick = () => {
+        const pk = formatClock("Asia/Karachi");
+        const uk = formatClock("Europe/London");
+        const pkTimeEl = document.getElementById("clock-pk-time");
+        const pkDateEl = document.getElementById("clock-pk-date");
+        const ukTimeEl = document.getElementById("clock-uk-time");
+        const ukDateEl = document.getElementById("clock-uk-date");
+        if (pkTimeEl) pkTimeEl.textContent = pk.time;
+        if (pkDateEl) pkDateEl.textContent = pk.date;
+        if (ukTimeEl) ukTimeEl.textContent = uk.time;
+        if (ukDateEl) ukDateEl.textContent = uk.date;
+      };
+      tick();
+      clockInterval = setInterval(tick, 1000);
+    }
+
+    /* ================= DASHBOARD ================= */
+    function viewDashboard() {
+      const totalDonated = state.donations.reduce((s, d) => s + (Number(d.amount) || 0), 0);
+      const totalSpent = state.expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+      const remaining = totalDonated - totalSpent;
+      const recent = [...state.donations].sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 6);
+      const pk = formatClock("Asia/Karachi");
+      const uk = formatClock("Europe/London");
+
+      return `
+    ${sectionHeader(t("dash_title"), t("dash_sub"))}
+    <div class="stat-row">
+      <div class="clock-card">
+        <div class="clock-label">${ICONS.clock} ${t("clock_pk")}</div>
+        <div class="clock-time" id="clock-pk-time">${pk.time}</div>
+        <div class="clock-date" id="clock-pk-date">${pk.date}</div>
+      </div>
+      <div class="clock-card">
+        <div class="clock-label">${ICONS.clock} ${t("clock_uk")}</div>
+        <div class="clock-time" id="clock-uk-time">${uk.time}</div>
+        <div class="clock-date" id="clock-uk-date">${uk.date}</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      ${statCard(t("stat_total_donated"), currency(totalDonated), t("sub_donations_count", { n: state.donations.length }))}
+      ${statCard(t("stat_total_spent"), currency(totalSpent), t("sub_expenses_count", { n: state.expenses.length }), "gold")}
+      ${statCard(t("stat_remaining"), currency(remaining), remaining >= 0 ? t("sub_funds_available") : t("sub_over_budget"), remaining < 0 ? "danger" : "default")}
+    </div>
+    ${sectionHeader(t("recent_donations"))}
+    ${recent.length === 0 ? emptyState(ICONS.donations, t("empty_donations_title"), t("empty_donations_text")) : `
+      <div class="table-wrap row-list">
+        ${recent.map(d => `
+          <div class="table-row" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+            <div><span style="font-weight:600;">${escapeHtml(d.name)}</span><span style="color:var(--muted-light);"> &middot; ${escapeHtml(d.city || "")}</span></div>
+            <div style="display:flex;gap:16px;">
+              <span style="color:var(--muted-light);">${escapeHtml(d.date)}</span>
+              <span style="font-weight:700;color:var(--green-mid);">${currency(d.amount)}</span>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `}
+  `;
+    }
+
+    /* ================= DONATIONS ================= */
+    function viewDonations() {
+      const totalDonated = state.donations.reduce((s, d) => s + (Number(d.amount) || 0), 0);
+      const filtered = state.donations
+        .filter(d => (d.name + " " + d.city).toLowerCase().includes(state.donationQuery.toLowerCase()))
+        .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+
+      return `
+    ${sectionHeader(t("nav_donations"), t("donations_sub", { n: state.donations.length, amt: currency(totalDonated) }))}
+    <form id="donation-form" class="card form-card" style="grid-template-columns:repeat(4,1fr) auto;">
+      <label class="field"><span>${t('field_donor_name')}</span><input type="text" id="d-name" placeholder="${t('ph_donor_name')}" required /></label>
+      <label class="field"><span>${t('field_city')}</span><input type="text" id="d-city" placeholder="${t('ph_city')}" /></label>
+      <label class="field"><span>${t('field_amount')}</span><input type="number" min="0" id="d-amount" placeholder="5000" required /></label>
+      <label class="field"><span>${t('field_date')}</span><input type="date" id="d-date" value="${todayISO()}" required /></label>
+      <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
+    </form>
+    <div style="position:relative;max-width:280px;margin-bottom:14px;">
+      <span style="position:absolute;inset-inline-start:10px;top:10px;color:var(--faint);">${ICONS.search}</span>
+      <input type="text" id="d-search" placeholder="${t('ph_search_donor')}" value="${escapeHtml(state.donationQuery)}" style="padding-inline-start:32px;" />
+    </div>
+    ${filtered.length === 0 ? emptyState(ICONS.donations, t("empty_donations_found_title"), t("empty_donations_found_text")) : `
+      <div class="table-wrap">
+        <div class="table-head" style="grid-template-columns:1.4fr 1fr 1fr 1fr auto;">
+          <span>${t('col_name')}</span><span>${t('col_city')}</span><span>${t('col_date')}</span><span>${t('col_amount')}</span><span></span>
+        </div>
+        ${filtered.map(d => `
+          <div class="table-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr auto;">
+            <span style="font-weight:600;">${escapeHtml(d.name)}</span>
+            <span style="color:var(--muted);">${escapeHtml(d.city || "—")}</span>
+            <span style="color:var(--muted);">${escapeHtml(d.date)}</span>
+            <span style="font-weight:700;color:var(--green-mid);">${currency(d.amount)}</span>
+            <button class="icon-btn danger" data-del="${d.id}" title="${t('btn_delete')}">${ICONS.trash}</button>
+          </div>
+        `).join("")}
+      </div>
+    `}
+  `;
+    }
+    function bindDonations() {
+      document.getElementById("donation-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("d-name").value.trim();
+        const amount = document.getElementById("d-amount").value;
+        if (!name || !amount) return;
+        state.donations = [{ id: uid(), name, city: document.getElementById("d-city").value.trim(), amount: Number(amount), date: document.getElementById("d-date").value }, ...state.donations];
+        if (!persist("donations")) alert(t("storage_full_warning"));
+        renderMain();
+      });
+      document.getElementById("d-search").addEventListener("input", (e) => {
+        state.donationQuery = e.target.value;
+        renderMain();
+        document.getElementById("d-search").focus();
+        document.getElementById("d-search").value = state.donationQuery;
+        document.getElementById("d-search").setSelectionRange(state.donationQuery.length, state.donationQuery.length);
+      });
+      document.querySelectorAll("[data-del]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          confirmDelete("confirm_delete_donation", () => {
+            state.donations = state.donations.filter(d => d.id !== btn.getAttribute("data-del"));
+            persist("donations");
+            renderMain();
+          });
+        });
+      });
+    }
+
+    /* ================= EXPENSES ================= */
+    function viewExpenses() {
+      const totalSpent = state.expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+      const sorted = [...state.expenses].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+      return `
+    ${sectionHeader(t("nav_expenses"), t("expenses_sub", { n: state.expenses.length, amt: currency(totalSpent) }))}
+    <form id="expense-form" class="card form-card" style="grid-template-columns:1.6fr 1fr 1fr 1fr auto;">
+      <label class="field"><span>${t('field_description')}</span><input type="text" id="e-desc" placeholder="${t('ph_description')}" required /></label>
+      <label class="field"><span>${t('field_category')}</span>
+        <select id="e-cat">${optionsFor(EXPENSE_CATEGORIES, CAT_KEY_MAP)}</select>
+      </label>
+      <label class="field"><span>${t('field_amount')}</span><input type="number" min="0" id="e-amount" placeholder="20000" required /></label>
+      <label class="field"><span>${t('field_date')}</span><input type="date" id="e-date" value="${todayISO()}" required /></label>
+      <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
+    </form>
+    ${sorted.length === 0 ? emptyState(ICONS.expenses, t("empty_expenses_title"), t("empty_expenses_text")) : `
+      <div class="table-wrap">
+        <div class="table-head" style="grid-template-columns:1.6fr 1fr 1fr 1fr auto;">
+          <span>${t('col_description')}</span><span>${t('col_category')}</span><span>${t('col_date')}</span><span>${t('col_amount')}</span><span></span>
+        </div>
+        ${sorted.map(x => `
+          <div class="table-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr auto;">
+            <span style="font-weight:600;">${escapeHtml(x.description)}</span>
+            <span style="color:var(--muted);">${escapeHtml(t(CAT_KEY_MAP[x.category] || x.category))}</span>
+            <span style="color:var(--muted);">${escapeHtml(x.date)}</span>
+            <span style="font-weight:700;color:var(--danger);">${currency(x.amount)}</span>
+            <button class="icon-btn danger" data-del="${x.id}" title="${t('btn_delete')}">${ICONS.trash}</button>
+          </div>
+        `).join("")}
+      </div>
+    `}
+  `;
+    }
+    function bindExpenses() {
+      document.getElementById("expense-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const description = document.getElementById("e-desc").value.trim();
+        const amount = document.getElementById("e-amount").value;
+        if (!description || !amount) return;
+        state.expenses = [{ id: uid(), description, category: document.getElementById("e-cat").value, amount: Number(amount), date: document.getElementById("e-date").value }, ...state.expenses];
+        if (!persist("expenses")) alert(t("storage_full_warning"));
+        renderMain();
+      });
+      document.querySelectorAll("[data-del]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          confirmDelete("confirm_delete_expense", () => {
+            state.expenses = state.expenses.filter(x => x.id !== btn.getAttribute("data-del"));
+            persist("expenses");
+            renderMain();
+          });
+        });
+      });
+    }
+
+    /* ================= PHOTOS ================= */
+    function viewPhotos() {
+      return `
+    ${sectionHeader(t("nav_photos"), t("photos_sub", { n: state.photos.length }))}
+    <form id="photo-form" class="card form-card" style="grid-template-columns:1.6fr auto 1.6fr 1.2fr 1fr auto;">
+      <label class="field"><span>${t('field_image_url')}</span><input type="url" id="p-url" placeholder="https://..." /></label>
+      <div class="or-divider">${state.lang === 'ur' ? 'یا' : 'or'}</div>
+      <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="p-file" accept="image/*" /></label>
+      <label class="field"><span>${t('field_caption')}</span><input type="text" id="p-caption" placeholder="${t('ph_caption')}" /></label>
+      <label class="field"><span>${t('field_category')}</span>
+        <select id="p-cat">${optionsFor(PHOTO_CATEGORIES, PCAT_KEY_MAP)}</select>
+      </label>
+      <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
+    </form>
+    <div class="form-hint">${t('hint_photo')}</div>
+    ${state.photos.length === 0 ? emptyState(ICONS.photos, t("empty_photos_title"), t("empty_photos_text")) : `
+      <div class="grid-photos">
+        ${state.photos.map(p => `
+          <div class="card" style="overflow:hidden;">
+            <div class="photo-thumb" data-lightbox-img="${escapeHtml(safeUrl(p.url))}" style="background-image:url('${safeUrl(p.url).replace(/'/g, "%27")}');"></div>
+            <div style="padding:10px 12px;">
+              <div class="photo-cat">${escapeHtml(t(PCAT_KEY_MAP[p.category] || p.category))}</div>
+              <div class="photo-caption">${escapeHtml(p.caption || t("untitled"))}</div>
+              <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+                <button class="icon-btn danger" data-del="${p.id}" title="${t('btn_remove')}">${ICONS.trash}</button>
+              </div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `}
+  `;
+    }
+    function bindPhotos() {
+      document.getElementById("photo-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById("p-file");
+        const urlVal = document.getElementById("p-url").value.trim();
+        let url = urlVal;
+        if (fileInput.files && fileInput.files[0]) {
+          try { url = await readFileAsDataURL(fileInput.files[0]); }
+          catch (err) { alert("Could not read that file."); return; }
+        }
+        if (!url) return;
+        const entry = { id: uid(), url, caption: document.getElementById("p-caption").value.trim(), category: document.getElementById("p-cat").value };
+        state.photos = [entry, ...state.photos];
+        if (!persist("photos")) {
+          state.photos = state.photos.filter(p => p.id !== entry.id);
+          alert(t("storage_full_warning"));
+          return;
+        }
+        renderMain();
+      });
+      document.querySelectorAll("[data-del]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          confirmDelete("confirm_delete_photo", () => {
+            state.photos = state.photos.filter(p => p.id !== btn.getAttribute("data-del"));
+            persist("photos");
+            renderMain();
+          });
+        });
+      });
+    }
+
+    /* ================= VIDEOS ================= */
+    function toEmbedUrl(url) {
+      try {
+        const u = new URL(url);
+        if (u.hostname.includes("youtu.be")) return "https://www.youtube.com/embed/" + u.pathname.slice(1);
+        if (u.hostname.includes("youtube.com")) {
+          const id = u.searchParams.get("v");
+          if (id) return "https://www.youtube.com/embed/" + id;
+          if (u.pathname.startsWith("/embed/")) return url;
+        }
+      } catch (e) { /* not a valid URL */ }
+      return url;
+    }
+    function viewVideos() {
+      return `
+    ${sectionHeader(t("nav_videos"), t("videos_sub", { n: state.videos.length }))}
+    <form id="video-form" class="card form-card" style="grid-template-columns:1.6fr auto 1.6fr 1.2fr auto;">
+      <label class="field"><span>${t('field_youtube_link')}</span><input type="url" id="v-url" placeholder="https://youtu.be/..." /></label>
+      <div class="or-divider">${state.lang === 'ur' ? 'یا' : 'or'}</div>
+      <label class="field"><span>${t('field_upload_video')}</span><input type="file" id="v-file" accept="video/*" /></label>
+      <label class="field"><span>${t('field_title')}</span><input type="text" id="v-title" placeholder="${t('ph_video_title')}" /></label>
+      <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
+    </form>
+    ${state.videos.length === 0 ? emptyState(ICONS.videos, t("empty_videos_title"), t("empty_videos_text")) : `
+      <div class="grid-videos">
+        ${state.videos.map(v => `
+          <div class="card" style="overflow:hidden;">
+            <div class="video-frame">${v.sourceType === 'upload'
+          ? `<video controls src="${safeUrl(v.url)}"></video>`
+          : `<iframe src="${safeUrl(toEmbedUrl(v.url))}" title="${escapeHtml(v.title || 'video')}" allowfullscreen></iframe>`}
+              <button class="expand-btn" title="${state.lang === 'ur' ? 'بڑا کریں' : 'Enlarge'}"
+                data-lightbox-video="${escapeHtml(v.sourceType === 'upload' ? safeUrl(v.url) : safeUrl(toEmbedUrl(v.url)))}"
+                data-video-type="${v.sourceType === 'upload' ? 'upload' : 'embed'}"
+                data-video-title="${escapeHtml(v.title || '')}">${ICONS.expand}</button>
+            </div>
+            <div style="padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:13.5px;">${escapeHtml(v.title || t("untitled"))}</span>
+              <button class="icon-btn danger" data-del="${v.id}" title="${t('btn_remove')}">${ICONS.trash}</button>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `}
+  `;
+    }
+    function bindVideos() {
+      document.getElementById("video-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById("v-file");
+        const urlVal = document.getElementById("v-url").value.trim();
+        let url = urlVal;
+        let sourceType = "link";
+        if (fileInput.files && fileInput.files[0]) {
+          try { url = await readFileAsDataURL(fileInput.files[0]); sourceType = "upload"; }
+          catch (err) { alert("Could not read that file."); return; }
+        }
+        if (!url) return;
+        const entry = { id: uid(), url, sourceType, title: document.getElementById("v-title").value.trim() };
+        state.videos = [entry, ...state.videos];
+        if (!persist("videos")) {
+          state.videos = state.videos.filter(v => v.id !== entry.id);
+          alert(t("storage_full_warning"));
+          return;
+        }
+        renderMain();
+      });
+      document.querySelectorAll("[data-del]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          confirmDelete("confirm_delete_video", () => {
+            state.videos = state.videos.filter(v => v.id !== btn.getAttribute("data-del"));
+            persist("videos");
+            renderMain();
+          });
+        });
+      });
+    }
+
+    /* ================= INFRASTRUCTURE ================= */
+    function viewInfra() {
+      const filtered = state.infraFilter === "All" ? state.infra : state.infra.filter(i => i.type === state.infraFilter);
+      return `
+    ${sectionHeader(t("infra_title"), t("infra_sub"))}
+    <form id="infra-form" class="card form-card" style="grid-template-columns:1fr 1fr;">
+      <label class="field"><span>${t('field_type')}</span><select id="i-type">${optionsFor(INFRA_TYPES, ITYPE_KEY_MAP)}</select></label>
+      <label class="field"><span>${t('field_floor')}</span><select id="i-floor">${optionsFor(FLOORS, FLOOR_KEY_MAP)}</select></label>
+      <label class="field field-full"><span>${t('field_location')}</span><input type="text" id="i-loc" placeholder="${t('ph_location')}" required /></label>
+      <label class="field field-full"><span>${t('field_notes')}</span><textarea id="i-notes" placeholder="${t('ph_notes')}"></textarea></label>
+      <label class="field"><span>${t('field_ref_photo')}</span><input type="url" id="i-photo-url" placeholder="https://..." /></label>
+      <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="i-photo-file" accept="image/*" /></label>
+      <label class="field"><span>${t('field_ref_video')}</span><input type="url" id="i-video-url" placeholder="https://..." /></label>
+      <label class="field"><span>${t('field_upload_video')}</span><input type="file" id="i-video-file" accept="video/*" /></label>
+      <label class="field"><span>${t('field_date_logged')}</span><input type="date" id="i-date" value="${todayISO()}" /></label>
+      <div class="field-full"><button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_log_item')}</button></div>
+    </form>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <button class="pill ${state.infraFilter === 'All' ? 'active' : ''}" data-filter="All">${state.lang === 'ur' ? 'تمام' : 'All'}</button>
+      ${INFRA_TYPES.map(t2 => `<button class="pill ${state.infraFilter === t2 ? 'active' : ''}" data-filter="${t2}">${escapeHtml(t(ITYPE_KEY_MAP[t2]))}</button>`).join("")}
+    </div>
+    ${filtered.length === 0 ? emptyState(ICONS.infra, t("empty_infra_title"), t("empty_infra_text")) : `
+      <div style="display:grid;gap:12px;">
+        ${filtered.map(i => `
+          <div class="infra-item">
+            <div class="arch-badge infra-badge">${ICONS.infra}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                <div>
+                  <div style="font-weight:700;font-size:14.5px;">${escapeHtml(t(ITYPE_KEY_MAP[i.type] || i.type))} <span style="font-weight:500;color:var(--muted-light);">&middot; ${escapeHtml(t(FLOOR_KEY_MAP[i.floor] || i.floor))}</span></div>
+                  <div class="infra-loc">${ICONS.pin} ${escapeHtml(i.location)}</div>
+                </div>
+                <button class="icon-btn danger" data-del="${i.id}" title="${t('btn_delete')}">${ICONS.trash}</button>
+              </div>
+              ${i.notes ? `<div class="infra-notes">${escapeHtml(i.notes)}</div>` : ""}
+              ${(i.photoUrl || i.videoUrl) ? `
+                <div class="infra-media">
+                  ${i.photoUrl ? `<img src="${safeUrl(i.photoUrl)}" alt="" data-lightbox-img="${escapeHtml(safeUrl(i.photoUrl))}" />` : ""}
+                  ${i.videoUrl ? `<div class="infra-video-wrap"><video controls src="${safeUrl(i.videoUrl)}"></video><button class="expand-btn" title="${state.lang === 'ur' ? 'بڑا کریں' : 'Enlarge'}" data-lightbox-video="${escapeHtml(safeUrl(i.videoUrl))}" data-video-type="upload">${ICONS.expand}</button></div>` : ""}
+                </div>
+              ` : ""}
+              <div class="infra-date">${t("logged_on", { date: escapeHtml(i.date) })}</div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `}
+  `;
+    }
+    function bindInfra() {
+      document.getElementById("infra-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const location = document.getElementById("i-loc").value.trim();
+        if (!location) return;
+        let photoUrl = document.getElementById("i-photo-url").value.trim();
+        let videoUrl = document.getElementById("i-video-url").value.trim();
+        const photoFile = document.getElementById("i-photo-file");
+        const videoFile = document.getElementById("i-video-file");
+        try {
+          if (photoFile.files && photoFile.files[0]) photoUrl = await readFileAsDataURL(photoFile.files[0]);
+          if (videoFile.files && videoFile.files[0]) videoUrl = await readFileAsDataURL(videoFile.files[0]);
+        } catch (err) { alert("Could not read that file."); return; }
+        const entry = {
+          id: uid(), type: document.getElementById("i-type").value, floor: document.getElementById("i-floor").value,
+          location, notes: document.getElementById("i-notes").value.trim(),
+          photoUrl, videoUrl, date: document.getElementById("i-date").value,
+        };
+        state.infra = [entry, ...state.infra];
+        if (!persist("infra")) {
+          state.infra = state.infra.filter(i => i.id !== entry.id);
+          alert(t("storage_full_warning"));
+          return;
+        }
+        renderMain();
+      });
+      document.querySelectorAll("[data-filter]").forEach(btn => {
+        btn.addEventListener("click", () => { state.infraFilter = btn.getAttribute("data-filter"); renderMain(); });
+      });
+      document.querySelectorAll("[data-del]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          confirmDelete("confirm_delete_infra", () => {
+            state.infra = state.infra.filter(i => i.id !== btn.getAttribute("data-del"));
+            persist("infra");
+            renderMain();
+          });
+        });
+      });
+    }
+
+    /* ================= MOSQUE LAYOUT ================= */
+    function viewLayout() {
+      return `
+    ${sectionHeader(t("layout_title"), t("layout_sub"))}
+    <form id="layout-form" class="card form-card" style="grid-template-columns:1.6fr auto 1.6fr 1fr 1fr auto;">
+      <label class="field"><span>${t('field_image_url')}</span><input type="url" id="l-url" placeholder="https://..." /></label>
+      <div class="or-divider">${state.lang === 'ur' ? 'یا' : 'or'}</div>
+      <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="l-file" accept="image/*" /></label>
+      <label class="field"><span>${t('field_layout_title')}</span><input type="text" id="l-title" placeholder="${t('ph_layout_title')}" /></label>
+      <label class="field"><span>${t('field_floor')}</span><select id="l-floor">${optionsFor(FLOORS, FLOOR_KEY_MAP)}</select></label>
+      <button type="submit" class="btn-primary">${ICONS.plus} ${t('btn_add')}</button>
+    </form>
+    <div class="form-hint">${t('hint_layout')}</div>
+    ${state.layout.length === 0 ? emptyState(ICONS.layout, t("empty_layout_title"), t("empty_layout_text")) : `
+      <div class="grid-photos">
+        ${state.layout.map(l => `
+          <div class="card" style="overflow:hidden;">
+            <div class="photo-thumb" data-lightbox-img="${escapeHtml(safeUrl(l.url))}" style="background-image:url('${safeUrl(l.url).replace(/'/g, "%27")}');"></div>
+            <div style="padding:10px 12px;">
+              <div class="photo-cat">${escapeHtml(t(FLOOR_KEY_MAP[l.floor] || l.floor))}</div>
+              <div class="photo-caption">${escapeHtml(l.title || t("untitled"))}</div>
+              <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+                <button class="icon-btn danger" data-del="${l.id}" title="${t('btn_remove')}">${ICONS.trash}</button>
+              </div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `}
+  `;
+    }
+    function bindLayout() {
+      document.getElementById("layout-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById("l-file");
+        const urlVal = document.getElementById("l-url").value.trim();
+        let url = urlVal;
+        if (fileInput.files && fileInput.files[0]) {
+          try { url = await readFileAsDataURL(fileInput.files[0]); }
+          catch (err) { alert("Could not read that file."); return; }
+        }
+        if (!url) return;
+        const entry = { id: uid(), url, title: document.getElementById("l-title").value.trim(), floor: document.getElementById("l-floor").value };
+        state.layout = [entry, ...state.layout];
+        if (!persist("layout")) {
+          state.layout = state.layout.filter(l => l.id !== entry.id);
+          alert(t("storage_full_warning"));
+          return;
+        }
+        renderMain();
+      });
+      document.querySelectorAll("[data-del]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          confirmDelete("confirm_delete_layout", () => {
+            state.layout = state.layout.filter(l => l.id !== btn.getAttribute("data-del"));
+            persist("layout");
+            renderMain();
+          });
+        });
+      });
+    }
+
+    /* ================= PRAYER TIMES ================= */
+    function viewPrayer() {
+      const modeButtons = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="pill ${state.prayerMode === 'calendar' ? 'active' : ''}" data-mode="calendar">${t('mode_calendar')}</button>
+      <button class="pill ${state.prayerMode === 'edit' ? 'active' : ''}" data-mode="edit">${t('mode_edit')}</button>
+      ${state.prayerMode === 'calendar' ? `<button class="btn-secondary" id="prayer-print">${ICONS.download} ${t('btn_download_pdf')}</button>` : ""}
+    </div>
+  `;
+      let body;
+      if (state.prayerMode === "edit") {
+        body = `
+      <div style="font-size:13px;color:var(--muted-light);margin-bottom:14px;">
+        ${t('edit_intro')}
+      </div>
+      <div class="prayer-months-grid">
+        ${MONTHS_EN.map((_, idx) => {
+          const t3 = state.prayer.monthly[idx] || emptyMonthlyTimes();
+          return `
+            <div class="prayer-month-card">
+              <div style="font-weight:700;margin-bottom:10px;">${monthName(idx)}</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                ${TIME_FIELDS.map(f => `
+                  <label class="field"><span>${t(f.labelKey)}</span><input type="time" data-month="${idx}" data-field="${f.key}" value="${t3[f.key] || ""}" /></label>
+                `).join("")}
+                <label class="field"><span>${t('lbl_jumma')}</span><input type="time" data-month="${idx}" data-field="jumma" value="${t3.jumma || ""}" /></label>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+      } else {
+        const year = state.prayerYear, monthIdx = state.prayerMonthIdx;
+        const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
+        const base = state.prayer.monthly[monthIdx] || emptyMonthlyTimes();
+        const overrides = state.prayer.overrides || [];
+        const today = todayISO();
+        const rows = Array.from({ length: daysInMonth }, (_, i) => {
+          const dayNum = i + 1;
+          const dateObj = new Date(year, monthIdx, dayNum);
+          const iso = dateObj.toISOString().slice(0, 10);
+          const isFriday = dateObj.getDay() === 5;
+          const override = overrides.find(o => o.date === iso);
+          const times = { ...base, ...(override || {}) };
+          return { dayNum, iso, isFriday, weekday: dayName(dateObj.getDay()), times, isToday: iso === today };
+        });
+        body = `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+        <button class="cal-nav-btn" id="prev-month">${ICONS.chevLeft}</button>
+        <div style="font-weight:700;font-size:16px;min-width:160px;text-align:center;">${monthName(monthIdx)} ${year}</div>
+        <button class="cal-nav-btn" id="next-month">${ICONS.chevRight}</button>
+        <input type="number" id="cal-year" value="${year}" style="width:90px;margin-inline-start:8px;" />
+      </div>
+      <div class="table-wrap">
+        <div class="cal-table-head">
+          <span>${t('col_date')}</span><span>${t('col_day')}</span><span>${t('lbl_fajr')}</span><span>${t('lbl_sunrise')}</span><span>${t('lbl_dhuhr')}</span><span>${t('lbl_asr')}</span><span>${t('lbl_maghrib')}</span><span>${t('lbl_isha')}</span>
+        </div>
+        <div class="cal-scroll">
+          ${rows.map(r => `
+            <div class="cal-table-row" style="background:${r.isToday ? '#F3F8F1' : (r.isFriday ? '#FBF6EC' : 'transparent')};">
+              <span style="font-weight:600;">${r.dayNum}</span>
+              <span style="color:${r.isFriday ? 'var(--gold)' : 'var(--muted)'};font-weight:${r.isFriday ? 700 : 400};">${r.weekday}</span>
+              <span>${r.times.fajr || "—"}</span>
+              <span>${r.times.sunrise || "—"}</span>
+              <span>${r.isFriday ? (r.times.jumma ? `${t('lbl_jumma')} ${r.times.jumma}` : (r.times.dhuhr || "—")) : (r.times.dhuhr || "—")}</span>
+              <span>${r.times.asr || "—"}</span>
+              <span>${r.times.maghrib || "—"}</span>
+              <span>${r.times.isha || "—"}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+      }
+      return `${sectionHeader(t("prayer_title"), t("prayer_sub"), modeButtons)}${body}`;
+    }
+    function bindPrayer() {
+      document.querySelectorAll("[data-mode]").forEach(btn => {
+        btn.addEventListener("click", () => { state.prayerMode = btn.getAttribute("data-mode"); renderMain(); });
+      });
+      if (state.prayerMode === "edit") {
+        document.querySelectorAll("[data-month]").forEach(input => {
+          input.addEventListener("change", () => {
+            const m = Number(input.getAttribute("data-month"));
+            const field = input.getAttribute("data-field");
+            state.prayer.monthly[m] = { ...(state.prayer.monthly[m] || emptyMonthlyTimes()), [field]: input.value };
+            persist("prayer");
+          });
+        });
+      } else {
+        document.getElementById("prev-month").addEventListener("click", () => {
+          state.prayerMonthIdx = state.prayerMonthIdx === 0 ? 11 : state.prayerMonthIdx - 1;
+          if (state.prayerMonthIdx === 11) state.prayerYear -= 1;
+          renderMain();
+        });
+        document.getElementById("next-month").addEventListener("click", () => {
+          state.prayerMonthIdx = state.prayerMonthIdx === 11 ? 0 : state.prayerMonthIdx + 1;
+          if (state.prayerMonthIdx === 0) state.prayerYear += 1;
+          renderMain();
+        });
+        document.getElementById("cal-year").addEventListener("change", (e) => {
+          state.prayerYear = Number(e.target.value) || state.prayerYear;
+          renderMain();
+        });
+        const printBtn = document.getElementById("prayer-print");
+        if (printBtn) printBtn.addEventListener("click", () => window.print());
+      }
+    }
+
+    /* ================= SETTINGS ================= */
+    function viewSettings() {
+      return `
+    ${sectionHeader(t("settings_title"), t("settings_sub"))}
+    <div class="settings-card">
+      <h3>${ICONS.image} ${t('card_logo_title')}</h3>
+      <div style="font-size:12.5px;color:var(--muted-light);margin-bottom:10px;">${t('logo_hint')}</div>
+      ${state.logo ? `<img class="logo-preview" src="${state.logo}" />` : ""}
+      <form id="logo-form" style="display:grid;gap:10px;">
+        <label class="field"><span>${t('field_image_url')}</span><input type="url" id="logo-url" placeholder="https://..." value="${state.logo && !String(state.logo).startsWith('data:') ? escapeHtml(state.logo) : ''}" /></label>
+        <label class="field"><span>${t('field_upload_photo')}</span><input type="file" id="logo-file" accept="image/*" /></label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="submit" class="btn-primary">${t('btn_save_logo')}</button>
+          ${state.logo ? `<button type="button" id="logo-remove" class="btn-danger-outline">${t('btn_remove_logo')}</button>` : ""}
+        </div>
+      </form>
+    </div>
+    <div class="settings-card">
+      <h3>${ICONS.key} ${t('card_passcode_title')}</h3>
+      <form id="passcode-form" style="display:grid;gap:10px;">
+        <label class="field"><span>${t('field_current_passcode')}</span><input type="password" id="s-old" /></label>
+        <label class="field"><span>${t('field_new_passcode')}</span><input type="password" id="s-new" /></label>
+        <button type="submit" class="btn-primary" style="justify-content:center;">${t('btn_update_passcode')}</button>
+        <div id="s-msg" style="font-size:12.5px;"></div>
+      </form>
+    </div>
+    <div class="settings-card">
+      <h3 style="color:var(--danger);">${ICONS.shield} ${t('card_reset_title')}</h3>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">
+        ${t('reset_warning')}
+      </div>
+      <button id="reset-all" class="btn-danger-outline">${ICONS.reset} ${t('btn_reset_everything')}</button>
+    </div>
+    <div style="font-size:11.5px;color:var(--faint);max-width:420px;">
+      ${t('storage_note')}
+    </div>
+  `;
+    }
+    function bindSettings() {
+      document.getElementById("logo-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById("logo-file");
+        let url = document.getElementById("logo-url").value.trim();
+        if (fileInput.files && fileInput.files[0]) {
+          try { url = await readFileAsDataURL(fileInput.files[0]); }
+          catch (err) { alert("Could not read that file."); return; }
+        }
+        if (!url) return;
+        const prevLogo = state.logo;
+        state.logo = url;
+        if (!store.set("mm_logo", url)) {
+          state.logo = prevLogo;
+          alert(t("storage_full_warning"));
+          return;
+        }
+        renderShell();
+      });
+      const removeBtn = document.getElementById("logo-remove");
+      if (removeBtn) removeBtn.addEventListener("click", () => {
+        state.logo = null;
+        store.set("mm_logo", null);
+        renderShell();
+      });
+      document.getElementById("passcode-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const oldP = document.getElementById("s-old").value;
+        const newP = document.getElementById("s-new").value;
+        const msg = document.getElementById("s-msg");
+        const oldHash = await hashPasscode(oldP);
+        if (oldHash !== state.passcodeHash) { msg.style.color = "var(--danger)"; msg.textContent = t("msg_current_incorrect"); return; }
+        if (!newP || newP.length < 4) { msg.style.color = "var(--danger)"; msg.textContent = t("msg_new_min"); return; }
+        const newHash = await hashPasscode(newP);
+        state.passcodeHash = newHash;
+        store.set("mm_passcode_hash", newHash);
+        msg.style.color = "var(--green-mid)";
+        msg.textContent = t("msg_updated");
+        document.getElementById("s-old").value = "";
+        document.getElementById("s-new").value = "";
+      });
+      document.getElementById("reset-all").addEventListener("click", () => {
+        if (!window.confirm(t("confirm_reset"))) return;
+        state.donations = []; state.expenses = []; state.photos = []; state.videos = []; state.infra = []; state.layout = [];
+        state.prayer = { monthly: Array.from({ length: 12 }, emptyMonthlyTimes), overrides: [] };
+        persist("donations"); persist("expenses"); persist("photos"); persist("videos"); persist("infra"); persist("layout"); persist("prayer");
+        renderMain();
+      });
+    }
+
+    /* ---------- boot ---------- */
+    render();
+  </script>
+</body>
+
+</html>
